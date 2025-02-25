@@ -1,0 +1,340 @@
+/* Importing Reddit Sans from Google Fonts. */
+@import url('https://fonts.googleapis.com/css2?family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap');
+
+/* All needed animations. */
+@keyframes ship-movement {
+  0% {transform: rotate(0deg) translateX(5%) rotate(0deg);}
+  100% {transform: rotate(360deg) translateX(5%) rotate(-360deg);}
+}
+
+@keyframes flame-flicker {
+  0% {transform: scaleY(104%) translateY(6%);}
+  100% {transform: scaleY(96%); opacity: 95%;}
+}
+
+@keyframes scroll-background {
+  0% {transform: translateY(-50%);}
+  100% {transform: translateY(0%);}
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 100vh;
+}
+
+body {
+  margin: 0;
+
+  background-color: #f5f5f5;
+  color: #231F20;
+
+  font-family: "Reddit Sans";
+}
+
+/* Formatting for the web header itself. */
+header {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+
+  background-color: white;
+
+  padding: 15px 35px 15px 35px;
+
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+}
+
+header a {
+  text-decoration: none;
+  color: #231F20;
+}
+
+/* Logo formatting. */
+.logo {
+  width: 30%;
+  display: flex;
+
+  align-items: center;
+}
+
+.logo img {
+  margin-right: 4px;
+
+  height: 32px;
+}
+
+.logo p {
+  margin: 0;
+
+  font-size: 20pt;
+}
+
+/* Formatting for the navigation bar itself. */
+.nav-bar {
+  width: 25%;
+  min-width: 175px;
+}
+
+.nav-bar ul {
+  display: flex;
+  gap: 10px;
+
+  height: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  list-style-type: none;
+}
+
+.nav-bar li {
+  width: 25%;
+
+  padding: 6px;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-bar a {
+  color: #231F20;
+
+  display: flex;
+
+  height: 100%;
+  width: 100%;
+
+  justify-content: center;
+  align-items: center;
+
+  text-decoration: none;
+}
+
+.nav-bar a:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.nav-bar a img {
+  height: 25px;
+  margin-right: 5px;
+}
+
+/* Formatting for the sign up button. */
+.account-button {
+  border-radius: 25px;
+
+  background-color: #231F20;
+}
+
+.account-button:hover {
+  background-color: #332d2e;
+}
+
+.account-button:active {
+  transform: scale(95%);
+}
+
+.account-button a {
+  color: white;
+}
+
+.account-button a:hover {
+  text-decoration: none;
+}
+
+/* Formatting for the about page header. */
+.about-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  background-color: #231F20;
+  color: white;
+}
+
+.banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 10px;
+
+  overflow: hidden;
+}
+
+.about-main h1, p {
+  margin: 10px;
+}
+
+.starfield {
+  display: flex;
+
+  width: 25%;
+
+  overflow: hidden;
+}
+
+.starfield::before {
+  content: '';
+  
+  height: 200%;
+  width: 100%;
+  background-image: url('./starfield.svg');
+  background-size: 100% 50%;
+
+  animation: 5s linear 0s infinite scroll-background;
+}
+
+.starfield:nth-child(1)::before {
+  animation-delay: -2s;
+}
+
+.ship {
+  display: flex;
+  flex-direction: column;
+
+  margin: 75px 0 75px 0;
+
+  animation: 3s linear 0s infinite ship-movement;
+}
+
+.ship img:last-child {
+  margin-top: 5px;
+
+  animation: 0.5s linear 0s infinite alternate flame-flicker;
+}
+
+.team-info {
+  font-size: 10pt;
+}
+
+/* Formatting for the smaller info section. */
+.info-container {
+  text-align: center;
+
+  padding: 24px;
+}
+
+.info-container:nth-child(odd) {
+  background-color: rgba(255,255,255,0.25);
+}
+
+.info-container h2 {
+  margin: 24px;
+}
+
+.info-container ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+
+  padding: 0;
+  margin: 24px;
+
+  list-style-type: none;
+}
+
+.info-container li {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+
+  width: 20%;
+  aspect-ratio: 2.25/1;
+
+  border-radius: 20px;
+  padding: 24px;
+
+  background-color: white;
+  box-shadow: 0 5px 5px lightgrey;
+}
+
+.info-container li hr {
+  border: 1px solid lightgrey;
+  width: 60%;
+}
+
+/* Formatting for the login / sign up page. */
+.account-form {
+  display: flex;
+
+  flex: 1;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.account-form form {
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 20px;
+
+  width: 30%;
+
+  padding: 40px;
+
+  background-color: white;
+  box-shadow: 0 5px 5px lightgrey;
+}
+
+.account-form img {
+  height: 80px;
+}
+
+.account-form label {
+  display: inline-block;
+
+  margin-top: 15px;
+}
+
+.account-form label:nth-of-type(1) {
+  margin-top: 0;
+}
+
+.account-form input {
+  font-size: 12pt;
+  font-family: "Reddit Sans";
+
+  box-sizing: border-box;
+
+  width: 100%;
+}
+
+.account-form button {
+  font-size: 12pt;
+  font-family: "Reddit Sans";
+
+  border-radius: 20px;
+  border: 0;
+
+  margin-top: 20px;
+  padding: 8px;
+
+  width: 100%;
+}
+
+.account-form button:hover {
+  cursor: pointer;
+}
+
+/* Footer formatting. */
+footer {
+  display: flex;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  background-color: white;
+  padding: 15px;  
+
+  place-content: center;
+  }
+  .footerDiv{
+    text-align: center;
+  }
