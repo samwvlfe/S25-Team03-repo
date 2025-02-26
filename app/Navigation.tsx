@@ -19,7 +19,7 @@ export default function Navigation() {
             <header>
                 <Link to="/">
                     <div className="logo">
-                        <img src="/media/signin.svg" alt="Logo"/>
+                        <img src="/media/logo.svg" alt="Logo"/>
                         <p><b>AlienBaba</b>.com</p>
                     </div>
                 </Link>
@@ -35,9 +35,6 @@ export default function Navigation() {
                             </Link>
                         </li>
                         <li className="account-button">
-                            <Link to="/signup">Sign Up</Link>
-                        </li>
-                        <li className="account-button">
                             <Link to="/apply">Apply</Link>
                         </li>
                     </ul>
@@ -46,7 +43,6 @@ export default function Navigation() {
             <Routes>
                 <Route path="/support" element={<Support/>} />
                 <Route path="/signin" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
                 <Route path="/apply" element={<ApplicationForm />} />
                 <Route path="/" element={<About/>} />
             </Routes>

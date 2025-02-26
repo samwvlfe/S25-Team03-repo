@@ -35,18 +35,26 @@ export default function ApplicationForm() {
     };
 
     return (
-        <div>
+        <div className="account-form">
             <form className="application-form" onSubmit={handleSubmit}>
+                <label>Full Name:</label>
                 <input type="text" name="applicantName" placeholder="Full Name" required onChange={handleChange} />
+                <label>I am a:</label>
                 <select name="applicantType" onChange={handleChange}>
                     <option value="Driver">Driver</option>
                     <option value="Sponsor">Sponsor</option>
                 </select>
+                <label>Username:</label>
                 <input type="text" name="username" placeholder="Username" required onChange={handleChange} />
+                <label>Email:</label>
                 <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
+                <label>Password:</label>
                 <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
                 {formData.applicantType === 'Sponsor' && (
-                    <input type="text" name="companyID" placeholder="Company ID" onChange={handleChange} />
+                    <div>
+                        <label>Company ID:</label>
+                        <input type="text" name="companyID" placeholder="Company ID" onChange={handleChange} />
+                    </div>
                 )}
                 <input type="submit" value="Submit Application" />
             </form>

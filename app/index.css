@@ -17,13 +17,6 @@
   100% {transform: translateY(0%);}
 }
 
-#root {
-  display: flex;
-  flex-direction: column;
-
-  min-height: 100vh;
-}
-
 body {
   margin: 0;
 
@@ -31,6 +24,13 @@ body {
   color: #231F20;
 
   font-family: "Reddit Sans";
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 100vh;
 }
 
 /* Formatting for the web header itself. */
@@ -306,7 +306,11 @@ header a {
   width: 100%;
 }
 
-.account-form button {
+.account-form div {
+  margin-top: 15px;
+}
+
+.account-form input[type="submit"] {
   font-size: 12pt;
   font-family: "Reddit Sans";
 
@@ -319,7 +323,7 @@ header a {
   width: 100%;
 }
 
-.account-form button:hover {
+.account-form input[type="submit"]:hover {
   cursor: pointer;
 }
 
