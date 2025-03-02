@@ -113,6 +113,29 @@ app.post('/api/submit-application', async (req, res) => {
     }
 });
 
+app.post('/api/admin/verify', (req, res) => {
+    const { adminID } = req.body;
+
+    if (!adminID) {
+        return res.status(400).json({ error: 'AdminID is required' });
+    }
+
+    const query = `SELECT * FROM Admins WHERE AdminID = ?`;
+
+    db.query(query, [adminID], (err, result) => {
+        if (err) {
+            console.error('Admin verification failed:', err);
+            return res.status(500).json({ error: 'Database error', details: err.sqlMessage });
+        }
+
+        if (result.length === 0) {
+            return res.status(403).json({ error: 'Invalid AdminID' });
+        }
+
+        res.status(200).json({ message: 'Admin verified', admin: result[0] });
+    });
+});
+
 app.post('/api/admin/create-user', async (req, res) => {
     const { name, username, email, password, role, companyID } = req.body;
 

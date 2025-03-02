@@ -12,6 +12,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Support from './pages/Support';
 import ApplicationForm from './pages/ApplicationForm';
+import AdminDashboard from './pages/AdminDashboard';
 
 export default function Navigation() {
     return (
