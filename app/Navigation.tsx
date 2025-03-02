@@ -38,6 +38,9 @@ export default function Navigation() {
                         <li className="account-button">
                             <Link to="/apply">Apply</Link>
                         </li>
+                        <li>
+                            <Link to="/admin-dashboard">Admin</Link> 
+                        </li>
                     </ul>
                 </nav>
             </header>
@@ -45,6 +48,7 @@ export default function Navigation() {
                 <Route path="/support" element={<Support/>} />
                 <Route path="/signin" element={<Login />} />
                 <Route path="/apply" element={<ApplicationForm />} />
+                <Route path="/admin-dashboard" element={<AdminDashboard />} />
                 <Route path="/" element={<About/>} />
             </Routes>
         </Router>
