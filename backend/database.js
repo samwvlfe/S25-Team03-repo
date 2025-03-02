@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
+const bcrypt = require('bcrypt');
 
 const app = express();
 const port = process.env.PORT || 2999;
@@ -71,14 +72,14 @@ app.put('/api/about/:id', (req, res) => {
 
 // Submitting Application
 app.post('/api/submit-application', async (req, res) => {
-    const { applicantName, applicantType, username, email, password, companyID } = req.body;
+    const { applicantName, applicantType, username, email, password, companyID, adminID } = req.body; // FIX: Extract adminID
 
     if (!applicantName || !applicantType || !username || !email || !password) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
     try {
-        const hashedPassword = await bcrypt.hash(password, 10); // Hash the password before storing it
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         let query;
         let values;
@@ -99,6 +100,9 @@ app.post('/api/submit-application', async (req, res) => {
             `;
             values = [applicantName, applicantType, username, email, hashedPassword, companyID || null];
         }
+
+        console.log('Executing Query:', query);
+        console.log('With Values:', values);
 
         db.query(query, values, (err, result) => {
             if (err) {
