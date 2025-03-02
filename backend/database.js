@@ -70,25 +70,98 @@ app.put('/api/about/:id', (req, res) => {
 });
 
 // Submitting Application
-app.post('/api/submit-application', (req, res) => {
+app.post('/api/submit-application', async (req, res) => {
     const { applicantName, applicantType, username, email, password, companyID } = req.body;
 
     if (!applicantName || !applicantType || !username || !email || !password) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    const query = `
-        INSERT INTO Applications (ApplicantName, ApplicantType, Username, Email, PasswordHash, CompanyID, ApplicationStatus, SubmissionDate)
-        VALUES (?, ?, ?, ?, ?, ?, 'Pending', NOW())
-    `;
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10); // Hash the password before storing it
 
-    db.query(query, [applicantName, applicantType, username, email, password, companyID || null], (err, result) => {
-        if (err) {
-            console.error('Database insert failed:', err);
-            res.status(500).json({ error: 'Database insert failed', details: err });
+        let query;
+        let values;
+
+        if (applicantType === 'Admin') {
+            if (!adminID) {
+                return res.status(400).json({ error: 'Admin ID is required for admin accounts' });
+            }
+            query = `
+                INSERT INTO Applications (ApplicantName, ApplicantType, Username, Email, PasswordHash, AdminID, ApplicationStatus, SubmissionDate)
+                VALUES (?, ?, ?, ?, ?, ?, 'Pending', NOW())
+            `;
+            values = [applicantName, applicantType, username, email, hashedPassword, adminID];
         } else {
-            res.status(201).json({ message: 'Application submitted successfully', id: result.insertId });
+            query = `
+                INSERT INTO Applications (ApplicantName, ApplicantType, Username, Email, PasswordHash, CompanyID, ApplicationStatus, SubmissionDate)
+                VALUES (?, ?, ?, ?, ?, ?, 'Pending', NOW())
+            `;
+            values = [applicantName, applicantType, username, email, hashedPassword, companyID || null];
         }
+
+        db.query(query, values, (err, result) => {
+            if (err) {
+                console.error('Database insert failed:', err);
+                return res.status(500).json({ error: 'Database insert failed', details: err.sqlMessage });
+            }
+            res.status(201).json({ message: 'Application submitted successfully', id: result.insertId });
+        });
+
+    } catch (error) {
+        res.status(500).json({ error: 'Password hashing failed', details: error.message });
+    }
+});
+
+app.post('/api/admin/create-user', async (req, res) => {
+    const { name, username, email, password, role, companyID } = req.body;
+
+    if (!name || !username || !email || !password || !role) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    try {
+        // Hash the password before storing
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const query = `
+            INSERT INTO Users (Name, Username, Email, PasswordHash, Role, CompanyID, CreatedAt)
+            VALUES (?, ?, ?, ?, ?, ?, NOW())
+        `;
+
+        db.query(query, [name, username, email, hashedPassword, role, companyID || null], (err, result) => {
+            if (err) {
+                console.error('User creation failed:', err);
+                return res.status(500).json({ error: 'User creation failed', details: err.sqlMessage });
+            }
+            res.status(201).json({ message: 'User created successfully', id: result.insertId });
+        });
+
+    } catch (error) {
+        res.status(500).json({ error: 'Password hashing failed', details: error.message });
+    }
+});
+
+app.delete('/api/admin/delete-user/:id', (req, res) => {
+    const userId = req.params.id;
+
+    if (!userId) {
+        return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    const query = `DELETE FROM Users WHERE ID = ?`;
+
+    db.query(query, [userId], (err, result) => {
+        if (err) {
+            console.error('User deletion failed:', err);
+            return res.status(500).json({ error: 'User deletion failed', details: err.sqlMessage });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'User deleted successfully' });
     });
 });
 

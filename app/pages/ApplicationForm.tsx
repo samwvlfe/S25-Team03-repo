@@ -11,6 +11,7 @@ export default function ApplicationForm() {
         email: '',
         password: '',
         companyID: '',
+        adminID: '',
         applicationStatus: 'Pending', // Default to Pending
         submissionDate: new Date().toISOString().slice(0, 19).replace('T', ' '), // Format for MySQL
         reviewedByAdminID: null,
@@ -43,6 +44,7 @@ export default function ApplicationForm() {
                 <select name="applicantType" onChange={handleChange}>
                     <option value="Driver">Driver</option>
                     <option value="Sponsor">Sponsor</option>
+                    <option value="Admin">Admin</option>
                 </select>
                 <label>Username:</label>
                 <input type="text" name="username" placeholder="Username" required onChange={handleChange} />
@@ -54,6 +56,12 @@ export default function ApplicationForm() {
                     <div>
                         <label>Company ID:</label>
                         <input type="text" name="companyID" placeholder="Company ID" onChange={handleChange} />
+                    </div>
+                )}
+                {formData.applicantType === 'Admin' && (
+                    <div>
+                        <label>Admin ID:</label>
+                        <input type="text" name="adminID" placeholder="Admin ID" required onChange={handleChange} />
                     </div>
                 )}
                 <input type="submit" value="Submit Application" />
