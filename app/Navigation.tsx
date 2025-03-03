@@ -9,8 +9,8 @@ import {
 } from "react-router-dom";
 import About from './pages/About';
 import Login from './pages/Login';
-import Support from './pages/Support';
 import ApplicationForm from './pages/ApplicationForm';
+import ApplicationSuccess from './pages/ApplicationSuccess';
 import ReviewApplications from './pages/ReviewApplications';
 import AdminDashboard from './pages/AdminDashboard';
 import Menu from './pages/Menu';
@@ -27,9 +27,6 @@ export default function Navigation() {
                 </Link>
                 <nav className="nav-bar">
                     <ul>
-                        <li>
-                            <Link to="/support">Support</Link>
-                        </li>
                         <li>
                             <Link to="/signin">
                                 <img src="/media/signin.svg" alt="Sign In"/>
@@ -49,9 +46,9 @@ export default function Navigation() {
                 </nav>
             </header>
             <Routes>
-                <Route path="/support" element={<Support/>} />
                 <Route path="/signin" element={<Login />} />
                 <Route path="/apply" element={<ApplicationForm />} />
+                <Route path="/apply-success" element={<ApplicationSuccess />} />
                 <Route path="/review" element={<ReviewApplications />} />
                 <Route path="/menu" element={<Menu />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />

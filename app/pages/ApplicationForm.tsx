@@ -25,6 +25,9 @@ export default function ApplicationForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        navigate('/apply-success');
+
         try {
             const response = await axios.post('http://localhost:2999/api/submit-application', formData); 
             alert(response.data.message);
