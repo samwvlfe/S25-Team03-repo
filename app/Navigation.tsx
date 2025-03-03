@@ -42,6 +42,9 @@ export default function Navigation() {
                         <li className="account-button">
                             <Link to="/review">Review Applications</Link>
                         </li>
+                        <li>
+                            <Link to="/admin-dashboard">Admin</Link> 
+                        </li>
                     </ul>
                 </nav>
             </header>
