@@ -8,7 +8,6 @@ import {
   Link
 } from "react-router-dom";
 import About from './pages/About';
-import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Support from './pages/Support';
 import ApplicationForm from './pages/ApplicationForm';
