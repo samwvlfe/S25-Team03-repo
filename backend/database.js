@@ -27,6 +27,38 @@ db.connect(err => {
     }
 });
 
+// Fetch applications (Pending Only)
+app.get('/api/get-applications', (req, res) => {
+    const query = `SELECT * FROM Applications WHERE ApplicationStatus = 'Pending'`;
+    db.query(query, (err, results) => {
+        if (err) {
+            res.status(500).json({ error: 'Database query failed', details: err });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+// Update Application Status
+app.post('/api/update-application-status', (req, res) => {
+    const { applicationID, status } = req.body;
+    
+    if (!applicationID || !status) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const query = `UPDATE Applications SET ApplicationStatus = ? WHERE ApplicationID = ?`;
+    db.query(query, [status, applicationID], (err, result) => {
+        if (err) {
+            console.error('Error updating application status:', err);
+            res.status(500).json({ error: 'Database update failed', details: err });
+        } else {
+            res.status(200).json({ message: `Application ${status} successfully` });
+        }
+    });
+});
+
+
 // Table name for the about page
 const aboutTable = 'AboutPage';
 

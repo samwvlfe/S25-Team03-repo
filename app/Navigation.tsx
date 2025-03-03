@@ -11,6 +11,7 @@ import About from './pages/About';
 import Login from './pages/Login';
 import Support from './pages/Support';
 import ApplicationForm from './pages/ApplicationForm';
+import ReviewApplications from './pages/ReviewApplications';
 
 export default function Navigation() {
     return (
@@ -36,6 +37,9 @@ export default function Navigation() {
                         <li className="account-button">
                             <Link to="/apply">Apply</Link>
                         </li>
+                        <li className="account-button">
+                            <Link to="/review">Review Applications</Link>
+                        </li>
                     </ul>
                 </nav>
             </header>
@@ -43,6 +47,7 @@ export default function Navigation() {
                 <Route path="/support" element={<Support/>} />
                 <Route path="/signin" element={<Login />} />
                 <Route path="/apply" element={<ApplicationForm />} />
+                <Route path="/review" element={<ReviewApplications />} />
                 <Route path="/" element={<About/>} />
             </Routes>
         </Router>
