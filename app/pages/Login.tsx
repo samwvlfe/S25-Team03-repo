@@ -28,7 +28,7 @@ export default function Login() {
 
             if (response.data.success) {
                 setMessage('Login successful! Redirecting...');
-                setTimeout(() => navigate('/Menu'), 2000);
+                setTimeout(() => navigate('/menu'), 2000);
                 localStorage.setItem('user', JSON.stringify(response.data.user)); // save user data for menuInfo
             } else {
                 setMessage(response.data.error || 'Login failed');

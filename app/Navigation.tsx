@@ -12,6 +12,7 @@ import Login from './pages/Login';
 import Support from './pages/Support';
 import ApplicationForm from './pages/ApplicationForm';
 import ReviewApplications from './pages/ReviewApplications';
+import Menu from './pages/Menu';
 
 export default function Navigation() {
     return (
@@ -48,6 +49,7 @@ export default function Navigation() {
                 <Route path="/signin" element={<Login />} />
                 <Route path="/apply" element={<ApplicationForm />} />
                 <Route path="/review" element={<ReviewApplications />} />
+                <Route path="/menu" element={<Menu />} />
                 <Route path="/" element={<About/>} />
             </Routes>
         </Router>
