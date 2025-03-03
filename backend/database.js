@@ -70,7 +70,7 @@ app.put('/api/about/:id', (req, res) => {
     });
 });
 
-// Submitting Application
+// Submitting Application 
 app.post('/api/submit-application', async (req, res) => {
     const { applicantName, applicantType, username, email, password, companyID, adminID } = req.body; // FIX: Extract adminID
 
@@ -116,6 +116,52 @@ app.post('/api/submit-application', async (req, res) => {
         res.status(500).json({ error: 'Password hashing failed', details: error.message });
     }
 });
+
+// Verify sponsor user
+app.post('/api/sponsor-login', (req, res) => {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ error: 'Missing username or password' });
+    }
+
+    verifySponsorLogin(username, password, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: 'Database error', details: err.message });
+        }
+
+        if (!result.success) {
+            return res.status(401).json({ error: result.message });
+        }
+
+        res.status(200).json(result);
+    });
+});
+
+// helper function to call sponsor login stored procedure 
+const verifySponsorLogin = (username, password, callback) => {
+    const query = `CALL VerifySponsorLogin(?, ?)`;
+
+    db.query(query, [username, password], (err, results) => {
+        if (err) {
+            return callback(null, { success: false, message: err.sqlMessage || 'Login failed' });
+        }
+
+        if (!results || results.length === 0 || results[0].length === 0) {
+            return callback(null, { success: false, message: 'User not found' });
+        }
+
+        return callback(null, {
+            success: true,
+            message: 'Login successful',
+            user: results[0][0]
+        });
+    });
+};
+
+module.exports = { verifySponsorLogin };
+
+
 
 app.post('/api/admin/create-user', async (req, res) => {
     const { name, username, email, password, role, companyID } = req.body;
