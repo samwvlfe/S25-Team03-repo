@@ -35,10 +35,10 @@ export default function Navigation() {
                                 Sign In
                             </Link>
                         </li>
-                        <li className="account-button">
+                        <li id="apply" className="account-button">
                             <Link to="/apply">Apply</Link>
                         </li>
-                        <li className="account-button">
+                        <li id="revApps" className="account-button">
                             <Link to="/review">Review Applications</Link>
                         </li>
                     </ul>
