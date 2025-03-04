@@ -17,6 +17,11 @@
   100% {transform: translateY(0%);}
 }
 
+@keyframes bounce {
+  0% {transform: translateY(0%);}
+  100% {transform: translateY(-20%);}
+}
+
 body {
   margin: 0;
 
@@ -328,6 +333,14 @@ header a {
   cursor: pointer;
 }
 
+/* Formatting for application success page. */
+.app-success {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+}
+
 /* Footer formatting. */
 footer {
   display: flex;
@@ -346,3 +359,25 @@ footer {
   .footerDiv{
     text-align: center;
   }
+
+/* Utility formatting. */
+.loading {
+  display: inline-block;
+  margin: 0;
+}
+
+.loading span {
+  display: inline-block;
+}
+
+.loading span:nth-of-type(1) {
+  animation: 0.5s ease 0s infinite alternate bounce;
+}
+
+.loading span:nth-of-type(2) {
+  animation: 0.5s ease 0.5s infinite alternate bounce; 
+}
+
+.loading span:nth-of-type(3) {
+  animation: 0.5s ease 1s infinite alternate bounce;
+}
