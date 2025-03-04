@@ -78,7 +78,7 @@ header a {
 
 /* Formatting for the navigation bar itself. */
 .nav-bar {
-  width: 30%;
+  width: 35%;
   min-width: 175px;
 }
 
@@ -101,6 +101,7 @@ header a {
 
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
 .nav-bar a {
@@ -351,6 +352,9 @@ footer {
   padding: 15px;  
 
   place-content: center;
+
+  position: absolute;
+  bottom: 0;
   }
   .footerDiv{
     text-align: center;
