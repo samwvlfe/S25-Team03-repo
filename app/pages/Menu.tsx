@@ -1,8 +1,15 @@
-export default function Menu() {
-    // Retrieve user info from localStorage
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
+import React, { useEffect } from 'react';
+import { toggleNav } from '../../script/toggle';
 
-    console.log("Menu component loaded"); // Debugging line
+export default function Menu() {
+    // Retrieve user info from local storage
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    
+    // call func ONCE after doc loads 
+    useEffect(() => {
+        toggleNav(); 
+    }, []); 
+
     return (
         <div>
             <p>Menu</p>
