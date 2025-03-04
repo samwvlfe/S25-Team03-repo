@@ -352,9 +352,6 @@ footer {
   padding: 15px;  
 
   place-content: center;
-
-  position: absolute;
-  bottom: 0;
   }
   .footerDiv{
     text-align: center;
