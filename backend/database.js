@@ -149,52 +149,61 @@ app.post('/api/submit-application', async (req, res) => {
     }
 });
 
-// Verify sponsor user
-app.post('/api/sponsor-login', (req, res) => {
+// log in
+app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
 
+    console.log("Received request, playa:", req.body); 
+
     if (!username || !password) {
-        return res.status(400).json({ error: 'Missing username or password' });
+        return res.status(400).json({ error: 'Usernamd and/or password not sent in request' });
     }
 
-    verifySponsorLogin(username, password, (err, result) => {
+    verifyLogin(username, password, (err, result) => {
         if (err) {
             return res.status(500).json({ error: 'Database error', details: err.message });
         }
 
-        if (!result.success) {
-            return res.status(401).json({ error: result.message });
+        if (!result || !result.success) {
+            return res.status(401).json({ error: result ? result.message : 'Login failed' });
         }
 
         res.status(200).json(result);
     });
 });
 
-// helper function to call sponsor login stored procedure 
-const verifySponsorLogin = (username, password, callback) => {
+// Function to Call Stored Procedure and Verify Password
+const verifyLogin = (Username, password, callback) => {
     const query = `CALL VerifySponsorLogin(?, ?)`;
 
-    db.query(query, [username, password], (err, results) => {
+    db.query(query, [Username, password], (err, results) => {
         if (err) {
-            return callback(null, { success: false, message: err.sqlMessage || 'Login failed' });
+            return callback({ success: false, message: err.message || 'Failed login' });
         }
 
         if (!results || results.length === 0 || results[0].length === 0) {
-            return callback(null, { success: false, message: 'User not found' });
+            return callback(null, { success: false, message: 'Stored procedure deemed incorrect username and/or password' });
         }
 
-        return callback(null, {
-            success: true,
-            message: 'Login successful',
-            user: results[0][0]
-        });
+        const user = results[0][0];
+        console.log("Extracted User Data:", user);
+            return callback(null, {
+                success: true,
+                message: 'Login successful',
+                user: {
+                    id: user.SponsorUserID,
+                    username: user.Username,
+                    email: user.Email,
+                    companyID: user.CompanyID,
+                    usertype: user.UserType
+                }
+            });
     });
 };
 
-module.exports = { verifySponsorLogin };
 
 
-
+// admin add user
 app.post('/api/admin/create-user', async (req, res) => {
     const { name, username, email, password, role, companyID } = req.body;
 
@@ -214,7 +223,7 @@ app.post('/api/admin/create-user', async (req, res) => {
         db.query(query, [name, username, email, hashedPassword, role, companyID || null], (err, result) => {
             if (err) {
                 console.error('User creation failed:', err);
-                return res.status(500).json({ error: 'User creation failed', details: err.sqlMessage });
+                return res.status(500).json({ error: 'User creation failed', details: err.message });
             }
             res.status(201).json({ message: 'User created successfully', id: result.insertId });
         });
@@ -224,6 +233,7 @@ app.post('/api/admin/create-user', async (req, res) => {
     }
 });
 
+// admin delete user
 app.delete('/api/admin/delete-user/:id', (req, res) => {
     const userId = req.params.id;
 
@@ -236,7 +246,7 @@ app.delete('/api/admin/delete-user/:id', (req, res) => {
     db.query(query, [userId], (err, result) => {
         if (err) {
             console.error('User deletion failed:', err);
-            return res.status(500).json({ error: 'User deletion failed', details: err.sqlMessage });
+            return res.status(500).json({ error: 'User deletion failed', details: err.message });
         }
 
         if (result.affectedRows === 0) {
