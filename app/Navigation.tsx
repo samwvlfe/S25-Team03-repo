@@ -12,6 +12,7 @@ import Login from './pages/Login';
 import Support from './pages/Support';
 import ApplicationForm from './pages/ApplicationForm';
 import ReviewApplications from './pages/ReviewApplications';
+import AdminDashboard from './pages/AdminDashboard';
 import Menu from './pages/Menu';
 
 export default function Navigation() {
@@ -41,6 +42,9 @@ export default function Navigation() {
                         <li id="revApps" className="account-button">
                             <Link to="/review">Review Applications</Link>
                         </li>
+                        <li>
+                            <Link to="/admin-dashboard">Admin</Link> 
+                        </li>
                     </ul>
                 </nav>
             </header>
@@ -50,6 +54,7 @@ export default function Navigation() {
                 <Route path="/apply" element={<ApplicationForm />} />
                 <Route path="/review" element={<ReviewApplications />} />
                 <Route path="/menu" element={<Menu />} />
+                <Route path="/admin-dashboard" element={<AdminDashboard />} />
                 <Route path="/" element={<About/>} />
             </Routes>
         </Router>
