@@ -25,6 +25,9 @@ export default function ApplicationForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        navigate('/apply-success');
+
         try {
             const response = await axios.post('http://localhost:2999/api/submit-application', formData); 
             alert(response.data.message);
@@ -38,6 +41,8 @@ export default function ApplicationForm() {
     return (
         <div className="account-form">
             <form className="application-form" onSubmit={handleSubmit}>
+                <img src="/media/default-alien.svg"/>
+
                 <label>Full Name:</label>
                 <input type="text" name="applicantName" placeholder="Full Name" required onChange={handleChange} />
                 <label>I am a:</label>
