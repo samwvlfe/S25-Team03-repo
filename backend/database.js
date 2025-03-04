@@ -187,17 +187,16 @@ const verifyLogin = (Username, password, callback) => {
 
         const user = results[0][0];
         console.log("Extracted User Data:", user);
-            return callback(null, {
-                success: true,
-                message: 'Login successful',
-                user: {
-                    id: user.SponsorUserID,
-                    username: user.Username,
-                    email: user.Email,
-                    companyID: user.CompanyID,
-                    usertype: user.UserType
-                }
-            });
+        
+        return callback(null, {
+            success: true,
+            message: 'Login successful',
+            user: {
+                id: user.UserID,   
+                username: user.Username,
+                usertype: user.UserType
+            }
+        });
     });
 };
 
