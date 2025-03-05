@@ -7,13 +7,17 @@ export function toggleNav(){
     const user = userData ? JSON.parse(userData) : null;
 
     // Check if elements exist before modifying them
+    const apply = document.querySelector("#apply");
     const signin = document.querySelector("#signin");
     const signout = document.querySelector("#signout");
     const revApps = document.querySelector("#revApps");
     const adminID = document.querySelector("#adminID");
 
-    // if signed in, take away apply
-    if(user){ if (signin) signin.style.display = "none";}
+    // if signed in, take away apply and sign in
+    if(user){ 
+        if (signin) signin.style.display = "none";
+        if (apply) apply.style.display = "none";
+    }
     // if driver, only show sign out
     if(user.usertype === "Driver"){
         if (signout) signout.style.display = "block";

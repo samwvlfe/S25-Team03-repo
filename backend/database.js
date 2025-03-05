@@ -10,11 +10,20 @@ const port = process.env.PORT || 2999;
 app.use(express.json());
 app.use(cors());
 
-// Database connection
+// Database connection - TEST
+// const db = mysql.createConnection({
+//     host: 't3db-instance.cmypylkqlfup.us-east-1.rds.amazonaws.com',
+//     user: 't3admin',
+//     password: 'JlziWBbT4LmgEEbJsCwW',
+//     database: 'GoodDriverIncentiveT3',
+//     port: 3306
+// });
+
+// Database connection - PRODUCTION
 const db = mysql.createConnection({
-    host: 't3db-instance.cmypylkqlfup.us-east-1.rds.amazonaws.com',
-    user: 't3admin',
-    password: 'JlziWBbT4LmgEEbJsCwW',
+    host: 'cpsc4911.cobd8enwsupz.us-east-1.rds.amazonaws.com',
+    user: 'admin',
+    password: '4911Admin2025',
     database: 'GoodDriverIncentiveT3',
     port: 3306
 });

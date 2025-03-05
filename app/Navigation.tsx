@@ -40,7 +40,7 @@ export default function Navigation() {
                                 Sign In
                             </Link>
                         </li>
-                        <li id="apply" className="account-button">
+                        <li id="apply" style={{ display: "block" }} className="account-button">
                             <Link to="/apply">Apply</Link>
                         </li>
                         <li id="revApps" className="account-button">
