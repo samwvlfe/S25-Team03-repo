@@ -51,7 +51,7 @@ export default function ApplicationForm() {
 
                     <label>Full Name:</label>
                     <input type="text" name="applicantName" placeholder="Full Name" required onChange={handleChange} />
-                    <label>I am a:</label>
+                    <label>I am a(n):</label>
                     <select name="applicantType" onChange={handleChange}>
                         <option value="Driver">Driver</option>
                         <option value="Sponsor">Sponsor</option>
@@ -64,13 +64,13 @@ export default function ApplicationForm() {
                     <label>Password:</label>
                     <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
                     {formData.applicantType === 'Sponsor' && (
-                        <div>
+                        <div className="extra-field">
                             <label>Company ID:</label>
                             <input type="text" name="companyID" placeholder="Company ID" onChange={handleChange} />
                         </div>
                     )}
                     {formData.applicantType === 'Admin' && (
-                        <div>
+                        <div className="extra-field">
                             <label>Admin ID:</label>
                             <input type="text" name="adminID" placeholder="Admin ID" required onChange={handleChange} />
                         </div>

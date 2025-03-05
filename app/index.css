@@ -315,6 +315,10 @@ header a {
   margin-top: 15px;
 }
 
+.extra-field {
+  margin-top: 15px;
+}
+
 .account-form label:nth-of-type(1) {
   margin-top: 0;
 }
