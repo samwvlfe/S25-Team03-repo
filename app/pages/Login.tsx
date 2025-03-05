@@ -47,7 +47,7 @@ export default function Login() {
     };
 
     return (
-        <div className="account-form">
+        <main className="account-form">
             <form className="login-form" onSubmit={handleSubmit}>
                 <label>Username:</label>
                 <input 
@@ -70,6 +70,6 @@ export default function Login() {
                 <input type="submit" value="Log in"/>
             </form>
             <p>{message}</p>
-        </div>
+        </main>
     );
 }

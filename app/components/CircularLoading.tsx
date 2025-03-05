@@ -39,7 +39,7 @@ export default function CircularLoading() {
                 const planetVar:number = Math.floor(Math.random() * (PLANET_MAX_VARIANCE - PLANET_MIN_VARIANCE + 1)) + PLANET_MIN_VARIANCE;
                 const normPlanetHeight:number = planetVar * (PLANET_NORMALIZE / (++i));
                 return (
-                    <div className="orbit-outline" style={{ height: `${orbitHeight}%`, animationDuration: `${(ORBIT_TIME + i)}s` }}>
+                    <div key={i} className="orbit-outline" style={{ height: `${orbitHeight}%`, animationDuration: `${(ORBIT_TIME + i)}s` }}>
                         <div className="planet" style={{ height: `${normPlanetHeight}%`, animationDuration: `${ORBIT_TIME + i}s`}}/>
                     </div>
                 );

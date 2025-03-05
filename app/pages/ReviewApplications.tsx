@@ -34,7 +34,7 @@ export default function ReviewApplications() {
     };
 
     return (
-        <div>
+        <main>
             <h2>Review Applications</h2>
             <table border={1}>
                 <thead>
@@ -69,6 +69,6 @@ export default function ReviewApplications() {
                     ))}
                 </tbody>
             </table>
-        </div>
+        </main>
     );
 }

@@ -29,7 +29,7 @@ export default function About() {
   // Returning all necessary data from the database.
   // Additional logic is in case the data isn't fully loaded.
   return (
-    <div className="about">
+    <main className="about">
       <div className="about-header">
         <div className="starfield"/>
         <div className="banner">
@@ -88,6 +88,6 @@ export default function About() {
           </li>
         </ul>
       </div>
-    </div>
+    </main>
   );
 }

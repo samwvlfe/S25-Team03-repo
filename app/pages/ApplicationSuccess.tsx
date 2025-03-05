@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function ApplicationSuccess() {
     return (
-        <div className="app-success">
+        <main className="app-success">
             <div className="info-container">
                 <h2>Application Received!</h2>
                 <p>Your application has been received! Here's what to expect:</p>
@@ -24,6 +24,6 @@ export default function ApplicationSuccess() {
                     </li>
                 </ul>
             </div>
-        </div>
+        </main>
     )
 }

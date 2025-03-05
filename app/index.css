@@ -31,6 +31,11 @@
 body {
   margin: 0;
 
+  display: flex;
+  flex-direction: column;
+
+  min-height: 100vh;
+
   background-color: #f5f5f5;
   color: #231F20;
 
@@ -38,10 +43,7 @@ body {
 }
 
 main {
-  display: flex;
-  flex-direction: column;
-
-  min-height: 100vh;
+  flex: 1;
 }
 
 /* Formatting for the web header itself. */
@@ -274,8 +276,6 @@ header a {
 /* Formatting for the login / sign up page. */
 .account-form {
   display: flex;
-
-  flex: 1;
 
   justify-content: center;
   align-items: center;
