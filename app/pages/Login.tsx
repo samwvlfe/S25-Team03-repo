@@ -24,7 +24,7 @@ export default function Login() {
         console.log("Sending data:", formData); 
 
         if (!formData.username || !formData.password) {
-            setMessage('Please enter both username and password');
+            setMessage('⚠️ Please enter both username and password.');
             return;
         }
 
@@ -38,13 +38,13 @@ export default function Login() {
                 setTimeout(() => navigate('/menu'), 2000);
                 localStorage.setItem('user', JSON.stringify(response.data.user)); // Save user data
             } else {
-                setMessage(response.data.error || 'Login failed');
+                setMessage(response.data.error || 'Login failed!');
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                setMessage(error.response?.data?.error || 'Login failed');
+                setMessage(error.response?.data?.error || 'Login failed!');
             } else {
-                setMessage('An unknown error occurred');
+                setMessage('An unknown error occurred!');
             }
             console.error('Login error:', error);
         } finally {
@@ -77,7 +77,7 @@ export default function Login() {
                     />
                     <input type="submit" value="Log in"/>
                 </form>
-                <p>{message}</p>
+                {message != '' && <p>{message}</p>}
             </div>
         </main>
     );

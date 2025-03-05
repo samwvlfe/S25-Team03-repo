@@ -279,6 +279,7 @@ header a {
 /* Formatting for the login / sign up page. */
 .account-form {
   display: flex;
+  flex-direction: column;
 
   flex: 1;
 
@@ -292,7 +293,9 @@ header a {
 
   border-radius: 20px;
 
-  width: 30%;
+  width: 32%;
+
+  box-sizing: border-box;
 
   padding: 40px;
 
@@ -301,6 +304,8 @@ header a {
 }
 
 .account-form img {
+  margin: 5px;
+
   height: 80px;
 }
 
@@ -323,10 +328,6 @@ header a {
   width: 100%;
 }
 
-.account-form div {
-  margin-top: 15px;
-}
-
 .account-form input[type="submit"] {
   font-size: 12pt;
   font-family: "Reddit Sans";
@@ -342,6 +343,21 @@ header a {
 
 .account-form input[type="submit"]:hover {
   cursor: pointer;
+}
+
+.account-form p {
+  text-align: center;
+  border-radius: 20px;
+
+  margin-top: 20px;
+  padding: 10px;
+
+  width: 32%;
+
+  box-sizing: border-box;
+
+  background-color: white;
+  box-shadow: 0 5px 5px lightgrey;
 }
 
 /* Footer formatting. */
