@@ -6,6 +6,7 @@ import CircularLoading from '../components/CircularLoading';
 export default function ApplicationForm() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState('');
     const [formData, setFormData] = useState({
         applicantName: '',
         applicantType: 'Driver',
@@ -34,7 +35,7 @@ export default function ApplicationForm() {
             alert(response.data.message);
             navigate('/apply-success');
         } catch (error) {
-            alert('Error submitting application');
+            setMessage('Error submitting application!');
             console.error(error);
         } finally {
             setLoading(false);
@@ -76,6 +77,7 @@ export default function ApplicationForm() {
                     )}
                     <input type="submit" value="Submit Application" />
                 </form>
+                {message != '' && <p>{message}</p>}
             </div>
         </main>
     );
