@@ -22,6 +22,12 @@
   100% {transform: translateY(-20%);}
 }
 
+@keyframes orbit {
+  0% {transform: translate(-50%, -50%) rotate(0deg);}
+  100% {transform: translate(-50%, -50%)  rotate(360deg);}
+}
+
+/* All general formatting. */
 body {
   margin: 0;
 
@@ -377,4 +383,57 @@ footer {
 
 .loading span:nth-of-type(3) {
   animation: 0.5s ease 1s infinite alternate bounce;
+}
+
+.solar-system {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  background-color: rgba(0, 0, 0, 0.8);
+
+  height: 100vh;
+  width: 100vw;
+}
+
+.solar-system div {
+  aspect-ratio: 1/1;
+  border-radius: 10000vh;
+}
+
+.solar-system p {
+  color: white;
+  font-size: 20pt;
+}
+
+.star, .orbit-outline {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.star {
+  background-color: white;
+
+  height: 8%;
+}
+
+.orbit-outline {
+  display: flex;
+  justify-content: center;
+
+  border: 2px solid white;
+
+  animation: 1s linear 0s infinite forwards orbit;
+}
+
+.planet {
+  display: flex;
+  overflow: hidden;
+
+  transform: translateY(-50%);
+
+  background-color: white;
 }
