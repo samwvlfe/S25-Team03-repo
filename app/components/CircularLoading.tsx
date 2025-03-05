@@ -18,7 +18,7 @@ export default function CircularLoading() {
     const PLANET_NORMALIZE:number = ORBIT_INITIAL_HEIGHT / (ORBIT_GAP + ORBIT_INITIAL_HEIGHT);
 
     // How much time the quickest orbit should take.
-    const ORBIT_TIME = 5;
+    const ORBIT_TIME = 2;
 
     // How many planets to create.
     const ORBIT_NUMBER:number = 4;
