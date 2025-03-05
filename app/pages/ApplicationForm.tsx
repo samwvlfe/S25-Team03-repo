@@ -63,12 +63,6 @@ export default function ApplicationForm() {
                         <input type="text" name="companyID" placeholder="Company ID" onChange={handleChange} />
                     </div>
                 )}
-                {formData.applicantType === 'Admin' && (
-                    <div>
-                        <label>Admin ID:</label>
-                        <input type="text" name="adminID" placeholder="Admin ID" required onChange={handleChange} />
-                    </div>
-                )}
                 <input type="submit" value="Submit Application" />
             </form>
         </div>
