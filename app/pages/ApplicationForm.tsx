@@ -1,12 +1,12 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CircularLoading from '../components/CircularLoading';
 
 export default function ApplicationForm() {
     const navigate = useNavigate();
-    const [loading, setLoading] = React.useState(false);
-    const [formData, setFormData] = React.useState({
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
         applicantName: '',
         applicantType: 'Driver',
         username: '',
@@ -43,9 +43,8 @@ export default function ApplicationForm() {
 
     return (
         <main>
+            {loading && <CircularLoading />}
             <div className="account-form">
-                {loading && <CircularLoading />}
-
                 <form className="application-form" onSubmit={handleSubmit}>
                     <img src="/media/default-alien.svg"/>
 

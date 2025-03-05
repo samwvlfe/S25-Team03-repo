@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+import CircularLoading from '../components/CircularLoading';
+
 export default function Login() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ username: '', password: '' });
     const [message, setMessage] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData(prevState => ({
@@ -16,6 +19,7 @@ export default function Login() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
 
         console.log("Sending data:", formData); 
 
@@ -43,33 +47,38 @@ export default function Login() {
                 setMessage('An unknown error occurred');
             }
             console.error('Login error:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <main className="account-form">
-            <form className="login-form" onSubmit={handleSubmit}>
-                <label>Username:</label>
-                <input 
-                    type="text"
-                    name="username"  
-                    placeholder="Enter username"
-                    value={formData.username} 
-                    onChange={handleChange}
-                    required
-                />
-                <label>Password:</label>
-                <input 
-                    type="password"
-                    name="password"
-                    placeholder="Enter password"
-                    value={formData.password} 
-                    onChange={handleChange}
-                    required
-                />
-                <input type="submit" value="Log in"/>
-            </form>
-            <p>{message}</p>
+        <main>
+            {loading && <CircularLoading />}
+            <div className="account-form">
+                <form className="login-form" onSubmit={handleSubmit}>
+                    <label>Username:</label>
+                    <input 
+                        type="text"
+                        name="username"  
+                        placeholder="Enter username"
+                        value={formData.username} 
+                        onChange={handleChange}
+                        required
+                    />
+                    <label>Password:</label>
+                    <input 
+                        type="password"
+                        name="password"
+                        placeholder="Enter password"
+                        value={formData.password} 
+                        onChange={handleChange}
+                        required
+                    />
+                    <input type="submit" value="Log in"/>
+                </form>
+                <p>{message}</p>
+            </div>
         </main>
     );
 }

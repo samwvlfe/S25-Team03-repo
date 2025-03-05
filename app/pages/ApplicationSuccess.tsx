@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function ApplicationSuccess() {
     return (
-        <main className="app-success">
+        <main>
             <div className="info-container">
                 <h2>Application Received!</h2>
                 <p>Your application has been received! Here's what to expect:</p>
@@ -10,7 +10,7 @@ export default function ApplicationSuccess() {
                     <li>
                         🕙 Wait For Review
                         <hr />
-                        Our sponsors are hard at work vetting the perfect candidate! Give them some time to review your application.
+                        Our team is hard at work vetting the perfect candidate! Give them some time to review your application.
                     </li>
                     <li>
                         ✉️ Receive Decision

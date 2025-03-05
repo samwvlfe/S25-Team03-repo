@@ -43,6 +43,9 @@ body {
 }
 
 main {
+  display: flex;
+  flex-direction: column;
+
   flex: 1;
 }
 
@@ -277,6 +280,8 @@ header a {
 .account-form {
   display: flex;
 
+  flex: 1;
+
   justify-content: center;
   align-items: center;
 }
@@ -337,14 +342,6 @@ header a {
 
 .account-form input[type="submit"]:hover {
   cursor: pointer;
-}
-
-/* Formatting for application success page. */
-.app-success {
-  display: flex;
-  flex-direction: column;
-
-  flex: 1;
 }
 
 /* Footer formatting. */

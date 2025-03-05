@@ -4,10 +4,10 @@ export default function Menu() {
 
     console.log("Menu component loaded"); // Debugging line
     return (
-        <div>
+        <main>
             <p>Menu</p>
             <p>Welcome, {user.username}</p>
             <p>User Type: {user.usertype}</p>
-        </div>
+        </main>
     );
 }
