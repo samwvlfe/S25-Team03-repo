@@ -33,6 +33,11 @@ export default function ApplicationForm() {
         try {
             const response = await axios.post('http://localhost:2999/api/submit-application', formData); 
             alert(response.data.message);
+
+            if(formData.applicantType === 'Admin') {
+                navigate('/admin-dashboard');
+            }
+
             navigate('/apply-success');
         } catch (error) {
             setMessage('Error submitting application!');
