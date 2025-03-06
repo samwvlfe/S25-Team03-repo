@@ -20,7 +20,7 @@ export default function Menu() {
                 {user.usertype == 'Admin' && <AdminButtons />}
             </ul>
 
-            <div className="menu-content">
+            <div id="menuContent">
                 <p>Menu</p>
                 <p>Welcome, {user.username}</p>
                 <p>User Type: {user.usertype}</p>

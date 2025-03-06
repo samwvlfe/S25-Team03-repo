@@ -409,7 +409,7 @@ header a {
   background-color: rgba(0, 0, 0, 0.15);
 }
 
-.menu-content {
+#menuContent {
   flex: 1;
 }
 
