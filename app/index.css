@@ -113,6 +113,8 @@ header a {
   justify-content: center;
   align-items: center;
   text-align: center;
+
+  display: none;
 }
 
 .nav-bar a {
@@ -142,8 +144,10 @@ header a {
 /* Formatting for the sign up button. */
 .account-button {
   border-radius: 25px;
-
   background-color: #231F20;
+  display: inherit;
+  color: white;
+  cursor: pointer;
 }
 
 .account-button:hover {
@@ -375,6 +379,7 @@ footer {
   padding: 15px;  
 
   place-content: center;
+
   }
   .footerDiv{
     text-align: center;

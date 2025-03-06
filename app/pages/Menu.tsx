@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { toggleNav } from '../../script/toggle';
 
 import {DriverButtons, SponsorButtons, AdminButtons} from '../components/MenuButtons';
 
 export default function Menu() {
     // Retrieve user info from localStorage
     const user = JSON.parse(localStorage.getItem("user") || "{}");
+    
+    // call func ONCE after doc loads 
+    useEffect(() => {
+        toggleNav(); 
+    }, []);
 
-    console.log("Menu component loaded"); // Debugging line
     return (
         <main>
             <div className="menu-content">

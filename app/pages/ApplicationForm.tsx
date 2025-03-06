@@ -53,7 +53,6 @@ export default function ApplicationForm() {
             <div className="account-form">
                 <form className="application-form" onSubmit={handleSubmit}>
                     <img src="/media/default-alien.svg"/>
-
                     <label>Full Name:</label>
                     <input type="text" name="applicantName" placeholder="Full Name" required onChange={handleChange} />
                     <label>I am a(n):</label>

@@ -10,11 +10,20 @@ const port = process.env.PORT || 2999;
 app.use(express.json());
 app.use(cors());
 
-// Database connection
+// Database connection - TEST
+// const db = mysql.createConnection({
+//     host: 't3db-instance.cmypylkqlfup.us-east-1.rds.amazonaws.com',
+//     user: 't3admin',
+//     password: 'JlziWBbT4LmgEEbJsCwW',
+//     database: 'GoodDriverIncentiveT3',
+//     port: 3306
+// });
+
+// Database connection - PRODUCTION
 const db = mysql.createConnection({
-    host: 't3db-instance.cmypylkqlfup.us-east-1.rds.amazonaws.com',
-    user: 't3admin',
-    password: 'JlziWBbT4LmgEEbJsCwW',
+    host: 'cpsc4911.cobd8enwsupz.us-east-1.rds.amazonaws.com',
+    user: 'admin',
+    password: '4911Admin2025',
     database: 'GoodDriverIncentiveT3',
     port: 3306
 });
@@ -153,7 +162,8 @@ app.post('/api/submit-application', async (req, res) => {
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
 
-    console.log("Received request, playa:", req.body); 
+    // #############HERE
+    console.log("Request:", req.body); 
 
     if (!username || !password) {
         return res.status(400).json({ error: 'Usernamd and/or password not sent in request' });
@@ -175,7 +185,6 @@ app.post('/api/login', (req, res) => {
 // Function to Call Stored Procedure and Verify Password
 const verifyLogin = (Username, password, callback) => {
     const query = `CALL VerifySponsorLogin(?, ?)`;
-
     db.query(query, [Username, password], (err, results) => {
         if (err) {
             return callback({ success: false, message: err.message || 'Failed login' });
@@ -186,18 +195,16 @@ const verifyLogin = (Username, password, callback) => {
         }
 
         const user = results[0][0];
-        console.log("Extracted User Data:", user);
-            return callback(null, {
-                success: true,
-                message: 'Login successful',
-                user: {
-                    id: user.SponsorUserID,
-                    username: user.Username,
-                    email: user.Email,
-                    companyID: user.CompanyID,
-                    usertype: user.UserType
-                }
-            });
+        
+        return callback(null, {
+            success: true,
+            message: 'Login successful',
+            user: {
+                id: user.UserID,   
+                username: user.Username,
+                usertype: user.UserType
+            }
+        });
     });
 };
 

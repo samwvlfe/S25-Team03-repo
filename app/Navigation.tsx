@@ -1,6 +1,6 @@
 "use client";  // Mark as a client component
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -15,7 +15,14 @@ import ReviewApplications from './pages/ReviewApplications';
 import AdminDashboard from './pages/AdminDashboard';
 import Menu from './pages/Menu';
 
+import {handleSignOut, toggleNav} from '../script/toggle'
+
 export default function Navigation() {
+
+    // useEffect(() => {
+    //     toggleNav(); // Run function after component mounts
+    // }, []);
+
     return (
         <Router>
             <header>
@@ -27,20 +34,23 @@ export default function Navigation() {
                 </Link>
                 <nav className="nav-bar">
                     <ul>
-                        <li>
+                        <li id="signin" style={{ display: "block" }}>
                             <Link to="/signin">
                                 <img src="/media/signin.svg" alt="Sign In"/>
                                 Sign In
                             </Link>
                         </li>
-                        <li id="apply" className="account-button">
+                        <li id="apply" style={{ display: "block" }} className="account-button">
                             <Link to="/apply">Apply</Link>
                         </li>
                         <li id="revApps" className="account-button">
                             <Link to="/review">Review Applications</Link>
                         </li>
-                        <li>
-                            <Link to="/menu">Menu</Link> 
+                        <li id="adminID" className="account-button">
+                            <Link to="/admin-dashboard">Admin</Link>
+                        </li>
+                        <li id="signout" className="account-button" onClick={handleSignOut}>
+                            Sign Out
                         </li>
                     </ul>
                 </nav>
