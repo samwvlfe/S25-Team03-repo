@@ -43,14 +43,14 @@ export default function Navigation() {
                         <li id="apply" style={{ display: "block" }} className="account-button">
                             <Link to="/apply">Apply</Link>
                         </li>
-                        <li id="revApps" className="account-button">
-                            <Link to="/review">Review Applications</Link>
+                        <li id="revApps">
+                            <Link to="/review">Applications</Link>
                         </li>
-                        <li id="adminID" className="account-button">
+                        <li id="adminID">
                             <Link to="/admin-dashboard">Admin</Link>
                         </li>
-                        <li id="signout" className="account-button" onClick={handleSignOut}>
-                            Sign Out
+                        <li id="signout"  onClick={handleSignOut}>
+                            
                         </li>
                     </ul>
                 </nav>

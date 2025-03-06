@@ -12,6 +12,7 @@ export function DriverButtons() {
             <li id="viewSponsor">View Sponsor</li>
             <li id="viewGuidelines">View Sponsor Guidelines</li>
             <li id="partnerMgmt">Manage Partnership</li>
+            <li id="poinstMgmt">View Points</li>
             <li id="pointsShop">Redeem Points</li>
         </>
     )
