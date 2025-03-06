@@ -13,18 +13,18 @@ export default function Menu() {
     }, []);
 
     return (
-        <main>
-            <div className="menu-content">
-                <p>Menu</p>
-                <p>Welcome, {user.username}</p>
-                <p>User Type: {user.usertype}</p>
-            </div>
-
+        <main className="menu-page">
             <ul className="side-menu">
                 {user.usertype == 'Driver' && <DriverButtons />}
                 {user.usertype == 'Sponsor' && <SponsorButtons />}
                 {user.usertype == 'Admin' && <AdminButtons />}
             </ul>
+
+            <div className="menu-content">
+                <p>Menu</p>
+                <p>Welcome, {user.username}</p>
+                <p>User Type: {user.usertype}</p>
+            </div>
         </main>
     );
 }

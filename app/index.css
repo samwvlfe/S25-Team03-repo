@@ -60,6 +60,8 @@ header {
   padding: 15px 35px 15px 35px;
 
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+
+  z-index: 99;
 }
 
 header a {
@@ -366,6 +368,33 @@ header a {
 
   background-color: white;
   box-shadow: 0 5px 5px lightgrey;
+}
+
+/* Formatting for the menu page. */
+.menu-page {
+  flex-direction: row;
+}
+
+.side-menu {
+  list-style-type: none;
+  
+  margin: 0;
+  padding: 0;
+
+  background-color: #e3e3e3;
+}
+
+.side-menu li {
+  padding: 15px;
+}
+
+.side-menu li:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.menu-content {
+  flex: 1;
 }
 
 /* Footer formatting. */
