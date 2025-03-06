@@ -1,3 +1,7 @@
+import React from 'react';
+
+import {DriverButtons, SponsorButtons, AdminButtons} from '../components/MenuButtons';
+
 export default function Menu() {
     // Retrieve user info from localStorage
     const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -5,9 +9,17 @@ export default function Menu() {
     console.log("Menu component loaded"); // Debugging line
     return (
         <main>
-            <p>Menu</p>
-            <p>Welcome, {user.username}</p>
-            <p>User Type: {user.usertype}</p>
+            <div className="menu-content">
+                <p>Menu</p>
+                <p>Welcome, {user.username}</p>
+                <p>User Type: {user.usertype}</p>
+            </div>
+
+            <ul className="side-menu">
+                {user.usertype == 'Driver' && <DriverButtons />}
+                {user.usertype == 'Sponsor' && <SponsorButtons />}
+                {user.usertype == 'Admin' && <AdminButtons />}
+            </ul>
         </main>
     );
 }

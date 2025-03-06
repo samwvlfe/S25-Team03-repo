@@ -40,7 +40,7 @@ export default function Navigation() {
                             <Link to="/review">Review Applications</Link>
                         </li>
                         <li>
-                            <Link to="/admin-dashboard">Admin</Link> 
+                            <Link to="/menu">Menu</Link> 
                         </li>
                     </ul>
                 </nav>

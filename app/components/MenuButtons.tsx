@@ -1,43 +1,43 @@
 import React from 'react';
 
 // Buttons for all driver actions.
-function DriverButtons() {
+export function DriverButtons() {
     return (
         <>
             {/* Only display these if driver doesn't have a sponsor. */ }
-            <button id="createApp">Create Application</button>
-            <button id="dViewApps">Review Applications</button>
+            <li id="createApp">Create Application</li>
+            <li id="dViewApps">Review Applications</li>
 
             {/* Only display these if a driver is sponsored. */}
-            <button id="viewSponsor">View Sponsor</button>
-            <button id="viewGuidelines">View Sponsor Guidelines</button>
-            <button id="partnerMgmt">Manage Partnership</button>
-            <button id="pointsShop">Redeem Points</button>
+            <li id="viewSponsor">View Sponsor</li>
+            <li id="viewGuidelines">View Sponsor Guidelines</li>
+            <li id="partnerMgmt">Manage Partnership</li>
+            <li id="pointsShop">Redeem Points</li>
         </>
     )
 }
 
 // Buttons for all sponsor actions.
-function SponsorButtons() {
+export function SponsorButtons() {
     return (
         <>
-            <button id="viewRoster">View Roster</button>
-            <button id="poinstMgmt">Points Management</button>
-            <button id="catalogMgmt">Catalog Management</button>
-            <button id="sponsorApps">Review Applications</button>
-            <button id="switchView">Driver View</button>
+            <li id="viewRoster">View Roster</li>
+            <li id="poinstMgmt">Points Management</li>
+            <li id="catalogMgmt">Catalog Management</li>
+            <li id="sponsorApps">Review Applications</li>
+            <li id="switchView">Driver View</li>
         </>
     )
 }
 
 // Buttons for all admin actions.
-function AdminButtons() {
+export function AdminButtons() {
     return (
         <>
-            <button id="viewUsers">View Users</button>
-            <button id="pointsMgmt">Points Management</button>
-            <button id="adminApps">Review Applications</button>
-            <button id="viewLogs">View Audit Logs</button>
+            <li id="viewUsers">View Users</li>
+            <li id="pointsMgmt">Points Management</li>
+            <li id="adminApps">Review Applications</li>
+            <li id="viewLogs">View Audit Logs</li>
         </>
     )
 }
