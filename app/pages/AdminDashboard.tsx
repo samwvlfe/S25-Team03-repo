@@ -6,12 +6,12 @@ export default function AdminDashboard() {
     const [verifiedAdminID, setVerifiedAdminID] = useState<string | null>(null);
 
     return (
-        <div>
+        <main>
             {verifiedAdminID ? (
                 <ProfileManagement adminID={verifiedAdminID} />
             ) : (
                 <AdminLogin onVerified={setVerifiedAdminID} />
             )}
-        </div>
+        </main>
     );
 }

@@ -1,10 +1,13 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import CircularLoading from '../components/CircularLoading';
 
 export default function ApplicationForm() {
     const navigate = useNavigate();
-    const [formData, setFormData] = React.useState({
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState('');
+    const [formData, setFormData] = useState({
         applicantName: '',
         applicantType: 'Driver',
         username: '',
@@ -25,46 +28,61 @@ export default function ApplicationForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        navigate('/apply-success');
+        setLoading(true);
 
         try {
             const response = await axios.post('http://localhost:2999/api/submit-application', formData); 
             alert(response.data.message);
+
+            if(formData.applicantType === 'Admin') {
+                navigate('/admin-dashboard');
+            }
+
             navigate('/apply-success');
         } catch (error) {
-            alert('Error submitting application');
+            setMessage('Error submitting application!');
             console.error(error);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <div className="account-form">
-            <form className="application-form" onSubmit={handleSubmit}>
-                <img src="/media/default-alien.svg"/>
-
-                <label>Full Name:</label>
-                <input type="text" name="applicantName" placeholder="Full Name" required onChange={handleChange} />
-                <label>I am a:</label>
-                <select name="applicantType" onChange={handleChange}>
-                    <option value="Driver">Driver</option>
-                    <option value="Sponsor">Sponsor</option>
-                    <option value="Admin">Admin</option>
-                </select>
-                <label>Username:</label>
-                <input type="text" name="username" placeholder="Username" required onChange={handleChange} />
-                <label>Email:</label>
-                <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
-                <label>Password:</label>
-                <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
-                {formData.applicantType === 'Sponsor' && (
-                    <div>
-                        <label>Company ID:</label>
-                        <input type="text" name="companyID" placeholder="Company ID" onChange={handleChange} />
-                    </div>
-                )}
-                <input type="submit" value="Submit Application" />
-            </form>
-        </div>
+        <main>
+            {loading && <CircularLoading />}
+            <div className="account-form">
+                <form className="application-form" onSubmit={handleSubmit}>
+                    <img src="/media/default-alien.svg"/>
+                    <label>Full Name:</label>
+                    <input type="text" name="applicantName" placeholder="Full Name" required onChange={handleChange} />
+                    <label>I am a(n):</label>
+                    <select name="applicantType" onChange={handleChange}>
+                        <option value="Driver">Driver</option>
+                        <option value="Sponsor">Sponsor</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                    <label>Username:</label>
+                    <input type="text" name="username" placeholder="Username" required onChange={handleChange} />
+                    <label>Email:</label>
+                    <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
+                    <label>Password:</label>
+                    <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
+                    {formData.applicantType === 'Sponsor' && (
+                        <div className="extra-field">
+                            <label>Company ID:</label>
+                            <input type="text" name="companyID" placeholder="Company ID" onChange={handleChange} />
+                        </div>
+                    )}
+                    {formData.applicantType === 'Admin' && (
+                        <div className="extra-field">
+                            <label>Admin ID:</label>
+                            <input type="text" name="adminID" placeholder="Admin ID" required onChange={handleChange} />
+                        </div>
+                    )}
+                    <input type="submit" value="Submit Application" />
+                </form>
+                {message != '' && <p>{message}</p>}
+            </div>
+        </main>
     );
 }
