@@ -91,12 +91,14 @@ header a {
 
 /* Formatting for the navigation bar itself. */
 .nav-bar {
-  width: 35%;
+  max-width: 35%;
   min-width: 175px;
 }
 
 .nav-bar ul {
   display: flex;
+  justify-content: center;
+
   gap: 10px;
 
   height: 100%;
@@ -108,7 +110,10 @@ header a {
 }
 
 .nav-bar li {
-  width: 25%;
+  box-sizing: border-box;
+
+  min-width: 110px;
+  max-width: 25%;
 
   padding: 6px;
 
