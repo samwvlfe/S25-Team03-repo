@@ -37,6 +37,20 @@ CREATE TABLE IF NOT EXISTS Driver (
     FOREIGN KEY (CompanyID) REFERENCES Sponsor(CompanyID) ON DELETE CASCADE
 );
 
+-- All Users
+CREATE TABLE IF NOT EXISTS AllUsers (
+    UserID INT AUTO_INCREMENT PRIMARY KEY,
+    Username VARCHAR(100) UNIQUE NOT NULL,
+    Email VARCHAR(255) NOT NULL,
+    PasswordHash VARCHAR(255) NOT NULL,
+    UserType ENUM('Driver', 'Sponsor', 'Admin') NOT NULL,
+    Name VARCHAR(255) NULL,  -- Only for Drivers
+    TotalPoints INT DEFAULT 0, -- Only for Drivers
+    CompanyID INT NULL,  -- Only for Sponsors and Drivers
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (CompanyID) REFERENCES Sponsor(CompanyID) ON DELETE SET NULL
+);
+
 -- Product Catalog
 CREATE TABLE IF NOT EXISTS ProductCatalog (
     ProductID INT AUTO_INCREMENT PRIMARY KEY,

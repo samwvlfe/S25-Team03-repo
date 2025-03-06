@@ -48,24 +48,97 @@ app.get('/api/get-applications', (req, res) => {
     });
 });
 
-// Update Application Status
-app.post('/api/update-application-status', (req, res) => {
+// Update Application Status and move to respective tables
+app.post('/api/update-application-status', async (req, res) => {
     const { applicationID, status } = req.body;
-    
+    console.log(`Processing application ID=${applicationID}, Status=${status}`);
+
     if (!applicationID || !status) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    const query = `UPDATE Applications SET ApplicationStatus = ? WHERE ApplicationID = ?`;
-    db.query(query, [status, applicationID], (err, result) => {
-        if (err) {
-            console.error('Error updating application status:', err);
-            res.status(500).json({ error: 'Database update failed', details: err });
-        } else {
-            res.status(200).json({ message: `Application ${status} successfully` });
-        }
-    });
+    if (status === 'Rejected') {
+        const deleteQuery = `DELETE FROM Applications WHERE ApplicationID = ?`;
+        db.query(deleteQuery, [applicationID], (err, result) => {
+            if (err) {
+                console.error('Error deleting rejected application:', err);
+                return res.status(500).json({ error: 'Failed to delete application', details: err });
+            }
+            return res.status(200).json({ message: 'Application rejected and removed successfully' });
+        });
+    } else if (status === 'Approved') {
+        console.log(` Fetching application details for ID=${applicationID}`);
+        const selectQuery = `SELECT * FROM Applications WHERE ApplicationID = ?`;
+        db.query(selectQuery, [applicationID], async (err, results) => {
+            if (err || results.length === 0) {
+                return res.status(500).json({ error: 'Application not found', details: err });
+            }
+
+            const application = results[0];
+            const { ApplicantName, ApplicantType, Username, Email, PasswordHash, CompanyID } = application;
+            console.log(`Application found:`, application);
+
+            let insertUserQuery;
+            let userValues;
+            let insertAllUsersQuery = `
+                INSERT INTO AllUsers (Username, Email, PasswordHash, UserType, Name, TotalPoints, CompanyID)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            `;
+            let allUsersValues = [Username, Email, PasswordHash, ApplicantType, ApplicantName, ApplicantType === 'Driver' ? 0 : null, CompanyID || null];
+
+            if (ApplicantType === 'Driver') {
+                insertUserQuery = `
+                    INSERT INTO Driver (Username, PasswordHash, Name, TotalPoints, CompanyID)
+                    VALUES (?, ?, ?, 0, ?)
+                `;
+                userValues = [Username, PasswordHash, ApplicantName, CompanyID || null];
+            } else if (ApplicantType === 'Sponsor') {
+                insertUserQuery = `
+                    INSERT INTO SponsorUser (Username, PasswordHash, CompanyID)
+                    VALUES (?, ?, ?)
+                `;
+                userValues = [Username, PasswordHash, CompanyID || null];
+            } else if (ApplicantType === 'Admin') {
+                insertUserQuery = `
+                    INSERT INTO Admin (Username, PasswordHash)
+                    VALUES (?, ?)
+                `;
+                userValues = [Username, PasswordHash];
+            }
+
+            console.log(`Running query:
+${insertUserQuery}`);
+            console.log(`With values:`, userValues);
+
+            db.query(insertUserQuery, userValues, (err, result) => {
+                if (err) {
+                    console.error(` Error inserting into ${ApplicantType} table:`, err);
+                    return res.status(500).json({ error: `Failed to insert into ${ApplicantType} table`, details: err });
+                }
+                console.log(` Successfully inserted into ${ApplicantType} table`);
+
+                db.query(insertAllUsersQuery, allUsersValues, (err, result) => {
+                    if (err) {
+                        console.error(' Error inserting into AllUsers table:', err);
+                        return res.status(500).json({ error: 'Failed to insert into AllUsers', details: err });
+                    }
+                    console.log(` Successfully inserted into AllUsers table`);
+
+                    const deleteApplicationQuery = `DELETE FROM Applications WHERE ApplicationID = ?`;
+                    db.query(deleteApplicationQuery, [applicationID], (err, result) => {
+                        if (err) {
+                            console.error(' Error deleting application:', err);
+                            return res.status(500).json({ error: 'Failed to delete application', details: err });
+                        }
+                        console.log(` Application ${applicationID} moved and deleted successfully.`);
+                        return res.status(200).json({ message: `Application approved and moved to ${ApplicantType} table.` });
+                    });
+                });
+            });
+        });
+    }
 });
+
 
 
 // Table name for the about page

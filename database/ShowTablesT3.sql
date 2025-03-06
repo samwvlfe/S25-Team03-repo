@@ -11,4 +11,5 @@ SELECT * FROM SponsorUser;
 SELECT * FROM Sponsor;
 SELECT * FROM Orders;
 SELECT * FROM Applications;
+SELECT * FROM AllUsers;
 
