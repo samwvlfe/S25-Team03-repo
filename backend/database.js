@@ -232,39 +232,53 @@ app.post('/api/submit-application', async (req, res) => {
 });
 
 // log in
-app.post('/api/login', (req, res) => {
-    const { username, password } = req.body;
+app.post('/api/login', async (req, res) => {
+    const { username, password} = req.body;
 
-    // #############HERE
-    console.log("Request:", req.body); 
+    console.log(username);
+    console.log(password);
+
 
     if (!username || !password) {
-        return res.status(400).json({ error: 'Usernamd and/or password not sent in request' });
+        return res.status(400).json({ error: 'Username and/or password not sent in request' });
+    }
+    try{
+
+
+
+        verifyLogin(username, async (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: 'Database error', details: err.message });
+            }
+    
+            if (!result || !result.success) {
+                return res.status(401).json({ error: result ? result.message : 'Login failed' });
+            }
+
+            const user = result.user;
+            // Use bcrypt.compare to verify the plaintext password
+            const isMatch = await bcrypt.compare(password, user.pass);
+            if (!isMatch) {
+                return res.status(401).json({ error: 'Incorrect password' });
+            }
+            res.status(200).json(result);
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred', details: error.message });
     }
 
-    verifyLogin(username, password, (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: 'Database error', details: err.message });
-        }
-
-        if (!result || !result.success) {
-            return res.status(401).json({ error: result ? result.message : 'Login failed' });
-        }
-
-        res.status(200).json(result);
-    });
 });
 
 // Function to Call Stored Procedure and Verify Password
-const verifyLogin = (Username, password, callback) => {
-    const query = `CALL VerifySponsorLogin(?, ?)`;
-    db.query(query, [Username, password], (err, results) => {
+const verifyLogin = (Username, callback) => {
+    const query = `CALL Log_In(?)`;
+    db.query(query, [Username], (err, results) => {
         if (err) {
             return callback({ success: false, message: err.message || 'Failed login' });
         }
 
         if (!results || results.length === 0 || results[0].length === 0) {
-            return callback(null, { success: false, message: 'Stored procedure deemed incorrect username and/or password' });
+            return callback(null, { success: false, message: 'Incorrect Username/Password' });
         }
 
         const user = results[0][0];
@@ -275,6 +289,7 @@ const verifyLogin = (Username, password, callback) => {
             user: {
                 id: user.UserID,   
                 username: user.Username,
+                pass: user.PasswordHash,
                 usertype: user.UserType
             }
         });

@@ -25,6 +25,7 @@ export default function Login() {
 
         if (!formData.username || !formData.password) {
             setMessage('⚠️ Please enter both username and password.');
+            setLoading(false);
             return;
         }
 
