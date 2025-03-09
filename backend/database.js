@@ -294,7 +294,15 @@ const verifyLogin = (Username, callback) => {
     });
 };
 
-
+app.get('/api/get-users', async (req, res) => {
+    try {
+        const [users] = await db.execute('SELECT id, name, username, email, role, companyID FROM Users WHERE role IN ("Driver", "Sponsor")');
+        res.json(users);  // ✅ Ensures JSON response
+    } catch (error) {
+        console.error("Database Error:", error);
+        res.status(500).json({ error: "Database query failed", details: error.message });
+    }
+});
 
 // admin add user
 app.post('/api/admin/create-user', async (req, res) => {
