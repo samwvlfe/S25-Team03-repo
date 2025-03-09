@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Loading from '../components/Loading';
 
 interface AboutData {
   team_number: number;
@@ -28,7 +29,7 @@ export default function About() {
   // Returning all necessary data from the database.
   // Additional logic is in case the data isn't fully loaded.
   return (
-    <div className="about">
+    <main className="about">
       <div className="about-header">
         <div className="starfield"/>
         <div className="banner">
@@ -38,14 +39,14 @@ export default function About() {
             <img src="/media/flame.svg" height="40px" alt="Flame"/>
           </div>
           <p className="team-info">
-            Team {data ? data.team_number : "..."} &#9900; Version {data ? data.version_number : "..."} &#9900; {data ? data.release_date : "..."}
+            Team {data ? data.team_number : <Loading />} &#9900; Version {data ? data.version_number : <Loading />} &#9900; {data ? data.release_date : <Loading />}
           </p>
         </div>
         <div className="starfield" />
       </div>
       <div className="info-container">
-        <h2>{data ? data.product_name : "..."}</h2>
-        <p>{data ? data.product_description : "..."}</p>
+        <h2>{data ? data.product_name : <Loading />}</h2>
+        <p>{data ? data.product_description : <Loading />}</p>
       </div>
       <div className="info-container">
         <h2>Join. Drive. Earn.</h2>
@@ -87,6 +88,6 @@ export default function About() {
           </li>
         </ul>
       </div>
-    </div>
+    </main>
   );
 }

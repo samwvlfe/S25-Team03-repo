@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
+const bcrypt = require('bcrypt');
 
 const app = express();
 const port = process.env.PORT || 2999;
@@ -9,11 +10,20 @@ const port = process.env.PORT || 2999;
 app.use(express.json());
 app.use(cors());
 
-// Database connection
+// Database connection - TEST
+// const db = mysql.createConnection({
+//     host: 't3db-instance.cmypylkqlfup.us-east-1.rds.amazonaws.com',
+//     user: 't3admin',
+//     password: 'JlziWBbT4LmgEEbJsCwW',
+//     database: 'GoodDriverIncentiveT3',
+//     port: 3306
+// });
+
+// Database connection - PRODUCTION
 const db = mysql.createConnection({
-    host: 't3db-instance.cmypylkqlfup.us-east-1.rds.amazonaws.com',
-    user: 't3admin',
-    password: 'JlziWBbT4LmgEEbJsCwW',
+    host: 'cpsc4911.cobd8enwsupz.us-east-1.rds.amazonaws.com',
+    user: 'admin',
+    password: '4911Admin2025',
     database: 'GoodDriverIncentiveT3',
     port: 3306
 });
@@ -25,6 +35,111 @@ db.connect(err => {
         console.log('Connected to Amazon RDS MySQL database');
     }
 });
+
+// Fetch applications (Pending Only)
+app.get('/api/get-applications', (req, res) => {
+    const query = `SELECT * FROM Applications WHERE ApplicationStatus = 'Pending'`;
+    db.query(query, (err, results) => {
+        if (err) {
+            res.status(500).json({ error: 'Database query failed', details: err });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+// Update Application Status and move to respective tables
+app.post('/api/update-application-status', async (req, res) => {
+    const { applicationID, status } = req.body;
+    console.log(`Processing application ID=${applicationID}, Status=${status}`);
+
+    if (!applicationID || !status) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    if (status === 'Rejected') {
+        const deleteQuery = `DELETE FROM Applications WHERE ApplicationID = ?`;
+        db.query(deleteQuery, [applicationID], (err, result) => {
+            if (err) {
+                console.error('Error deleting rejected application:', err);
+                return res.status(500).json({ error: 'Failed to delete application', details: err });
+            }
+            return res.status(200).json({ message: 'Application rejected and removed successfully' });
+        });
+    } else if (status === 'Approved') {
+        console.log(` Fetching application details for ID=${applicationID}`);
+        const selectQuery = `SELECT * FROM Applications WHERE ApplicationID = ?`;
+        db.query(selectQuery, [applicationID], async (err, results) => {
+            if (err || results.length === 0) {
+                return res.status(500).json({ error: 'Application not found', details: err });
+            }
+
+            const application = results[0];
+            const { ApplicantName, ApplicantType, Username, Email, PasswordHash, CompanyID } = application;
+            console.log(`Application found:`, application);
+
+            let insertUserQuery;
+            let userValues;
+            let insertAllUsersQuery = `
+                INSERT INTO AllUsers (Username, Email, PasswordHash, UserType, Name, TotalPoints, CompanyID)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            `;
+            let allUsersValues = [Username, Email, PasswordHash, ApplicantType, ApplicantName, ApplicantType === 'Driver' ? 0 : null, CompanyID || null];
+
+            if (ApplicantType === 'Driver') {
+                insertUserQuery = `
+                    INSERT INTO Driver (Username, PasswordHash, Name, TotalPoints, CompanyID)
+                    VALUES (?, ?, ?, 0, ?)
+                `;
+                userValues = [Username, PasswordHash, ApplicantName, CompanyID || null];
+            } else if (ApplicantType === 'Sponsor') {
+                insertUserQuery = `
+                    INSERT INTO SponsorUser (Username, PasswordHash, CompanyID)
+                    VALUES (?, ?, ?)
+                `;
+                userValues = [Username, PasswordHash, CompanyID || null];
+            } else if (ApplicantType === 'Admin') {
+                insertUserQuery = `
+                    INSERT INTO Admin (Username, PasswordHash)
+                    VALUES (?, ?)
+                `;
+                userValues = [Username, PasswordHash];
+            }
+
+            console.log(`Running query:
+${insertUserQuery}`);
+            console.log(`With values:`, userValues);
+
+            db.query(insertUserQuery, userValues, (err, result) => {
+                if (err) {
+                    console.error(` Error inserting into ${ApplicantType} table:`, err);
+                    return res.status(500).json({ error: `Failed to insert into ${ApplicantType} table`, details: err });
+                }
+                console.log(` Successfully inserted into ${ApplicantType} table`);
+
+                db.query(insertAllUsersQuery, allUsersValues, (err, result) => {
+                    if (err) {
+                        console.error(' Error inserting into AllUsers table:', err);
+                        return res.status(500).json({ error: 'Failed to insert into AllUsers', details: err });
+                    }
+                    console.log(` Successfully inserted into AllUsers table`);
+
+                    const deleteApplicationQuery = `DELETE FROM Applications WHERE ApplicationID = ?`;
+                    db.query(deleteApplicationQuery, [applicationID], (err, result) => {
+                        if (err) {
+                            console.error(' Error deleting application:', err);
+                            return res.status(500).json({ error: 'Failed to delete application', details: err });
+                        }
+                        console.log(` Application ${applicationID} moved and deleted successfully.`);
+                        return res.status(200).json({ message: `Application approved and moved to ${ApplicantType} table.` });
+                    });
+                });
+            });
+        });
+    }
+});
+
+
 
 // Table name for the about page
 const aboutTable = 'AboutPage';
@@ -69,16 +184,16 @@ app.put('/api/about/:id', (req, res) => {
     });
 });
 
-// Submitting Application
+// Submitting Application 
 app.post('/api/submit-application', async (req, res) => {
-    const { applicantName, applicantType, username, email, password, companyID } = req.body;
+    const { applicantName, applicantType, username, email, password, companyID, adminID } = req.body; // FIX: Extract adminID
 
     if (!applicantName || !applicantType || !username || !email || !password) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
     try {
-        const hashedPassword = await bcrypt.hash(password, 10); // Hash the password before storing it
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         let query;
         let values;
@@ -100,6 +215,9 @@ app.post('/api/submit-application', async (req, res) => {
             values = [applicantName, applicantType, username, email, hashedPassword, companyID || null];
         }
 
+        console.log('Executing Query:', query);
+        console.log('With Values:', values);
+
         db.query(query, values, (err, result) => {
             if (err) {
                 console.error('Database insert failed:', err);
@@ -113,29 +231,74 @@ app.post('/api/submit-application', async (req, res) => {
     }
 });
 
-app.post('/api/admin/verify', (req, res) => {
-    const { adminID } = req.body;
+// log in
+app.post('/api/login', async (req, res) => {
+    const { username, password} = req.body;
 
-    if (!adminID) {
-        return res.status(400).json({ error: 'AdminID is required' });
+    console.log(username);
+    console.log(password);
+
+
+    if (!username || !password) {
+        return res.status(400).json({ error: 'Username and/or password not sent in request' });
+    }
+    try{
+
+
+
+        verifyLogin(username, async (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: 'Database error', details: err.message });
+            }
+    
+            if (!result || !result.success) {
+                return res.status(401).json({ error: result ? result.message : 'Login failed' });
+            }
+
+            const user = result.user;
+            // Use bcrypt.compare to verify the plaintext password
+            const isMatch = await bcrypt.compare(password, user.pass);
+            if (!isMatch) {
+                return res.status(401).json({ error: 'Incorrect password' });
+            }
+            res.status(200).json(result);
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred', details: error.message });
     }
 
-    const query = `SELECT * FROM Admins WHERE AdminID = ?`;
-
-    db.query(query, [adminID], (err, result) => {
-        if (err) {
-            console.error('Admin verification failed:', err);
-            return res.status(500).json({ error: 'Database error', details: err.sqlMessage });
-        }
-
-        if (result.length === 0) {
-            return res.status(403).json({ error: 'Invalid AdminID' });
-        }
-
-        res.status(200).json({ message: 'Admin verified', admin: result[0] });
-    });
 });
 
+// Function to Call Stored Procedure and Verify Password
+const verifyLogin = (Username, callback) => {
+    const query = `CALL Log_In(?)`;
+    db.query(query, [Username], (err, results) => {
+        if (err) {
+            return callback({ success: false, message: err.message || 'Failed login' });
+        }
+
+        if (!results || results.length === 0 || results[0].length === 0) {
+            return callback(null, { success: false, message: 'Incorrect Username/Password' });
+        }
+
+        const user = results[0][0];
+        
+        return callback(null, {
+            success: true,
+            message: 'Login successful',
+            user: {
+                id: user.UserID,   
+                username: user.Username,
+                pass: user.PasswordHash,
+                usertype: user.UserType
+            }
+        });
+    });
+};
+
+
+
+// admin add user
 app.post('/api/admin/create-user', async (req, res) => {
     const { name, username, email, password, role, companyID } = req.body;
 
@@ -155,7 +318,7 @@ app.post('/api/admin/create-user', async (req, res) => {
         db.query(query, [name, username, email, hashedPassword, role, companyID || null], (err, result) => {
             if (err) {
                 console.error('User creation failed:', err);
-                return res.status(500).json({ error: 'User creation failed', details: err.sqlMessage });
+                return res.status(500).json({ error: 'User creation failed', details: err.message });
             }
             res.status(201).json({ message: 'User created successfully', id: result.insertId });
         });
@@ -165,6 +328,7 @@ app.post('/api/admin/create-user', async (req, res) => {
     }
 });
 
+// admin delete user
 app.delete('/api/admin/delete-user/:id', (req, res) => {
     const userId = req.params.id;
 
@@ -177,7 +341,7 @@ app.delete('/api/admin/delete-user/:id', (req, res) => {
     db.query(query, [userId], (err, result) => {
         if (err) {
             console.error('User deletion failed:', err);
-            return res.status(500).json({ error: 'User deletion failed', details: err.sqlMessage });
+            return res.status(500).json({ error: 'User deletion failed', details: err.message });
         }
 
         if (result.affectedRows === 0) {
