@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { ButtonHTMLAttributes } from 'react';
 import { Link } from 'react-router-dom';
 
+type ButtonProps = {
+    changeView: Function
+}
+
 // Buttons for all driver actions.
-export function DriverButtons({ changeView }) {
+export function DriverButtons({ changeView }: ButtonProps) {
     return (
         <>
             {/* Only display these if driver doesn't have a sponsor. */ }
@@ -20,7 +24,7 @@ export function DriverButtons({ changeView }) {
 }
 
 // Buttons for all sponsor actions.
-export function SponsorButtons({ changeView }) {
+export function SponsorButtons({ changeView }: ButtonProps) {
     return (
         <>
             <li id="viewRoster">View Roster</li>
@@ -33,7 +37,7 @@ export function SponsorButtons({ changeView }) {
 }
 
 // Buttons for all admin actions.
-export function AdminButtons({ changeView }) {
+export function AdminButtons({ changeView }: ButtonProps) {
     return (
         <>
             <li id="viewUsers" onClick={() => {changeView('test');}}>View Users</li>

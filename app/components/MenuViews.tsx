@@ -1,6 +1,20 @@
 import React from 'react';
 
-function LandingView({ user }) {
+interface User {
+    username: string;
+    usertype: string;
+}
+
+interface LandingViewProps {
+    user: User;
+}
+
+interface CreateMenuProps {
+    currentView: string,
+    currentUser: User
+}
+
+function LandingView({ user }:LandingViewProps) {
     return (
         <>
             <div id="landingView">
@@ -21,7 +35,7 @@ function TestView() {
     )
 }
 
-export function CreateMenu({ currentView, currentUser }) {
+export function CreateMenu({ currentView, currentUser }:CreateMenuProps) {
     return (
         <div id="menuContent">
             {currentView == 'landing' && <LandingView user={currentUser}/>}
