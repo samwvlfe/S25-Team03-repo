@@ -504,3 +504,24 @@ footer {
 
   background-color: white;
 }
+/* 
+.userFuncContainer{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  }
+  .userFuncContainer input{
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .userFuncContainer button{
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: black;
+    color: white;
+  }
+  .userFuncContainer button:hover{
+    background-color: #e9e9e9;
+    color: white;
+  } */
