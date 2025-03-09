@@ -8,7 +8,7 @@ export default function Menu() {
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     
     // Track current menu view.
-    const [currentView, setCurrentView] = useState("Landing");
+    const [currentView, setCurrentView] = useState('landing');
 
     // call func ONCE after doc loads 
     useEffect(() => {
@@ -23,7 +23,7 @@ export default function Menu() {
                 {user.usertype == 'Admin' && <AdminButtons changeView={setCurrentView}/>}
             </ul>
 
-            <CreateMenu currentView={currentView}/>
+            <CreateMenu currentView={currentView} currentUser={user}/>
         </main>
     );
 }

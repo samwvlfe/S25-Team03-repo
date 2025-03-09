@@ -35,7 +35,7 @@ export function SponsorButtons({ changeView }) {
 export function AdminButtons({ changeView }) {
     return (
         <>
-            <li id="viewUsers" onClick={() => {changeView('test'); console.log('Hello!');}}>View Users</li>
+            <li id="viewUsers" onClick={() => {changeView('test');}}>View Users</li>
             <li id="pointsMgmt">Points Management</li>
             <li id="adminApps">Review Applications</li>
             <li id="viewLogs">View Audit Logs</li>
