@@ -13,6 +13,7 @@ import ApplicationForm from './pages/ApplicationForm';
 import ApplicationSuccess from './pages/ApplicationSuccess';
 import ReviewApplications from './pages/ReviewApplications';
 import AdminDashboard from './pages/AdminDashboard';
+import ViewUsers from './pages/ViewUsers';
 import Menu from './pages/Menu';
 
 import {handleSignOut, toggleNav} from '../script/toggle'
@@ -62,6 +63,7 @@ export default function Navigation() {
                 <Route path="/review" element={<ReviewApplications />} />
                 <Route path="/menu" element={<Menu />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                <Route path="/users" element={<ViewUsers />} />
                 <Route path="/" element={<About/>} />
             </Routes>
         </Router>
