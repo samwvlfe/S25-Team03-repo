@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toggleNav } from '../../script/toggle';
-
 import {DriverButtons, SponsorButtons, AdminButtons} from '../components/MenuButtons';
+import { CreateMenu } from '../components/MenuViews';
 
 export default function Menu() {
     // Retrieve user info from localStorage
@@ -20,11 +20,7 @@ export default function Menu() {
                 {user.usertype == 'Admin' && <AdminButtons />}
             </ul>
 
-            <div id="menuContent">
-                <p>Menu</p>
-                <p>Welcome, {user.username}</p>
-                <p>User Type: {user.usertype}</p>
-            </div>
+            <CreateMenu />
         </main>
     );
 }

@@ -9,3 +9,11 @@ export function LandingView() {
         </>
     )
 }
+
+export function CreateMenu({ currentView }) {
+    return (
+        <div id="menuContent">
+            {currentView == 'Landing' && <LandingView />}
+        </div>
+    )
+}
