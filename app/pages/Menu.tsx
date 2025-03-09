@@ -24,6 +24,10 @@ export default function Menu() {
                 <p>Menu</p>
                 <p>Welcome, {user.username}</p>
                 <p>User Type: {user.usertype}</p>
+                {/* <div className="userFuncContainer">
+                    <input type="text" placeholder="Enter # of points" />
+                    <button type="button">Submit</button>
+                </div> */}
             </div>
         </main>
     );
