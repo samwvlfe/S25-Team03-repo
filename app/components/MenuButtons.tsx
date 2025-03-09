@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Buttons for all driver actions.
-export function DriverButtons() {
+export function DriverButtons({ changeView }) {
     return (
         <>
             {/* Only display these if driver doesn't have a sponsor. */ }
@@ -19,7 +19,7 @@ export function DriverButtons() {
 }
 
 // Buttons for all sponsor actions.
-export function SponsorButtons() {
+export function SponsorButtons({ changeView }) {
     return (
         <>
             <li id="viewRoster">View Roster</li>
@@ -32,10 +32,10 @@ export function SponsorButtons() {
 }
 
 // Buttons for all admin actions.
-export function AdminButtons() {
+export function AdminButtons({ changeView }) {
     return (
         <>
-            <li id="viewUsers" onClick={() => changeView('test')}>View Users</li>
+            <li id="viewUsers" onClick={() => {changeView('test'); console.log('Hello!');}}>View Users</li>
             <li id="pointsMgmt">Points Management</li>
             <li id="adminApps">Review Applications</li>
             <li id="viewLogs">View Audit Logs</li>

@@ -7,6 +7,9 @@ export default function Menu() {
     // Retrieve user info from localStorage
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     
+    // Track current menu view.
+    const [currentView, setCurrentView] = useState("Landing");
+
     // call func ONCE after doc loads 
     useEffect(() => {
         toggleNav(); 
@@ -15,12 +18,12 @@ export default function Menu() {
     return (
         <main className="menu-page">
             <ul className="side-menu">
-                {user.usertype == 'Driver' && <DriverButtons />}
-                {user.usertype == 'SponsorUser' && <SponsorButtons />}
-                {user.usertype == 'Admin' && <AdminButtons />}
+                {user.usertype == 'Driver' && <DriverButtons changeView={setCurrentView}/>}
+                {user.usertype == 'SponsorUser' && <SponsorButtons changeView={setCurrentView}/>}
+                {user.usertype == 'Admin' && <AdminButtons changeView={setCurrentView}/>}
             </ul>
 
-            <CreateMenu />
+            <CreateMenu currentView={currentView}/>
         </main>
     );
 }
