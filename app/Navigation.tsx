@@ -63,7 +63,7 @@ export default function Navigation() {
                 <Route path="/review" element={<ReviewApplications />} />
                 <Route path="/menu" element={<Menu />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
-                <Route path="/users" element={<ViewUsers />} />
+                <Route path="/users" element={<ViewUsers adminID="admin123" />} />
                 <Route path="/" element={<About/>} />
             </Routes>
         </Router>
