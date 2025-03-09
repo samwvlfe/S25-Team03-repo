@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 // Buttons for all driver actions.
 export function DriverButtons() {
@@ -35,7 +36,9 @@ export function SponsorButtons() {
 export function AdminButtons() {
     return (
         <>
-            <li id="viewUsers">View Users</li>
+            <li>
+                <Link to="/users">View Users</Link>
+            </li>
             <li id="pointsMgmt">Points Management</li>
             <li id="adminApps">Review Applications</li>
             <li id="viewLogs">View Audit Logs</li>
