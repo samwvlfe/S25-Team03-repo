@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 // Buttons for all driver actions.
 export function DriverButtons({ changeView }) {

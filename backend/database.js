@@ -1,7 +1,7 @@
-const express = require('express');
-const mysql = require('mysql2');
-const cors = require('cors');
-const bcrypt = require('bcrypt');
+import express from 'express';
+import mysql from 'mysql2';
+import cors from 'cors';
+import bcrypt from 'bcrypt';
 
 const app = express();
 const port = process.env.PORT || 2999;
@@ -9,6 +9,9 @@ const port = process.env.PORT || 2999;
 // Middleware
 app.use(express.json());
 app.use(cors());
+
+//import hash func
+import {createHashPassword} from "../script/extra.js"
 
 // Database connection - TEST
 // const db = mysql.createConnection({
@@ -192,43 +195,38 @@ app.post('/api/submit-application', async (req, res) => {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    try {
-        const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await createHashPassword(password);
 
-        let query;
-        let values;
+    let query;
+    let values;
 
-        if (applicantType === 'Admin') {
-            if (!adminID) {
-                return res.status(400).json({ error: 'Admin ID is required for admin accounts' });
-            }
-            query = `
-                INSERT INTO Applications (ApplicantName, ApplicantType, Username, Email, PasswordHash, AdminID, ApplicationStatus, SubmissionDate)
-                VALUES (?, ?, ?, ?, ?, ?, 'Pending', NOW())
-            `;
-            values = [applicantName, applicantType, username, email, hashedPassword, adminID];
-        } else {
-            query = `
-                INSERT INTO Applications (ApplicantName, ApplicantType, Username, Email, PasswordHash, CompanyID, ApplicationStatus, SubmissionDate)
-                VALUES (?, ?, ?, ?, ?, ?, 'Pending', NOW())
-            `;
-            values = [applicantName, applicantType, username, email, hashedPassword, companyID || null];
+    if (applicantType === 'Admin') {
+        if (!adminID) {
+            return res.status(400).json({ error: 'Admin ID is required for admin accounts' });
         }
-
-        console.log('Executing Query:', query);
-        console.log('With Values:', values);
-
-        db.query(query, values, (err, result) => {
-            if (err) {
-                console.error('Database insert failed:', err);
-                return res.status(500).json({ error: 'Database insert failed', details: err.sqlMessage });
-            }
-            res.status(201).json({ message: 'Application submitted successfully', id: result.insertId });
-        });
-
-    } catch (error) {
-        res.status(500).json({ error: 'Password hashing failed', details: error.message });
+        query = `
+            INSERT INTO Applications (ApplicantName, ApplicantType, Username, Email, PasswordHash, AdminID, ApplicationStatus, SubmissionDate)
+            VALUES (?, ?, ?, ?, ?, ?, 'Pending', NOW())
+        `;
+        values = [applicantName, applicantType, username, email, hashedPassword, adminID];
+    } else {
+        query = `
+            INSERT INTO Applications (ApplicantName, ApplicantType, Username, Email, PasswordHash, CompanyID, ApplicationStatus, SubmissionDate)
+            VALUES (?, ?, ?, ?, ?, ?, 'Pending', NOW())
+        `;
+        values = [applicantName, applicantType, username, email, hashedPassword, companyID || null];
     }
+
+    console.log('Executing Query:', query);
+    console.log('With Values:', values);
+
+    db.query(query, values, (err, result) => {
+        if (err) {
+            console.error('Database insert failed:', err);
+            return res.status(500).json({ error: 'Database insert failed', details: err.sqlMessage });
+        }
+        res.status(201).json({ message: 'Application submitted successfully', id: result.insertId });
+    });
 });
 
 // log in
