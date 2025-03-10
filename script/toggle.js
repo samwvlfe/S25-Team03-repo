@@ -20,18 +20,18 @@ export function toggleNav(){
     }
     // if driver, only show sign out
     if(user.usertype === "Driver"){
-        if (signout) signout.style.display = "block";
+        if (signout) signout.style.display = "flex";
     }
     // if sponsor, only show applications and sign out
     else if(user.usertype === "SponsorUser"){
         if (revApps) revApps.style.display = "block";
-        if (signout) signout.style.display = "block";
+        if (signout) signout.style.display = "flex";
     }
     // if admin, show everything 
     else if(user.usertype === "Admin"){
         if (adminID) adminID.style.display = "block";
         if (revApps) revApps.style.display = "block";
-        if (signout) signout.style.display = "block";
+        if (signout) signout.style.display = "flex";
     }
     // not signed in, take away all but sign in
     else{

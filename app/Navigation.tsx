@@ -1,6 +1,6 @@
 "use client";  // Mark as a client component
 
-import React, {useEffect} from 'react';
+import React, {useState, useEffect, ReactEventHandler} from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -19,10 +19,19 @@ import Menu from './pages/Menu';
 import {handleSignOut, toggleNav} from '../script/toggle'
 
 export default function Navigation() {
-
     // useEffect(() => {
     //     toggleNav(); // Run function after component mounts
     // }, []);
+    const [menuState, setMenuState] = useState("none");
+
+    const toggleMenu = (event: React.MouseEvent<HTMLImageElement>) => {
+        if (menuState == "none") {
+            setMenuState("block");
+            return;
+        }
+
+        setMenuState("none");
+    }
 
     return (
         <Router>
@@ -50,8 +59,11 @@ export default function Navigation() {
                         <li id="adminID">
                             <Link to="/admin-dashboard">Admin</Link>
                         </li>
-                        <li id="signout"  onClick={handleSignOut}>
-                            
+                        <li id="signout">
+                            <img src="/media/default-alien.svg" onClick={ toggleMenu }/>
+                            <div id="signoutMenu" style={{ display: menuState }}>
+                                <button className="account-button" onClick={handleSignOut}>Sign Out</button>
+                            </div>
                         </li>
                     </ul>
                 </nav>
