@@ -53,7 +53,7 @@ export default function Navigation() {
                         <li id="apply" style={{ display: "block" }} className="account-button">
                             <Link to="/apply">Apply</Link>
                         </li>
-                        <li id="revApps">
+                        <li id="revApps" style={{ display: "block" }}>
                             <Link to="/review">Applications</Link>
                         </li>
                         <li id="adminID">

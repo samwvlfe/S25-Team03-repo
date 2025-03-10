@@ -40,7 +40,11 @@ export function SponsorButtons({ changeView }: ButtonProps) {
 export function AdminButtons({ changeView }: ButtonProps) {
     return (
         <>
-            <li id="viewUsers" onClick={() => {changeView('test');}}>View Users</li>
+            <li id="viewUsers">
+                <Link to="/users">
+                    View Users
+                </Link>
+            </li>
             <li id="pointsMgmt">Points Management</li>
             <li id="adminApps">Review Applications</li>
             <li id="viewLogs">View Audit Logs</li>

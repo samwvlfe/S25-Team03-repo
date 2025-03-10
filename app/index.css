@@ -49,6 +49,44 @@ main {
   flex: 1;
 }
 
+table {
+  background-color: white;
+  text-align: center;
+
+  width: 70%;
+
+  border: 0;
+  border-collapse: collapse;
+}
+
+table button {
+  font-family: 'Reddit Sans';
+
+  border-radius: 100px;
+  border: 0;
+
+  padding: 5px 20px;
+  margin: 5px;
+}
+
+table button:hover {
+  cursor: pointer;
+}
+
+th {
+  background-color: white;
+}
+
+tr:nth-child(odd) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+th, td {
+  border: 0;
+
+  padding: 5px;
+}
+
 /* Formatting for the web header itself. */
 header {
   display: flex;
@@ -533,4 +571,15 @@ footer {
   transform: translateY(-50%);
 
   background-color: white;
+}
+
+.table-container {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
 }
