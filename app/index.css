@@ -241,6 +241,24 @@ header a {
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.15);
 }
 
+#signout div::before {
+  content: '';
+
+  position: absolute;
+  top: -8px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  height: 0;
+  width: 0;
+
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+
+  border-bottom: 8px solid white;
+}
+
 #signout .account-button {
   font-family: 'Reddit Sans';
   font-size: 11pt;
