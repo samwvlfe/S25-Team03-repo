@@ -39,7 +39,7 @@ export default function About() {
             <img src="/media/flame.svg" height="40px" alt="Flame"/>
           </div>
           <p className="team-info">
-            Team {data ? data.team_number : <Loading />} &#9900; Version {data ? data.version_number : <Loading />} &#9900; {data ? data.release_date : <Loading />}
+            Team {data ? data.team_number : <Loading />} &#9900; Version {data ? data.version_number : <Loading />} &#9900; {data ? data.release_date.split("T")[0] : <Loading />}
           </p>
         </div>
         <div className="starfield" />
