@@ -294,14 +294,15 @@ const verifyLogin = (Username, callback) => {
     });
 };
 
-app.get('/api/get-users', (req, res) => {
-    db.query('SELECT id, name, username, email, role, companyID FROM Users WHERE role IN ("Driver", "Sponsor")', 
-    (err, results) => {
+app.get('/api/get-users', async (req, res) => {
+    const query = await db.execute('SELECT UserID, Name, Username, Email, UserType, CompanyID FROM AllUsers WHERE UserType IN ("Driver", "Sponsor")');
+
+    db.query(query, (err, results) => {
         if (err) {
-            console.error("Database Error:", err);
-            return res.status(500).json({ error: "Database query failed", details: err.message });
+            res.status(500).json({ error: 'Database query failed', details: err });
+        } else {
+            res.json(results);
         }
-        res.json(results);  // ✅ Return the query result as JSON
     });
 });
 
