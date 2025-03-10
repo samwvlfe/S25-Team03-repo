@@ -19,7 +19,7 @@ export default function Menu() {
         <main className="menu-page">
             <ul className="side-menu">
                 {user.usertype == 'Driver' && <DriverButtons changeView={setCurrentView}/>}
-                {user.usertype == 'Sponsor' && <SponsorButtons changeView={setCurrentView}/>}
+                {user.usertype == 'SponsorUser' && <SponsorButtons changeView={setCurrentView}/>}
                 {user.usertype == 'Admin' && <AdminButtons changeView={setCurrentView}/>}
             </ul>
 
