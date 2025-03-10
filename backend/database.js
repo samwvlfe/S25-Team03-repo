@@ -294,14 +294,15 @@ const verifyLogin = (Username, callback) => {
     });
 };
 
-app.get('/api/get-users', async (req, res) => {
-    try {
-        const [users] = await db.execute('SELECT id, name, username, email, role, companyID FROM Users WHERE role IN ("Driver", "Sponsor")');
-        res.json(users);  // ✅ Ensures JSON response
-    } catch (error) {
-        console.error("Database Error:", error);
-        res.status(500).json({ error: "Database query failed", details: error.message });
-    }
+app.get('/api/get-users', (req, res) => {
+    db.query('SELECT id, name, username, email, role, companyID FROM Users WHERE role IN ("Driver", "Sponsor")', 
+    (err, results) => {
+        if (err) {
+            console.error("Database Error:", err);
+            return res.status(500).json({ error: "Database query failed", details: err.message });
+        }
+        res.json(results);  // ✅ Return the query result as JSON
+    });
 });
 
 // admin add user
