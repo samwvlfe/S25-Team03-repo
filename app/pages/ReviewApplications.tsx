@@ -17,7 +17,7 @@ export default function ReviewApplications() {
     // Fetch applications from backend
     React.useEffect(() => {
         axios.get('http://localhost:2999/api/get-applications')
-            .then(response => setApplications(response.data))
+            .then(response => {setApplications(response.data)})
             .catch(error => console.error('Error fetching applications:', error));
     }, []);
 

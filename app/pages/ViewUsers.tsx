@@ -6,12 +6,12 @@ interface ViewUsersProps {
 }
 
 interface User {
-    id: number;
-    name: string;
-    username: string;
-    email: string;
-    role: string;
-    companyID?: string; // Only for Sponsors
+    UserID: number;
+    Name: string;
+    Username: string;
+    Email: string;
+    UserType: string;
+    CompanyID?: number | null; // Only for Sponsors
 }
 
 export default function ViewUsers({ adminID }: ViewUsersProps) {
@@ -35,7 +35,7 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
     // Filter users based on selected role
     const filteredUsers = roleFilter === "All" 
         ? users 
-        : users.filter(user => user.role === roleFilter);
+        : users.filter(user => user.UserType === roleFilter);
 
     return (
         <div>
@@ -67,13 +67,13 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
                 <tbody>
                     {filteredUsers.length > 0 ? (
                         filteredUsers.map(user => (
-                            <tr key={user.id}>
-                                <td>{user.id}</td>
-                                <td>{user.name}</td>
-                                <td>{user.username}</td>
-                                <td>{user.email}</td>
-                                <td>{user.role}</td>
-                                <td>{user.role === "Sponsor" ? user.companyID || "N/A" : "—"}</td>
+                            <tr key={user.UserID}>
+                                <td>{user.UserID}</td>
+                                <td>{user.Name}</td>
+                                <td>{user.Username}</td>
+                                <td>{user.Email}</td>
+                                <td>{user.UserType}</td>
+                                <td>{user.UserType === "Sponsor" ? user.CompanyID || "N/A" : "—"}</td>
                             </tr>
                         ))
                     ) : (
