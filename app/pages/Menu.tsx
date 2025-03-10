@@ -23,7 +23,15 @@ export default function Menu() {
                 {user.usertype == 'Admin' && <AdminButtons changeView={setCurrentView}/>}
             </ul>
 
-            <CreateMenu currentView={currentView} currentUser={user}/>
+            <div id="menuContent">
+                <p>Menu</p>
+                <p>Welcome, {user.username}</p>
+                <p>User Type: {user.usertype}</p>
+                {/* <div className="userFuncContainer">
+                    <input type="text" placeholder="Enter # of points" />
+                    <button type="button">Submit</button>
+                </div> */}
+            </div>
         </main>
     );
 }
