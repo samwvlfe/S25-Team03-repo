@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface User {
     username: string;
@@ -17,9 +17,18 @@ interface CreateMenuProps {
 function LandingView({ user }:LandingViewProps) {
     return (
         <>
-            <div id="landingView">
+            {/* <div id="landingView">
                 <p>Hello, {user.username}!</p>
                 <p>User Type: {user.usertype}</p>
+            </div> */}
+            <div className="userFuncContainer">
+                <div className="widget">
+                    <input type="text" placeholder="Enter # of points" />
+                    <button type="button">Submit</button>
+                </div>
+                <div className="widget"></div>
+                <div className="widget"></div>
+                <div className="widget"></div>
             </div>
         </>
     )
