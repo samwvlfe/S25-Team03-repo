@@ -173,15 +173,45 @@ header a {
 
 /* Formatting for the account / signout section. */
 #signout {
-  justify-content: center;
-  align-items: center;
-
-  height: 40px;
   width: 40px;
 
-  border-radius: 100px;
+  justify-content: center;
+  align-items: center;
+}
 
-  background-image: url('/media/default-alien.svg');
+#signout img {
+  height: 35px;
+
+  border-radius: 100px;
+}
+
+#signout img:hover {
+  cursor: pointer;
+}
+
+#signout div {
+  position: absolute;
+
+  transform: translateY(150%);
+
+  width: 10%;
+
+  border-radius: 20px;
+  padding: 10px;
+
+  background-color: white;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.15);
+}
+
+#signout .account-button {
+  font-family: 'Reddit Sans';
+  font-size: 11pt;
+
+  border: 0;
+
+  width: 100%;
+
+  padding: 5px;
 }
 
 /* Formatting for the about page header. */
