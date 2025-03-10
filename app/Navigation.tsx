@@ -19,9 +19,11 @@ import Menu from './pages/Menu';
 import {handleSignOut, toggleNav} from '../script/toggle'
 
 export default function Navigation() {
-    // useEffect(() => {
-    //     toggleNav(); // Run function after component mounts
-    // }, []);
+
+    useEffect(() => {
+        toggleNav(); // Run function after component mounts
+    }, []);
+    
     const [menuState, setMenuState] = useState("none");
 
     const toggleMenu = (event: React.MouseEvent<HTMLImageElement>) => {
@@ -64,6 +66,9 @@ export default function Navigation() {
                             <div id="signoutMenu" style={{ display: menuState }}>
                                 <button className="account-button" onClick={handleSignOut}>Sign Out</button>
                             </div>
+                        </li>
+                        <li id="goto">
+                            <Link to="/menu">Go to Menu</Link>
                         </li>
                     </ul>
                 </nav>
