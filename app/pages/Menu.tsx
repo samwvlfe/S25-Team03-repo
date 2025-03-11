@@ -2,17 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { toggleNav } from '../../script/toggle';
 import {DriverButtons, SponsorButtons, AdminButtons} from '../components/MenuButtons';
 import { CreateMenu } from '../components/MenuViews';
+import { fetchTotalPoints } from '../../backend/api';
+import {DriverContent, SponsorContent, AdminContent} from '../components/MenuContent';
+
 
 export default function Menu() {
     // Retrieve user info from localStorage
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-    
-    // Track current menu view.
     const [currentView, setCurrentView] = useState('landing');
 
-    // call func ONCE after doc loads 
+    // get points only if user is driver
+    const [totalPoints, setTotalPoints] = useState<number | null>(null);
     useEffect(() => {
         toggleNav(); 
+        if (user.usertype === 'Driver' && user.id) {
+            fetchTotalPoints(user.id).then(setTotalPoints);
+        }
     }, []);
 
     return (
@@ -22,15 +27,10 @@ export default function Menu() {
                 {user.usertype == 'SponsorUser' && <SponsorButtons changeView={setCurrentView}/>}
                 {user.usertype == 'Admin' && <AdminButtons changeView={setCurrentView}/>}
             </ul>
-
-            <div id="menuContent">
-                <p>Menu</p>
-                <p>Welcome, {user.username}</p>
-                <p>User Type: {user.usertype}</p>
-                {/* <div className="userFuncContainer">
-                    <input type="text" placeholder="Enter # of points" />
-                    <button type="button">Submit</button>
-                </div> */}
+            <div className="userFuncContainer">
+                {user.usertype === 'Driver' && <DriverContent totalPoints={totalPoints} user={user} />}
+                {user.usertype === 'SponsorUser' && <SponsorContent user={user} />}
+                {user.usertype === 'Admin' && <AdminContent user={user} />}
             </div>
         </main>
     );

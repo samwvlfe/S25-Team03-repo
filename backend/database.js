@@ -360,6 +360,55 @@ app.delete('/api/admin/delete-user/:id', (req, res) => {
     });
 });
 
+// get points from driver table based on driver ID
+app.get('/getTotalPoints', (req, res) => {
+    const { driverID } = req.query;
+
+    if (!driverID) {
+        return res.status(400).json({ error: 'Driver ID is required' });
+    }
+
+    db.query(
+        'SELECT TotalPoints FROM Driver WHERE DriverID = ?',
+        [driverID],
+        (err, results) => {
+            if (err) {
+                console.error('Database error:', err);
+                return res.status(500).json({ error: 'Database query error' });
+            }
+
+            if (results.length > 0) {
+                res.status(200).json({ totalPoints: results[0].TotalPoints });
+            } else {
+                res.status(404).json({ error: 'Driver not found' });
+            }
+        }
+    );
+});
+
+// change points by Driver ID 
+app.post('/updatePoints', (req, res) => {
+    const { userDriverID, Points_inc } = req.body; 
+
+    if (!userDriverID || !Points_inc) {
+        return res.status(400).json({ error: 'Both parameters (userDriverID and Points_inc) are required' });
+    }
+
+    db.query(
+        'CALL PointChange(?, ?)', // Call the stored procedure
+        [parseInt(userDriverID), parseInt(Points_inc)], // Convert to integers
+        (err, results) => {
+            if (err) {
+                console.error('Database error:', err);
+                return res.status(500).json({ error: 'Database query error' });
+            }
+
+            res.status(200).json({ message: 'Stored procedure executed successfully', results });
+        }
+    );
+});
+
+
 // Start server
 app.listen(port, () => {
     console.log(`Server running at http://127.0.0.1:${port}/`);
