@@ -475,6 +475,8 @@ header a {
 /* Formatting for the menu page. */
 .menu-page {
   flex-direction: row;
+
+  gap: 10px;
 }
 
 #menuContent {
