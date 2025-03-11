@@ -517,13 +517,24 @@ header a {
 }
 
 .view-content table {
-  table-layout: fixed;
+  /* table-layout: fixed; */
 
   width: 100%;
 }
 
 .view-content td {
   overflow: hidden;
+}
+
+.status {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.minimized table button {
+  aspect-ratio: 1/1;
 }
 
 /* Footer formatting. */
@@ -618,17 +629,6 @@ footer {
   background-color: white;
 }
 
-.table-container {
-  display: flex;
-
-  flex-direction: column;
-
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-}
-
 .userFuncContainer{
   display: flex;
   align-items: center;
@@ -649,3 +649,22 @@ footer {
     background-color: #e9e9e9;
     color: white;
   }
+
+.circle {
+  border-radius: 100px;
+
+  aspect-ratio: 1/1;
+  height: 15px;
+}
+
+.pending {
+  background-color: #ffd000;
+}
+
+.approved {
+  background-color: green;
+}
+
+.rejected {
+  background-color: red;
+}

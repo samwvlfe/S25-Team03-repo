@@ -126,13 +126,38 @@ function ViewApplications() {
             .catch(error => console.error('Error updating status:', error));
     };
 
+    // Creating minimized indicators for the application status.
+    const Approved = () => {
+        return (
+            <div className="status">
+                <div className="approved circle" />
+            </div>
+        )
+    }
+
+    const Pending = () => {
+        return (
+            <div className="status">
+                <div className="pending circle" />
+            </div>
+        )
+    }
+
+    const Rejected = () => {
+        return (
+            <div className="status">
+                <div className="rejected circle" />
+            </div>
+        )
+    }
+
     return (
-        <div className="view-container">
+        <div className="view-container minimized">
             <div className="view-container">
                 <h2>Review Applications</h2>
             </div>
             <div className="view-content">
-                <table border={1}>
+                <table border={1} className="applications">
                     <thead>
                         <tr>
                             {/*<th>ID</th>*/}
@@ -152,7 +177,12 @@ function ViewApplications() {
                                 <td>{app.ApplicantType}</td>
                                 <td>{app.Username}</td>
                                 {/*<td>{app.Email}</td>*/}
-                                <td>{app.ApplicationStatus}</td>
+                                <td>
+                                    {app.ApplicationStatus === 'Pending' && <Pending />}
+                                    {app.ApplicationStatus === 'Approved' && <Approved />}
+                                    {app.ApplicationStatus === 'Rejected' && <Rejected />}
+                                    {/*app.ApplicationStatus*/}
+                                </td>
                                 <td>
                                     {app.ApplicationStatus === 'Pending' && (
                                         <>
