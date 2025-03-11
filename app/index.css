@@ -477,26 +477,51 @@ header a {
   flex-direction: row;
 }
 
-.side-menu {
-  list-style-type: none;
-  
-  margin: 0;
-  padding: 0;
-
-  background-color: #e3e3e3;
-}
-
-.side-menu li {
-  padding: 15px;
-}
-
-.side-menu li:hover {
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.15);
-}
-
 #menuContent {
+  display: flex;
+  flex-direction: row;
+
   flex: 1;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.view-container {
+  display: flex;
+  flex-direction: column;
+
+  background-color: white;
+
+  border-radius: 25px 25px 0 0;
+
+  height: 40%;
+  width: 40%;
+}
+
+.view-header {
+  padding: 5px 10px;
+}
+
+.view-extras {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 5px 10px;
+}
+
+.view-content {
+  flex: 1;
+
+  overflow: scroll;
+}
+
+.view-content table {
+  table-layout: fixed;
+
+  width: 100%;
+}
+
+.view-content td {
+  overflow: hidden;
 }
 
 /* Footer formatting. */
@@ -601,7 +626,6 @@ footer {
 
   width: 100%;
 }
-
 
 .userFuncContainer{
   display: flex;
