@@ -12,7 +12,7 @@ import Login from './pages/Login';
 import ApplicationForm from './pages/ApplicationForm';
 import ApplicationSuccess from './pages/ApplicationSuccess';
 import ReviewApplications from './pages/ReviewApplications';
-import AdminDashboard from './pages/AdminDashboard';
+//import AdminDashboard from './pages/AdminDashboard';
 import ViewUsers from './pages/ViewUsers';
 import Menu from './pages/Menu';
 
@@ -79,8 +79,6 @@ export default function Navigation() {
                 <Route path="/apply-success" element={<ApplicationSuccess />} />
                 <Route path="/review" element={<ReviewApplications />} />
                 <Route path="/menu" element={<Menu />} />
-                <Route path="/admin-dashboard" element={<AdminDashboard />} />
-                <Route path="/users" element={<ViewUsers adminID="admin123" />} />
                 <Route path="/" element={<About/>} />
             </Routes>
         </Router>
