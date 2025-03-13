@@ -50,7 +50,7 @@ function ViewUsers({ adminID }: ViewUsersProps) {
                 <select onChange={(e) => setRoleFilter(e.target.value)}>
                     <option value="All">All</option>
                     <option value="Driver">Drivers</option>
-                    <option value="SponsorUser">Sponsors</option>
+                    <option value="Sponsor">Sponsors</option>
                 </select>
             </div>
 

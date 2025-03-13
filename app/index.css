@@ -516,9 +516,11 @@ header a {
   overflow: scroll;
 }
 
-.view-content table {
-  /* table-layout: fixed; */
+.fixed-table {
+  table-layout: fixed;
+}
 
+.view-content table {
   width: 100%;
 }
 
