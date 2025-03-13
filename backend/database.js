@@ -2,6 +2,7 @@ import express from 'express';
 import mysql from 'mysql2';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
+import axios from "axios";
 
 const app = express();
 const port = process.env.PORT || 2999;
@@ -358,6 +359,15 @@ app.delete('/api/admin/delete-user/:id', (req, res) => {
 
         res.status(200).json({ message: 'User deleted successfully' });
     });
+});
+
+app.get('/api/fake-products', async (req, res) => {
+    try {
+        const response = await axios.get('https://fakestoreapi.com/products');
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch fake products", details: error.message });
+    }
 });
 
 // Start server
