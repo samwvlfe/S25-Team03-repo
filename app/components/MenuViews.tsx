@@ -39,9 +39,10 @@ function ViewUsers({ adminID }: ViewUsersProps) {
         : users.filter(user => user.UserType === roleFilter);
 
     return (
-        <div className="view-container">
+        <div className="view-container maximized">
             <div className="view-header">
                 <h2>View Users</h2>
+                <button>⛶</button>
             </div>
 
             <div className="view-extras">
@@ -59,7 +60,7 @@ function ViewUsers({ adminID }: ViewUsersProps) {
                 {error && <p style={{ color: 'red' }}>{error}</p>}
 
                 {/* Users List */}
-                <table border={1}>
+                <table border={1} className="fixed-table">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -94,7 +95,7 @@ function ViewUsers({ adminID }: ViewUsersProps) {
     );
 }
 
-// Define the expected shape of an Application object
+// All relevant code for viewing the applications.
 interface Application {
     ApplicationID: number;
     ApplicantName: string;
@@ -152,9 +153,10 @@ function ViewApplications() {
     }
 
     return (
-        <div className="view-container minimized">
+        <div className="view-container">
             <div className="view-header">
                 <h2>Review Applications</h2>
+                <button>⛶</button>
             </div>
             <div className="view-content">
                 <table border={1} className="applications">

@@ -502,7 +502,31 @@ header a {
 }
 
 .view-header {
-  padding: 5px 10px;
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 5px 25px;
+}
+
+.view-header button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 16pt;
+
+  aspect-ratio: 1/1;
+
+  border: 0;
+  border-radius: 25px;
+
+  padding: 10px;
+}
+
+.view-header button:hover {
+  cursor: pointer;
 }
 
 .view-extras {
@@ -528,18 +552,18 @@ header a {
   overflow: hidden;
 }
 
+.view-content table button {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
 .status {
   display: flex;
 
   justify-content: center;
   align-items: center;
-}
-
-.minimized table button {
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
 }
 
 /* Footer formatting. */
