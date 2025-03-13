@@ -79,6 +79,7 @@ export default function Navigation() {
                 <Route path="/apply-success" element={<ApplicationSuccess />} />
                 <Route path="/review" element={<ReviewApplications />} />
                 <Route path="/menu" element={<Menu />} />
+                <Route path="/users" element={<ViewUsers adminID="admin123" />} />
                 <Route path="/" element={<About/>} />
             </Routes>
         </Router>
