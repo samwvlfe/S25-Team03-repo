@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+/*import React, { useState } from 'react';
 import axios from 'axios';
 
 interface AdminLoginProps {
@@ -36,4 +36,4 @@ export default function AdminLogin({ onVerified }: AdminLoginProps) {
             {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
     );
-}
+}*/
