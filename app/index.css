@@ -475,8 +475,6 @@ header a {
 /* Formatting for the menu page. */
 .menu-page {
   flex-direction: row;
-
-  gap: 10px;
 }
 
 #menuContent {
@@ -484,6 +482,8 @@ header a {
   flex-direction: row;
 
   flex: 1;
+
+  gap: 20px;
 
   justify-content: center;
   align-items: center;
@@ -534,7 +534,10 @@ header a {
 }
 
 .minimized table button {
-  aspect-ratio: 1/1;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
 }
 
 /* Footer formatting. */

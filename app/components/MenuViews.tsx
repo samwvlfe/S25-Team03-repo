@@ -153,7 +153,7 @@ function ViewApplications() {
 
     return (
         <div className="view-container minimized">
-            <div className="view-container">
+            <div className="view-header">
                 <h2>Review Applications</h2>
             </div>
             <div className="view-content">
@@ -185,10 +185,10 @@ function ViewApplications() {
                                 </td>
                                 <td>
                                     {app.ApplicationStatus === 'Pending' && (
-                                        <>
+                                        <div className="status">
                                             <button onClick={() => updateStatus(app.ApplicationID, 'Approved')}>&#10003; {/* Approve */}</button>
                                             <button onClick={() => updateStatus(app.ApplicationID, 'Rejected')}>&#x2717; {/* Reject */}</button>
-                                        </>
+                                        </div>
                                     )}
                                 </td>
                             </tr>
