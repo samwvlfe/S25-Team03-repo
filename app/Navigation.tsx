@@ -12,7 +12,6 @@ import Login from './pages/Login';
 import ApplicationForm from './pages/ApplicationForm';
 import ApplicationSuccess from './pages/ApplicationSuccess';
 import ReviewApplications from './pages/ReviewApplications';
-//import AdminDashboard from './pages/AdminDashboard';
 import ViewUsers from './pages/ViewUsers';
 import Menu from './pages/Menu';
 
@@ -57,9 +56,6 @@ export default function Navigation() {
                         </li>
                         <li id="revApps">
                             <Link to="/review">Applications</Link>
-                        </li>
-                        <li id="adminID">
-                            <Link to="/admin-dashboard">Admin</Link>
                         </li>
                         <li id="signout">
                             <img src="/media/default-alien.svg" onClick={ toggleMenu }/>
