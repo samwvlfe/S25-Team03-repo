@@ -33,11 +33,6 @@ export default function ApplicationForm() {
         try {
             const response = await axios.post('http://localhost:2999/api/submit-application', formData); 
             alert(response.data.message);
-
-            if(formData.applicantType === 'Admin') {
-                navigate('/admin-dashboard');
-            }
-
             navigate('/apply-success');
         } catch (error) {
             setMessage('Error submitting application!');
@@ -59,7 +54,6 @@ export default function ApplicationForm() {
                     <select name="applicantType" onChange={handleChange}>
                         <option value="Driver">Driver</option>
                         <option value="Sponsor">Sponsor</option>
-                        <option value="Admin">Admin</option>
                     </select>
                     <label>Username:</label>
                     <input type="text" name="username" placeholder="Username" required onChange={handleChange} />
@@ -71,12 +65,6 @@ export default function ApplicationForm() {
                         <div className="extra-field">
                             <label>Company ID:</label>
                             <input type="text" name="companyID" placeholder="Company ID" onChange={handleChange} />
-                        </div>
-                    )}
-                    {formData.applicantType === 'Admin' && (
-                        <div className="extra-field">
-                            <label>Admin ID:</label>
-                            <input type="text" name="adminID" placeholder="Admin ID" required onChange={handleChange} />
                         </div>
                     )}
                     <input type="submit" value="Submit Application" />
