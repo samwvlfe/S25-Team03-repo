@@ -361,14 +361,22 @@ app.delete('/api/admin/delete-user/:id', (req, res) => {
     });
 });
 
-app.get('/api/fake-products', async (req, res) => {
+app.get('/api/fake-store', async (req, res) => {
     try {
         const response = await axios.get('https://fakestoreapi.com/products');
-        res.json(response.data);
+        const products = response.data.map(product => ({
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            image: product.image
+        }));
+        res.json(products);
     } catch (error) {
-        res.status(500).json({ error: "Failed to fetch fake products", details: error.message });
+        res.status(500).json({ error: "Failed to fetch store products", details: error.message });
     }
 });
+
+app.get('/api/create-product')
 
 // Start server
 app.listen(port, () => {
