@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Product } from "../types/Product";
 
-const FakeStore = () => {
-    const [products, setProducts] = useState([]);
-    const [userPoints, setUserPoints] = useState(100); // Example: User has 100 points
+const FakeStore: React.FC = () => {
+    const [products, setProducts] = useState<Product[]>([]);
+    const [userPoints, setUserPoints] = useState<number>(100);
 
     useEffect(() => {
         fetch("http://127.0.0.1:2999/api/fake-store")
@@ -11,7 +12,7 @@ const FakeStore = () => {
             .catch(error => console.error("Error fetching products:", error));
     }, []);
 
-    const handleRedeem = (product) => {
+    const handleRedeem = (product: Product) => {
         if (userPoints >= product.price) {
             setUserPoints(userPoints - product.price);
             alert(`You redeemed ${product.title} for ${product.price} points!`);
