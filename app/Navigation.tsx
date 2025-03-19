@@ -79,7 +79,6 @@ export default function Navigation() {
                 <Route path="/menu" element={<Menu />} />
                 <Route path="/users" element={<ViewUsers adminID="admin123" />} />
                 <Route path="/" element={<DriverDashboard />} />
-                <Route path="/fake-store" element={<FakeStore />} />
                 <Route path="/" element={<About/>} />
             </Routes>
         </Router>
