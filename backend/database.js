@@ -2,6 +2,7 @@ import express from 'express';
 import mysql from 'mysql2';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
+import axios from "axios";
 
 const app = express();
 const port = process.env.PORT || 2999;
@@ -354,6 +355,23 @@ app.delete('/api/admin/delete-user/:id', (req, res) => {
         res.status(200).json({ message: 'User deleted successfully' });
     });
 });
+
+app.get('/api/fake-store', async (req, res) => {
+    try {
+        const response = await axios.get('https://fakestoreapi.com/products');
+        const products = response.data.map(product => ({
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            image: product.image
+        }));
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch store products", details: error.message });
+    }
+});
+
+app.get('/api/create-product')
 
 // get points from driver table based on driver ID
 app.get('/getTotalPoints', (req, res) => {

@@ -1,5 +1,6 @@
 import React, { ButtonHTMLAttributes } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 type ButtonProps = {
     changeView: Function
@@ -7,6 +8,7 @@ type ButtonProps = {
 
 // Buttons for all driver actions.
 export function DriverButtons({ changeView }: ButtonProps) {
+    const navigate = useNavigate();
     return (
         <>
             {/* Only display these if driver doesn't have a sponsor. */ }
@@ -18,7 +20,7 @@ export function DriverButtons({ changeView }: ButtonProps) {
             <li id="viewGuidelines">View Sponsor Guidelines</li>
             <li id="partnerMgmt">Manage Partnership</li>
             <li id="poinstMgmt">View Points</li>
-            <li id="pointsShop">Redeem Points</li>
+            <li id="pointsShop" onClick={() => navigate("/fake-store")}>Redeem Points</li>
         </>
     )
 }

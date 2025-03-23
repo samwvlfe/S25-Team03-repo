@@ -12,9 +12,9 @@ import Login from './pages/Login';
 import ApplicationForm from './pages/ApplicationForm';
 import ApplicationSuccess from './pages/ApplicationSuccess';
 import ReviewApplications from './pages/ReviewApplications';
-import AdminDashboard from './pages/AdminDashboard';
 import ViewUsers from './pages/ViewUsers';
 import Menu from './pages/Menu';
+import FakeStore from "./pages/FakeStore";
 
 import {handleSignOut, toggleNav} from '../script/toggle'
 
@@ -58,9 +58,6 @@ export default function Navigation() {
                         <li id="revApps">
                             <Link to="/review">Applications</Link>
                         </li>
-                        <li id="adminID">
-                            <Link to="/admin-dashboard">Admin</Link>
-                        </li>
                         <li id="signout">
                             <img src="/media/default-alien.svg" onClick={ toggleMenu }/>
                             <div id="signoutMenu" style={{ display: menuState }}>
@@ -79,8 +76,8 @@ export default function Navigation() {
                 <Route path="/apply-success" element={<ApplicationSuccess />} />
                 <Route path="/review" element={<ReviewApplications />} />
                 <Route path="/menu" element={<Menu />} />
-                <Route path="/admin-dashboard" element={<AdminDashboard />} />
                 <Route path="/users" element={<ViewUsers adminID="admin123" />} />
+                <Route path="/fake-store" element={<FakeStore />} />
                 <Route path="/" element={<About/>} />
             </Routes>
         </Router>
