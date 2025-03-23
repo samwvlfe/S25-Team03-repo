@@ -233,16 +233,10 @@ app.post('/api/submit-application', async (req, res) => {
 app.post('/api/login', async (req, res) => {
     const { username, password} = req.body;
 
-    console.log(username);
-    console.log(password);
-
-
     if (!username || !password) {
         return res.status(400).json({ error: 'Username and/or password not sent in request' });
     }
     try{
-
-
 
         verifyLogin(username, async (err, result) => {
             if (err) {
@@ -288,7 +282,8 @@ const verifyLogin = (Username, callback) => {
                 id: user.UserID,   
                 username: user.Username,
                 pass: user.PasswordHash,
-                usertype: user.UserType
+                usertype: user.UserType,
+                companyID: user.CompanyID
             }
         });
     });
@@ -407,6 +402,8 @@ app.post('/updatePoints', (req, res) => {
         }
     );
 });
+
+//update password by username
 
 
 // Start server

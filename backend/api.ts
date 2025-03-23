@@ -12,6 +12,7 @@ export async function fetchTotalPoints(driverID: number): Promise<number | null>
         return null;
     }
 }
+
 // update points function
 export async function updatePoints(userDriverID: number, Points_inc: number): Promise<boolean> {
     try {

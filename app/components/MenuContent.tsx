@@ -5,6 +5,7 @@ type User = {
     id: string;
     username: string;
     usertype: string;
+    companyID: string;
 };
 
 type DriverProps = {
@@ -71,18 +72,9 @@ export function DriverContent({ totalPoints, user }: DriverProps) {
             <div className="widget">
                 <div className="widgetTitle">Driver Dashboard</div>
                 <p>Username: {user.username}</p>
-                <p>User Type: {user.usertype}</p>
-                <p>** link to edit account info **</p>
-            </div>
-            <div className="widget">
-                <div className="widgetTitle">Points</div>
                 <p>Points: {totalPoints !== null ? totalPoints : 'Loading...'}</p>
-                <p>** link to see point history **</p>
-            </div>
-            <div className="widget">
-                <div className="widgetTitle">Partnership</div>
-                <p>related sponsor info here</p>
-                <p>** contact sponsor via their email **</p>
+                <p>SponsorID: {user.companyID}</p>
+                <p>Change Password Link Here</p>
             </div>
             <div className="widget">
                 <div className="widgetTitle">Catalog</div>
@@ -100,7 +92,7 @@ export function SponsorContent({ user }: GeneralProps) {
                 <div className="widgetTitle">Sponsor Dashboard</div>
                 <p>Username: {user.username}</p>
                 <p>User Type: {user.usertype}</p>
-                <p>** Company ID/Name **</p>
+                <p>Company ID/Name: {user.companyID}</p>
             </div>
             <div className="widget">
                 <div className="widgetTitle">Points Management</div>

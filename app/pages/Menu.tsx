@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { toggleNav } from '../../script/toggle';
-import {DriverButtons, SponsorButtons, AdminButtons} from '../components/MenuButtons';
 import { CreateMenu } from '../components/MenuViews';
-import { fetchTotalPoints } from '../../backend/api';
-import {DriverContent, SponsorContent, AdminContent} from '../components/MenuContent';
+import { toggleNav } from '../../script/toggle';
+// import different html elements for each usertype
+import { DriverButtons, SponsorButtons, AdminButtons } from '../components/MenuButtons';
+import { DriverContent, SponsorContent, AdminContent } from '../components/MenuContent';
+// functions to GET data
+import { fetchTotalPoints} from '../../backend/api';
 
 
 export default function Menu() {
@@ -11,8 +13,9 @@ export default function Menu() {
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     const [currentView, setCurrentView] = useState('landing');
 
-    // get points only if user is driver
+    // get points and companyID only if user is driver
     const [totalPoints, setTotalPoints] = useState<number | null>(null);
+
     useEffect(() => {
         toggleNav(); 
         if (user.usertype === 'Driver' && user.id) {
