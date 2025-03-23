@@ -205,6 +205,7 @@ function ViewApplications() {
 // View for creating / deleting accounts.
 function ManageAccounts() {
     const [message, setMessage] = useState('');
+    const [mode, setMode] = useState('add');
     const [formData, setFormData] = useState({
         name: '',
         username: '',
@@ -214,20 +215,27 @@ function ManageAccounts() {
         companyID: '',
         submissionDate: new Date().toISOString().slice(0, 19).replace('T', ' '), // Format for MySQL
     });
+    const [id, setID] = useState('');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        if (mode === 'add') {
+            setFormData({ ...formData, [e.target.name]: e.target.value });
+        } else if (mode === 'delete') {
+            setID(e.target.value);
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        console.log(formData);
-
         try {
-            const response = await axios.post('http://localhost:2999/api/admin/create-user', formData); 
-            console.log(response);
-            alert(response.data.message);
+            if (mode === 'add') {
+                const response = await axios.post('http://localhost:2999/api/admin/create-user', formData);
+                alert(response.data.message);
+            } else if (mode === 'delete') {
+                const response = await axios.delete(`http://localhost:2999/api/admin/delete-user/${id}`);
+                alert(response.data.message);
+            }
         } catch (error) {
             setMessage('Error creating user!');
             console.error(error);
@@ -240,29 +248,46 @@ function ManageAccounts() {
                 <h2>Manage Accounts</h2>
                 <button>⛶</button>
             </div>
+            <div className="view-options">
+                <select onChange={(e) => setMode(e.target.value)}>
+                    <option value="add">Add User</option>
+                    <option value="delete">Delete User</option>
+                </select>
+            </div>
             <div className="view-content">
-                <form className="application-form" onSubmit={handleSubmit}>
-                    <label>Full Name:</label>
-                    <input type="text" name="name" placeholder="Full Name" required onChange={handleChange} />
-                    <label>Account Type:</label>
-                    <select name="userType" onChange={handleChange}>
-                        <option value="Driver">Driver</option>
-                        <option value="Sponsor">Sponsor</option>
-                    </select>
-                    <label>Username:</label>
-                    <input type="text" name="username" placeholder="Username" required onChange={handleChange} />
-                    <label>Email:</label>
-                    <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
-                    <label>Password:</label>
-                    <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
-                    {formData.userType === 'Sponsor' && (
-                        <div className="extra-field">
-                            <label>Company ID:</label>
-                            <input type="text" name="companyID" placeholder="Company ID" onChange={handleChange} />
-                        </div>
-                    )}
-                    <input type="submit" value="Create Account" />
-                </form>
+                {
+                    mode == "add" &&
+                    <form className="application-form" onSubmit={handleSubmit}>
+                        <label>Full Name:</label>
+                        <input type="text" name="name" placeholder="Full Name" required onChange={handleChange} />
+                        <label>Account Type:</label>
+                        <select name="userType" onChange={handleChange}>
+                            <option value="Driver">Driver</option>
+                            <option value="Sponsor">Sponsor</option>
+                        </select>
+                        <label>Username:</label>
+                        <input type="text" name="username" placeholder="Username" required onChange={handleChange} />
+                        <label>Email:</label>
+                        <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
+                        <label>Password:</label>
+                        <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
+                        {formData.userType === 'Sponsor' && (
+                            <div className="extra-field">
+                                <label>Company ID:</label>
+                                <input type="text" name="companyID" placeholder="Company ID" onChange={handleChange} />
+                            </div>
+                        )}
+                        <input type="submit" value="Create Account" />
+                    </form>
+                }
+                {
+                    mode == "delete" &&
+                    <form className="application-form" onSubmit={handleSubmit}>
+                        <label>User ID:</label>
+                        <input type="text" name="userID" placeholder="UserID" required onChange={handleChange}/>
+                        <input type="submit" value="Delete Account"/>
+                    </form>
+                }
             </div>
         </div>
     )

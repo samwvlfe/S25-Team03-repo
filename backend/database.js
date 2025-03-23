@@ -344,7 +344,7 @@ app.delete('/api/admin/delete-user/:id', (req, res) => {
         return res.status(400).json({ error: 'User ID is required' });
     }
 
-    const query = `DELETE FROM Users WHERE ID = ?`;
+    const query = `DELETE FROM AllUsers WHERE UserID = ?`;
 
     db.query(query, [userId], (err, result) => {
         if (err) {
