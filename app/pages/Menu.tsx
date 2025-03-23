@@ -5,7 +5,7 @@ import { AdminView } from '../components/MenuViews';
 
 export default function Menu() {
     // Creating a state for tracking the maximized element.
-    const [maximized, setMaximized] = useState(null);
+    const [maximized, setMaximized] = useState<string | null>(null);
 
     // Retrieve user info from localStorage
     const user = JSON.parse(localStorage.getItem("user") || "{}");

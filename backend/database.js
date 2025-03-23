@@ -308,9 +308,9 @@ app.get('/api/get-users', async (req, res) => {
 
 // admin add user
 app.post('/api/admin/create-user', async (req, res) => {
-    const { name, username, email, password, role, companyID } = req.body;
+    const { name, username, email, password, userType, companyID } = req.body;
 
-    if (!name || !username || !email || !password || !role) {
+    if (!name || !username || !email || !password || !userType) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
@@ -319,11 +319,11 @@ app.post('/api/admin/create-user', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const query = `
-            INSERT INTO Users (Name, Username, Email, PasswordHash, Role, CompanyID, CreatedAt)
+            INSERT INTO AllUsers (Name, Username, Email, PasswordHash, UserType, CompanyID, CreatedAt)
             VALUES (?, ?, ?, ?, ?, ?, NOW())
         `;
 
-        db.query(query, [name, username, email, hashedPassword, role, companyID || null], (err, result) => {
+        db.query(query, [name, username, email, hashedPassword, userType, companyID || null], (err, result) => {
             if (err) {
                 console.error('User creation failed:', err);
                 return res.status(500).json({ error: 'User creation failed', details: err.message });

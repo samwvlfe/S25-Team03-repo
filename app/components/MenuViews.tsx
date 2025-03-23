@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// All relevant data for the ViewUsers segment.
-interface ViewUsersProps {
-    adminID: string;
+// Function to handle maximization / minimization.
+function MaximizeHandler() {
+    
 }
 
+// All relevant data for the ViewUsers segment.
 interface User {
     UserID: number;
     Name: string;
@@ -15,23 +16,22 @@ interface User {
     CompanyID?: number | null; // Only for Sponsors
 }
 
-function ViewUsers({ adminID }: ViewUsersProps) {
+function ViewUsers() {
     const [users, setUsers] = useState<User[]>([]);
     const [roleFilter, setRoleFilter] = useState("All");
     const [error, setError] = useState('');
 
     // Fetch users from backend
     useEffect(() => {
-        axios.get('http://localhost:2999/api/get-users', { params: { adminID } })
+        axios.get('http://localhost:2999/api/get-users')
             .then(response => {
-                console.log("Users received:", response.data); // Debug log
                 setUsers(response.data);
             })
             .catch(err => {
                 console.error("API Error:", err);
                 setError('Error fetching users');
             });
-    }, [adminID]);
+    });
 
     // Filter users based on selected role
     const filteredUsers = roleFilter === "All" 
@@ -202,12 +202,79 @@ function ViewApplications() {
     );
 }
 
+// View for creating / deleting accounts.
+function ManageAccounts() {
+    const [message, setMessage] = useState('');
+    const [formData, setFormData] = useState({
+        name: '',
+        username: '',
+        email: '',
+        password: '',
+        userType: 'Driver',
+        companyID: '',
+        submissionDate: new Date().toISOString().slice(0, 19).replace('T', ' '), // Format for MySQL
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        console.log(formData);
+
+        try {
+            const response = await axios.post('http://localhost:2999/api/admin/create-user', formData); 
+            console.log(response);
+            alert(response.data.message);
+        } catch (error) {
+            setMessage('Error creating user!');
+            console.error(error);
+        }
+    };
+
+    return (
+        <div className="view-container">
+            <div className="view-header">
+                <h2>Manage Accounts</h2>
+                <button>⛶</button>
+            </div>
+            <div className="view-content">
+                <form className="application-form" onSubmit={handleSubmit}>
+                    <label>Full Name:</label>
+                    <input type="text" name="name" placeholder="Full Name" required onChange={handleChange} />
+                    <label>Account Type:</label>
+                    <select name="userType" onChange={handleChange}>
+                        <option value="Driver">Driver</option>
+                        <option value="Sponsor">Sponsor</option>
+                    </select>
+                    <label>Username:</label>
+                    <input type="text" name="username" placeholder="Username" required onChange={handleChange} />
+                    <label>Email:</label>
+                    <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
+                    <label>Password:</label>
+                    <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
+                    {formData.userType === 'Sponsor' && (
+                        <div className="extra-field">
+                            <label>Company ID:</label>
+                            <input type="text" name="companyID" placeholder="Company ID" onChange={handleChange} />
+                        </div>
+                    )}
+                    <input type="submit" value="Create Account" />
+                </form>
+            </div>
+        </div>
+    )
+}
+
 export function AdminView() {
     return (
         <>
             <div id="menuContent">
-                <ViewUsers adminID='admin123' />
+                <ViewUsers />
                 <ViewApplications />
+                <ManageAccounts />
             </div>
         </>
     )
