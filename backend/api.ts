@@ -14,14 +14,14 @@ export async function fetchTotalPoints(driverID: number): Promise<number | null>
 }
 
 // update points function
-export async function updatePoints(userDriverID: number, Points_inc: number): Promise<boolean> {
+export async function updatePoints(userDriverID: number, Points_inc: number, SponsorUserID: number, reason: string): Promise<boolean> {
     try {
         const response = await fetch("http://localhost:2999/updatePoints", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ userDriverID, Points_inc }),
+            body: JSON.stringify({ userDriverID, Points_inc, SponsorUserID, reason }),
         });
 
         if (!response.ok) {
@@ -30,10 +30,10 @@ export async function updatePoints(userDriverID: number, Points_inc: number): Pr
 
         const data = await response.json();
         console.log("Update Points Response:", data);
-        return true; // Indicate success
+        return true;
     } catch (error) {
         console.error("Error updating points:", error);
-        return false; // Indicate failure
+        return false; 
     }
 }
 

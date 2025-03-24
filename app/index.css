@@ -476,6 +476,11 @@ header a {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.15);
 }
+.side-menu a{
+  text-decoration: none;
+  color: #231F20;
+}
+
 
 #menuContent {
   flex: 1;
@@ -618,4 +623,36 @@ footer {
   .widget button:hover{
     background-color: #e9e9e9;
     color: white;
+  }
+
+.password-change-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+  .password-change-container button{
+    margin: 10px 0px 10px 60px;
+    height: 30px;
+    width: 10vw;
+    background-color: #007AFF;
+    border-radius: 10px;
+  }
+
+.cp-input{
+  padding-top: 15px;
+}
+
+.backButn{
+  position: absolute;
+  display: flex;
+  top: 78px;
+  left: 0px;
+  height: 40px;
+  width: 70px;
+  place-content: center;
+  place-items: center;
+  text-decoration: underline;
+  }
+  .backButn link{
+    color: #231F20;
   }

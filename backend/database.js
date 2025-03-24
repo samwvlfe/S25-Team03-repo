@@ -13,6 +13,7 @@ app.use(cors());
 
 //import hash func
 import {createHashPassword} from "../script/extra.js"
+import { isValidPassword } from "../script/passwordComplexity.js";
 
 // Database connection - TEST
 // const db = mysql.createConnection({
@@ -290,6 +291,45 @@ const verifyLogin = (Username, callback) => {
     });
 };
 
+//update new password 
+app.post('/api/update-password', async (req, res) => {
+    const { u_table, username, newPassword } = req.body;
+
+    // make sure all parameters are there
+    if (!u_table || !username || !newPassword) {
+        return res.status(400).json({ error: 'Table, username, and new password must be provided.' });
+    }
+    //make sure passwords fits complexity requirements
+    if(!isValidPassword(newPassword)){
+        return res.status(400).json({ error: 'Password must have at least 6 charaters and 1 digit' });
+    }
+
+    try {
+        // Hash the new password 
+        const hashedPassword = await createHashPassword(newPassword);
+
+        // Stored procedure query
+        const query = `CALL Password_Change(?, ?, ?)`;
+
+        db.query(query, [u_table, username, hashedPassword], (err, results) => {
+            if (err) {
+                console.error("Database Error:", err);
+                return res.status(500).json({ error: 'Database error', details: err.message });
+            }
+            if (!results || results.affectedRows === 0) {
+                return res.status(400).json({ error: 'User not found or password update failed.' });
+            }
+            // success
+            res.status(200).json({ success: true, message: 'Password updated successfully' });
+        });
+
+    } catch (error) {
+        console.error("Server Error:", error);
+        res.status(500).json({ error: 'An error occurred', details: error.message });
+    }
+});
+
+// get users
 app.get('/api/get-users', async (req, res) => {
     const query = await db.execute('SELECT UserID, Name, Username, Email, UserType, CompanyID FROM AllUsers WHERE UserType IN ("Driver", "Sponsor")');
 
@@ -401,15 +441,15 @@ app.get('/getTotalPoints', (req, res) => {
 
 // change points by Driver ID 
 app.post('/updatePoints', (req, res) => {
-    const { userDriverID, Points_inc } = req.body; 
+    const { userDriverID, Points_inc, SponsorUserID, reason } = req.body; 
 
-    if (!userDriverID || !Points_inc) {
-        return res.status(400).json({ error: 'Both parameters (userDriverID and Points_inc) are required' });
+    if (!userDriverID || !Points_inc || !SponsorUserID || !reason) {
+        return res.status(400).json({ error: 'All parameters are required' });
     }
 
     db.query(
-        'CALL PointChange(?, ?)', // Call the stored procedure
-        [parseInt(userDriverID), parseInt(Points_inc)], // Convert to integers
+        'CALL PointChange(?, ?, ?, ?)', // Call the stored procedure
+        [parseInt(userDriverID), parseInt(Points_inc), parseInt(SponsorUserID), reason], // Convert to integers
         (err, results) => {
             if (err) {
                 console.error('Database error:', err);
@@ -420,8 +460,6 @@ app.post('/updatePoints', (req, res) => {
         }
     );
 });
-
-//update password by username
 
 
 // Start server

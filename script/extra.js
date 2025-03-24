@@ -5,9 +5,29 @@ export async function createHashPassword(pswd) {
   return hashedPassword;
 }
 
-createHashPassword
 //log it
 
 // (async () => {
-//     console.log(await createHashPassword("password"));
+//   console.log(await createHashPassword("pass"));
+// })();
+
+
+
+
+async function bcryptCompare(plainPassword, hashedPassword) {
+  try {
+      return await bcrypt.compare(plainPassword, hashedPassword);
+  } catch (error) {
+      console.error("Error comparing passwords:", error);
+      return false;
+  }
+}
+
+//log it
+// (async () => {
+//   const plainPassword = "password"; // text 
+//   const hashedPassword = "$2b$10$rXUPHjaSeqn9ZEY6y8JIhu/s.TKahdNOMCNirntuLzxVc5elTlRaC"; // hashed
+
+//   const isMatch = await bcryptCompare(plainPassword, hashedPassword);
+//   console.log("Passwords match:", isMatch);
 // })();

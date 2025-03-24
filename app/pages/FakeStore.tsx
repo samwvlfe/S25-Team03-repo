@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Product } from "../types/Product";
+import { Link } from 'react-router-dom';
+
 
 const FakeStore: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -34,6 +36,10 @@ const FakeStore: React.FC = () => {
                         <button onClick={() => handleRedeem(product)}>Redeem</button>
                     </div>
                 ))}
+            </div>
+            {/* back to menu button */}
+            <div className="backButn">
+                <Link to="/menu">{"<-- Back"}</Link>
             </div>
         </div>
     );
