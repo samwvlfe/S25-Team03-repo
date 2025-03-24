@@ -660,21 +660,35 @@ footer {
 
 .userFuncContainer{
   display: flex;
+  padding: 20px;
   align-items: center;
   gap: 10px;
   }
-  .userFuncContainer input{
+  .widget{
+    width: 300px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #e9e9e9;
+    padding-top: 20px;
+  }
+  .widgetTitle{
+    font-weight: bold;
+    font-size: 15px;;
+  }
+  .widget input{
     border: 1px solid #ccc;
     border-radius: 4px;
   }
-  .userFuncContainer button{
+  .widget button{
     cursor: pointer;
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: black;
     color: white;
   }
-  .userFuncContainer button:hover{
+  .widget button:hover{
     background-color: #e9e9e9;
     color: white;
   }

@@ -2,6 +2,7 @@ import express from 'express';
 import mysql from 'mysql2';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
+import axios from "axios";
 
 const app = express();
 const port = process.env.PORT || 2999;
@@ -233,16 +234,10 @@ app.post('/api/submit-application', async (req, res) => {
 app.post('/api/login', async (req, res) => {
     const { username, password} = req.body;
 
-    console.log(username);
-    console.log(password);
-
-
     if (!username || !password) {
         return res.status(400).json({ error: 'Username and/or password not sent in request' });
     }
     try{
-
-
 
         verifyLogin(username, async (err, result) => {
             if (err) {
@@ -288,7 +283,8 @@ const verifyLogin = (Username, callback) => {
                 id: user.UserID,   
                 username: user.Username,
                 pass: user.PasswordHash,
-                usertype: user.UserType
+                usertype: user.UserType,
+                companyID: user.CompanyID
             }
         });
     });
@@ -359,6 +355,74 @@ app.delete('/api/admin/delete-user/:id', (req, res) => {
         res.status(200).json({ message: 'User deleted successfully' });
     });
 });
+
+app.get('/api/fake-store', async (req, res) => {
+    try {
+        const response = await axios.get('https://fakestoreapi.com/products');
+        const products = response.data.map(product => ({
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            image: product.image
+        }));
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch store products", details: error.message });
+    }
+});
+
+app.get('/api/create-product')
+
+// get points from driver table based on driver ID
+app.get('/getTotalPoints', (req, res) => {
+    const { driverID } = req.query;
+
+    if (!driverID) {
+        return res.status(400).json({ error: 'Driver ID is required' });
+    }
+
+    db.query(
+        'SELECT TotalPoints FROM Driver WHERE DriverID = ?',
+        [driverID],
+        (err, results) => {
+            if (err) {
+                console.error('Database error:', err);
+                return res.status(500).json({ error: 'Database query error' });
+            }
+
+            if (results.length > 0) {
+                res.status(200).json({ totalPoints: results[0].TotalPoints });
+            } else {
+                res.status(404).json({ error: 'Driver not found' });
+            }
+        }
+    );
+});
+
+// change points by Driver ID 
+app.post('/updatePoints', (req, res) => {
+    const { userDriverID, Points_inc } = req.body; 
+
+    if (!userDriverID || !Points_inc) {
+        return res.status(400).json({ error: 'Both parameters (userDriverID and Points_inc) are required' });
+    }
+
+    db.query(
+        'CALL PointChange(?, ?)', // Call the stored procedure
+        [parseInt(userDriverID), parseInt(Points_inc)], // Convert to integers
+        (err, results) => {
+            if (err) {
+                console.error('Database error:', err);
+                return res.status(500).json({ error: 'Database query error' });
+            }
+
+            res.status(200).json({ message: 'Stored procedure executed successfully', results });
+        }
+    );
+});
+
+//update password by username
+
 
 // Start server
 app.listen(port, () => {
