@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { updatePoints } from '../../backend/api';
 import axios from 'axios';
 
-// Function to handle maximization / minimization.
-function MaximizeHandler() {
-    
+// The interface for the user object in the localstorage.
+interface UserData {
+    companyID: null | number;
+    id: number;
+    pass: string;
+    username: string;
+    usertype: string;
+}
+
+interface GeneralData {
+    user: UserData;
 }
 
 // All relevant data for the ViewUsers segment.
@@ -203,7 +212,7 @@ function ViewApplications() {
 }
 
 // View for creating / deleting accounts.
-function ManageAccounts() {
+function ManageAccounts({ user }: GeneralData) {
     const [message, setMessage] = useState('');
     const [mode, setMode] = useState('add');
     const [formData, setFormData] = useState({
@@ -248,7 +257,7 @@ function ManageAccounts() {
                 <h2>Manage Accounts</h2>
                 <button>⛶</button>
             </div>
-            <div className="view-options">
+            <div className="view-extras">
                 <select onChange={(e) => setMode(e.target.value)}>
                     <option value="add">Add User</option>
                     <option value="delete">Delete User</option>
@@ -264,6 +273,7 @@ function ManageAccounts() {
                         <select name="userType" onChange={handleChange}>
                             <option value="Driver">Driver</option>
                             <option value="Sponsor">Sponsor</option>
+                            {user.usertype === "Admin" && <option value="Admin">Admin</option>}
                         </select>
                         <label>Username:</label>
                         <input type="text" name="username" placeholder="Username" required onChange={handleChange} />
@@ -293,13 +303,62 @@ function ManageAccounts() {
     )
 }
 
-export function AdminView() {
+function DriverPointChange() {
+        const [userDriverID, setUserDriverID] = useState("");
+        const [Points_inc, setPointsInc] = useState("");
+    
+        const handleSubmit = async (e: React.FormEvent) => {
+            e.preventDefault();
+    
+            const success = await updatePoints(parseInt(userDriverID), parseInt(Points_inc));
+    
+            if (success) {
+                alert("Points updated successfully!");
+                setUserDriverID(""); // Reset form fields
+                setPointsInc("");
+            } else {
+                alert("Failed to update points.");
+            }
+        };
+
+        return (
+            <div className="view-container">
+                <div className="view-header">
+                    <h2>Points Management</h2>
+                    <button>⛶</button>
+                </div>
+                <div className="view-content">
+                    <form onSubmit={handleSubmit}>
+                        <label>Driver ID:</label>
+                        <input type="number" value={userDriverID} onChange={(e) => setUserDriverID(e.target.value)} required/>
+                        <label>Points:</label>
+                        <input type="number" value={Points_inc} onChange={(e) => setPointsInc(e.target.value)} required/>
+                        <button type="submit">Update Points</button>
+                    </form>
+                </div>
+            </div>
+        );
+}
+
+export function SponsorView({ user }: GeneralData) {
+    return (
+        <>
+            <div id="menuContent">
+                <ManageAccounts user={user}/>
+                <DriverPointChange />
+            </div>
+        </>
+    )
+}
+
+export function AdminView({ user }: GeneralData) {
     return (
         <>
             <div id="menuContent">
                 <ViewUsers />
                 <ViewApplications />
-                <ManageAccounts />
+                <ManageAccounts user={user}/>
+                <DriverPointChange />
             </div>
         </>
     )

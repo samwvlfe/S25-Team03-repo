@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toggleNav } from '../../script/toggle';
 import {DriverButtons, SponsorButtons, AdminButtons} from '../components/MenuButtons';
-import { AdminView } from '../components/MenuViews';
+import { AdminView, SponsorView } from '../components/MenuViews';
 import { fetchTotalPoints} from '../../backend/api';
 
 export default function Menu() {
@@ -24,7 +24,8 @@ export default function Menu() {
 
     return (
         <main className="menu-page">
-            {user.usertype === 'Admin' && <AdminView />}
+            {user.usertype === 'Admin' && <AdminView user={user}/>}
+            {user.usertype === 'SponsorUser' && <SponsorView user={user}/>}
 
             {/*
                 <div id="menuContent">

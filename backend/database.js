@@ -249,16 +249,10 @@ app.post('/api/login', async (req, res) => {
 
             const user = result.user;
             // Use bcrypt.compare to verify the plaintext password
-            bcrypt.compare(password, user.pass, (err, isMatch) => {
-                if (err) {
-                    return res.status(500).json({ error: 'Error comparing passwords' });
-                }
-
-                if (!isMatch) {
-                    return res.status(401).json({ error: 'Incorrect password' });
-                }
-            })
-
+            const isMatch = await bcrypt.compare(password, user.pass);
+            if (!isMatch) {
+                return res.status(401).json({ error: 'Incorrect password' });
+            }
             res.status(200).json(result);
         });
     } catch (error) {
