@@ -232,13 +232,12 @@ app.post('/api/submit-application', async (req, res) => {
 
 // log in
 app.post('/api/login', async (req, res) => {
-    const { username, password} = req.body;
+    const { username, password } = req.body;
 
     if (!username || !password) {
         return res.status(400).json({ error: 'Username and/or password not sent in request' });
     }
     try{
-
         verifyLogin(username, async (err, result) => {
             if (err) {
                 return res.status(500).json({ error: 'Database error', details: err.message });
@@ -250,16 +249,21 @@ app.post('/api/login', async (req, res) => {
 
             const user = result.user;
             // Use bcrypt.compare to verify the plaintext password
-            const isMatch = await bcrypt.compare(password, user.pass);
-            if (!isMatch) {
-                return res.status(401).json({ error: 'Incorrect password' });
-            }
+            bcrypt.compare(password, user.pass, (err, isMatch) => {
+                if (err) {
+                    return res.status(500).json({ error: 'Error comparing passwords' });
+                }
+
+                if (!isMatch) {
+                    return res.status(401).json({ error: 'Incorrect password' });
+                }
+            })
+
             res.status(200).json(result);
         });
     } catch (error) {
         res.status(500).json({ error: 'An error occurred', details: error.message });
     }
-
 });
 
 // Function to Call Stored Procedure and Verify Password
@@ -371,7 +375,7 @@ app.get('/api/fake-store', async (req, res) => {
     }
 });
 
-app.get('/api/create-product')
+app.get('/api/create-product');
 
 // get points from driver table based on driver ID
 app.get('/getTotalPoints', (req, res) => {
