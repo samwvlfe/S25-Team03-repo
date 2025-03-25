@@ -29,7 +29,7 @@ export function DriverButtons({ changeView }: ButtonProps) {
 export function SponsorButtons({ changeView }: ButtonProps) {
     return (
         <>
-            <li id="viewRoster">Roster Management</li>
+            <li id="viewRoster">View Roster</li>
             <li id="poinstMgmt">Points Management</li>
             <li id="catalogMgmt">Catalog Management</li>
             <li id="sponsorApps">Review Applications</li>
@@ -42,7 +42,11 @@ export function SponsorButtons({ changeView }: ButtonProps) {
 export function AdminButtons({ changeView }: ButtonProps) {
     return (
         <>
-            <li id="viewUsers">User Management</li>
+            <li id="viewUsers">
+                <Link to="/users">
+                    View Users
+                </Link>
+            </li>
             <li id="pointsMgmt">Points Management</li>
             <li id="adminApps">Review Applications</li>
             <li id="viewLogs">View Audit Logs</li>
