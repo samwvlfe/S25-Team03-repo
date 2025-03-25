@@ -19,7 +19,7 @@ export function DriverButtons({ changeView }: ButtonProps) {
             {/* <li id="viewSponsor">View Sponsor</li>
             <li id="viewGuidelines">View Sponsor Guidelines</li>
             <li id="partnerMgmt">Manage Partnership</li> */}
-            <li id="poinstMgmt">View Points</li>
+            <li><Link to="/point-transaction">Point History</Link></li>
             <li id="pointsShop" onClick={() => navigate("/fake-store")}>Redeem Points</li>
             <li><Link to="/password-change">Change Password</Link></li>
 
