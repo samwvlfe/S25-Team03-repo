@@ -75,9 +75,9 @@ function ViewUsers() {
                             <th>ID</th>
                             <th>Name</th>
                             <th>Username</th>
-                            {/*<th>Email</th>*/}
+                            <th>Email</th>
                             <th>Role</th>
-                            {/*<th>Company ID (if Sponsor)</th>*/}
+                            <th>Company ID (if Sponsor)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -87,9 +87,9 @@ function ViewUsers() {
                                     <td>{user.UserID}</td>
                                     <td>{user.Name}</td>
                                     <td>{user.Username}</td>
-                                    {/*<td>{user.Email}</td>*/}
+                                    <td>{user.Email}</td>
                                     <td>{user.UserType}</td>
-                                    {/*<td>{user.UserType === "SponsorUser" ? user.CompanyID || "N/A" : "—"}</td>*/}
+                                    <td>{user.UserType === "SponsorUser" ? user.CompanyID || "N/A" : "—"}</td>
                                 </tr>
                             ))
                         ) : (
@@ -136,31 +136,6 @@ function ViewApplications() {
             .catch(error => console.error('Error updating status:', error));
     };
 
-    // Creating minimized indicators for the application status.
-    const Approved = () => {
-        return (
-            <div className="status">
-                <div className="approved circle" />
-            </div>
-        )
-    }
-
-    const Pending = () => {
-        return (
-            <div className="status">
-                <div className="pending circle" />
-            </div>
-        )
-    }
-
-    const Rejected = () => {
-        return (
-            <div className="status">
-                <div className="rejected circle" />
-            </div>
-        )
-    }
-
     return (
         <div className="view-container">
             <div className="view-header">
@@ -171,11 +146,11 @@ function ViewApplications() {
                 <table border={1} className="applications">
                     <thead>
                         <tr>
-                            {/*<th>ID</th>*/}
+                            <th>ID</th>
                             <th>Name</th>
                             <th>Type</th>
                             <th>Username</th>
-                            {/*<th>Email</th>*/}
+                            <th>Email</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -183,17 +158,12 @@ function ViewApplications() {
                     <tbody>
                         {applications.map(app => (
                             <tr key={app.ApplicationID}>
-                                {/*<td>{app.ApplicationID}</td>*/}
+                                <td>{app.ApplicationID}</td>
                                 <td>{app.ApplicantName}</td>
                                 <td>{app.ApplicantType}</td>
                                 <td>{app.Username}</td>
-                                {/*<td>{app.Email}</td>*/}
-                                <td>
-                                    {app.ApplicationStatus === 'Pending' && <Pending />}
-                                    {app.ApplicationStatus === 'Approved' && <Approved />}
-                                    {app.ApplicationStatus === 'Rejected' && <Rejected />}
-                                    {/*app.ApplicationStatus*/}
-                                </td>
+                                <td>{app.Email}</td>
+                                <td>{app.ApplicationStatus}</td>
                                 <td>
                                     {app.ApplicationStatus === 'Pending' && (
                                         <div className="status">
