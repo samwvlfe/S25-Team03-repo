@@ -20,19 +20,8 @@ const PasswordChange: React.FC = () => {
         }
 
         // Retrieve user data from local storage
-        const userDataString = localStorage.getItem('user');
-        if (!userDataString) {
-            setMessage('User data not found.');
-            return;
-        }
+        const userData = JSON.parse(localStorage.getItem("user") || "{}");
 
-        let userData;
-        try {
-            userData = JSON.parse(userDataString);
-        } catch (error) {
-            setMessage('Failed to parse user data.');
-            return;
-        }
 
         // Validate stored hash format
         if (!userData.pass || userData.pass.length !== 60) {

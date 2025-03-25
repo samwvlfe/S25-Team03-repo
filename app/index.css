@@ -656,3 +656,9 @@ footer {
   .backButn link{
     color: #231F20;
   }
+
+.move-down{
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
