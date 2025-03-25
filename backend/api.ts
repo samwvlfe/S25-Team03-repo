@@ -37,3 +37,26 @@ export async function updatePoints(userDriverID: number, Points_inc: number, Spo
     }
 }
 
+// // // interface for transaction log
+// export type PointHistoryRow = {
+//     TransactionID: number;
+//     DriverID: number;
+//     PointChange: number;
+//     SponsorUserID: number;
+//     Timestamp: string;
+//     reason: string;
+//   };
+//   // fetch transaction data
+//   export async function getPointHistory(driverID: number): Promise<PointHistoryRow[] | null> {
+//       try {
+//           const response = await fetch(`http://localhost:2999/pointHistory/?driverID=${driverID}`);
+//           if (!response.ok) {
+//               throw new Error('Failed to fetch point history');
+//           }
+//           const data: PointHistoryRow[] = await response.json();
+//           return data;
+//       } catch (error) {
+//           console.log('Error fetching transaction log: ', error);
+//           return null;
+//       }
+//   }

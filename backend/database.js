@@ -461,6 +461,35 @@ app.post('/updatePoints', (req, res) => {
     );
 });
 
+// // show point log based on current DriverID
+// app.get('/pointHistory/', (req, res) => {
+
+//     const { driverID } = req.query;
+
+//     if (!driverID) {
+//         return res.status(400).json({ error: 'Cannot access Driver ID' });
+//     }
+
+//     // Query the table for all rows that match driverID
+//     db.query(
+//         'SELECT * FROM GoodDriverIncentiveT3.PointHistory WHERE DriverID = ?',
+//         [driverID],
+//         (err, results) => {
+//             if(err){
+//                 console.error('Database error:', err);
+//                 return res.status(500).json({ error: 'Database query error' });
+//             }
+//             if(results.length > 0){
+//                 // return data as JSON
+//                 res.status(200).json(results);
+//             } 
+//             else{
+//                 res.status(404).json({ error: 'Driver not found' });
+//             }            
+//         }
+//     );
+// });
+
 
 // Start server
 app.listen(port, () => {

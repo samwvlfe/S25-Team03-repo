@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-
 interface ViewUsersProps {
     adminID: string;
 }
@@ -40,7 +39,7 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
         : users.filter(user => user.UserType === roleFilter);
 
     return (
-        <div>
+        <div className="move-down">
             <h2>View Users</h2>
 
             {/* Role Filter Dropdown */}
