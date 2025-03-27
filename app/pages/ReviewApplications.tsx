@@ -74,7 +74,7 @@ export default function ReviewApplications() {
                 </table>
             </div>
             <div className="backButn">
-                <Link to="/menu">{"<-- Back"}</Link>
+                <Link to="/menu" className="black-link">{"<-- Back"}</Link>
             </div>
         </main>
     );

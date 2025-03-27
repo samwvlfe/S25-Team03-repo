@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 
 const FakeStore: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
-    const [userPoints, setUserPoints] = useState<number>(100);
 
     useEffect(() => {
         fetch("http://127.0.0.1:2999/api/fake-store")
@@ -14,32 +13,38 @@ const FakeStore: React.FC = () => {
             .catch(error => console.error("Error fetching products:", error));
     }, []);
 
-    const handleRedeem = (product: Product) => {
-        if (userPoints >= product.price) {
-            setUserPoints(userPoints - product.price);
-            alert(`You redeemed ${product.title} for ${product.price} points!`);
-        } else {
-            alert("Not enough points!");
-        }
+
+    // when redeem buttom is pressed, item is added to cart
+    const addToCart = (product: Product) => {
+        const cartJSON = localStorage.getItem('cart');
+        // empty array to add more products to 
+        let cart: Product[] = cartJSON ? JSON.parse(cartJSON) : [];
+        // add new product
+        cart.push(product);
+        //save whole cart
+        localStorage.setItem('cart', JSON.stringify(cart));
     };
 
     return (
         <div style={{ textAlign: "center", padding: "20px" }}>
+            <div className="shopping-cart">
+                <Link to="/cart" className="black-link" ><h1>View Cart</h1></Link>
+            </div>
             <h1>Redeem Your Points</h1>
-            <p>Available Points: <strong>{userPoints}</strong></p>
+            <p>Available Points: <strong>Loading...</strong></p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" }}>
                 {products.map(product => (
                     <div key={product.id} style={{ border: "1px solid #ccc", padding: "10px" }}>
                         <img src={product.image} alt={product.title} width="100" height="100" />
                         <h3>{product.title}</h3>
                         <p>Price: {product.price} points</p>
-                        <button onClick={() => handleRedeem(product)}>Redeem</button>
+                        <button onClick={() => addToCart(product)}>Add To Cart</button>
                     </div>
                 ))}
             </div>
             {/* back to menu button */}
             <div className="backButn">
-                <Link to="/menu">{"<-- Back"}</Link>
+                <Link to="/menu" className="black-link" >{"<-- Back"}</Link>
             </div>
         </div>
     );
