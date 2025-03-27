@@ -17,20 +17,37 @@ type GeneralProps = {
     user: User;
 };
 
+
 // Form component for updating driver points (used by sponsors and admins)
 function DriverPointChangeForm() {
+    // Retrieve user data from local storage
+    const userDataString = localStorage.getItem('user');
+    if (!userDataString) {
+        return;
+    }
+    let userData;
+    try {
+        userData = JSON.parse(userDataString);
+    } catch (error) {
+        return;
+    }
+
+    // initialize state to get driverID and points from sponsor
     const [userDriverID, setUserDriverID] = useState("");
     const [Points_inc, setPointsInc] = useState("");
+    const [reason, setReason] = useState("");
+    //const [Reason, setReason] = useState("");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        const success = await updatePoints(parseInt(userDriverID), parseInt(Points_inc));
+        console.log(parseInt(userData.id));
+        const success = await updatePoints(parseInt(userDriverID), parseInt(Points_inc), parseInt(userData.id), reason);
 
         if (success) {
             alert("Points updated successfully!");
             setUserDriverID(""); // Reset form fields
             setPointsInc("");
+            setReason("");
         } else {
             alert("Failed to update points.");
         }
@@ -60,6 +77,17 @@ function DriverPointChangeForm() {
                 />
             </label>
             <br />
+            <label>
+                Reason:
+                <br />
+                <input 
+                    type="Text" 
+                    value={reason} 
+                    onChange={(e) => setReason(e.target.value)} 
+                    required 
+                />
+            </label>
+            <br />
             <button type="submit">Update Points</button>
         </form>
     );
@@ -74,7 +102,6 @@ export function DriverContent({ totalPoints, user }: DriverProps) {
                 <p>Username: {user.username}</p>
                 <p>Points: {totalPoints !== null ? totalPoints : 'Loading...'}</p>
                 <p>SponsorID: {user.companyID}</p>
-                <p>Change Password Link Here</p>
             </div>
             <div className="widget">
                 <div className="widgetTitle">Catalog</div>
@@ -92,16 +119,16 @@ export function SponsorContent({ user }: GeneralProps) {
                 <div className="widgetTitle">Sponsor Dashboard</div>
                 <p>Username: {user.username}</p>
                 <p>User Type: {user.usertype}</p>
-                <p>Company ID/Name: {user.companyID}</p>
+                <p>Company ID: {user.companyID}</p>
             </div>
             <div className="widget">
                 <div className="widgetTitle">Points Management</div>
                 <DriverPointChangeForm />
             </div>
-            <div className="widget">
+            {/* <div className="widget">
                 <div className="widgetTitle">Catalog Management</div>
                 <p>** change catalog here **</p>
-            </div>
+            </div> */}
         </div>
     );
 }

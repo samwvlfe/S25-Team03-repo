@@ -15,6 +15,9 @@ import ReviewApplications from './pages/ReviewApplications';
 import ViewUsers from './pages/ViewUsers';
 import Menu from './pages/Menu';
 import FakeStore from "./pages/FakeStore";
+import PasswordChange from "./pages/PasswordChange";
+import PointTransaction from "./pages/PointTransaction";
+
 
 import {handleSignOut, toggleNav} from '../script/toggle'
 
@@ -78,6 +81,8 @@ export default function Navigation() {
                 <Route path="/menu" element={<Menu />} />
                 <Route path="/users" element={<ViewUsers adminID="admin123" />} />
                 <Route path="/fake-store" element={<FakeStore />} />
+                <Route path="/password-change" element={<PasswordChange />} />
+                <Route path="/point-transaction" element={<PointTransaction />} />
                 <Route path="/" element={<About/>} />
             </Routes>
         </Router>

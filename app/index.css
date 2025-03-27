@@ -477,6 +477,28 @@ header a {
   flex-direction: row;
 }
 
+.side-menu {
+  list-style-type: none;
+  
+  margin: 0;
+  padding: 0;
+
+  background-color: #e3e3e3;
+}
+
+.side-menu li {
+  padding: 15px;
+}
+
+.side-menu li:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+.side-menu a{
+  text-decoration: none;
+  color: #231F20;
+}
+
 #menuContent {
   display: flex;
   flex-direction: row;
@@ -693,21 +715,40 @@ footer {
     color: white;
   }
 
-.circle {
-  border-radius: 100px;
+.password-change-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+  .password-change-container button{
+    margin: 10px 0px 10px 60px;
+    height: 30px;
+    width: 10vw;
+    background-color: #007AFF;
+    border-radius: 10px;
+  }
 
-  aspect-ratio: 1/1;
-  height: 15px;
+.cp-input{
+  padding-top: 15px;
 }
 
-.pending {
-  background-color: #ffd000;
-}
+.backButn{
+  position: absolute;
+  display: flex;
+  top: 70px;
+  left: 0px;
+  height: 40px;
+  width: 70px;
+  place-content: center;
+  place-items: center;
+  text-decoration: underline;
+  }
+  .backButn link{
+    color: #231F20;
+  }
 
-.approved {
-  background-color: green;
-}
-
-.rejected {
-  background-color: red;
+.move-down{
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
 }

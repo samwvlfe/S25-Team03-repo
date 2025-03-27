@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 interface ViewUsersProps {
     adminID: string;
@@ -38,10 +39,8 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
         : users.filter(user => user.UserType === roleFilter);
 
     return (
-        <main>
-            <div className="table-container">
-                <h2>View Users</h2>
-
+        <div className="move-down">
+            <h2>View Users</h2>
                 {/* Role Filter Dropdown */}
                 <label>Filter by Role:</label>
                 <select onChange={(e) => setRoleFilter(e.target.value)}>
@@ -84,7 +83,9 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
                         )}
                     </tbody>
                 </table>
+                <div className="backButn">
+                    <Link to="/menu">{"<-- Back"}</Link>
+                </div>
             </div>
-        </main>
     );
 }
