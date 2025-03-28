@@ -503,86 +503,16 @@ header a {
   display: flex;
   flex-direction: row;
 
+  background-color: rgba(255, 255, 255, 0.75);
+  background-image: url('/media/logo.svg');
+  background-blend-mode: lighten;
+  background-size: 40%;
+  background-repeat: no-repeat;
+  background-position: center;
+
   flex: 1;
 
   gap: 20px;
-
-  justify-content: center;
-  align-items: center;
-}
-
-.view-container {
-  display: flex;
-  flex-direction: column;
-
-  background-color: white;
-
-  border-radius: 25px 25px 0 0;
-
-  height: 40%;
-  width: 40%;
-}
-
-.view-header {
-  display: flex;
-
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 5px 25px;
-}
-
-.view-header button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 16pt;
-
-  aspect-ratio: 1/1;
-
-  border: 0;
-  border-radius: 25px;
-
-  padding: 10px;
-}
-
-.view-header button:hover {
-  cursor: pointer;
-}
-
-.view-extras {
-  background-color: rgba(0, 0, 0, 0.05);
-  padding: 5px 10px;
-}
-
-.view-content {
-  flex: 1;
-
-  overflow: scroll;
-}
-
-.fixed-table {
-  table-layout: fixed;
-}
-
-.view-content table {
-  width: 100%;
-}
-
-.view-content td {
-  overflow: hidden;
-}
-
-.view-content table button {
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-}
-
-.status {
-  display: flex;
 
   justify-content: center;
   align-items: center;

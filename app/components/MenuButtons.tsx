@@ -2,12 +2,9 @@ import React, { ButtonHTMLAttributes } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
-type ButtonProps = {
-    changeView: Function
-}
 
 // Buttons for all driver actions.
-export function DriverButtons({ changeView }: ButtonProps) {
+export function DriverButtons() {
     const navigate = useNavigate();
     return (
         <>
@@ -19,16 +16,15 @@ export function DriverButtons({ changeView }: ButtonProps) {
             {/* <li id="viewSponsor">View Sponsor</li>
             <li id="viewGuidelines">View Sponsor Guidelines</li>
             <li id="partnerMgmt">Manage Partnership</li> */}
-            <li><Link to="/point-transaction">Point History</Link></li>
-            <li id="pointsShop" onClick={() => navigate("/fake-store")}>Redeem Points</li>
-            <li><Link to="/password-change">Change Password</Link></li>
-
+            <li onClick={() => navigate("/point-transaction")}>Point History</li>
+            <li onClick={() => navigate("/fake-store")}>Redeem Points</li>
+            <li onClick={() => navigate("/password-change")}>Change Password</li>
         </>
     )
 }
 
 // Buttons for all sponsor actions.
-export function SponsorButtons({ changeView }: ButtonProps) {
+export function SponsorButtons() {
     const navigate = useNavigate();
     return (
         <>
@@ -37,25 +33,21 @@ export function SponsorButtons({ changeView }: ButtonProps) {
             {/* <li id="catalogMgmt">Catalog Management</li> */}
             {/* <li id="sponsorApps">Review Applications</li> */}
             {/* <li id="switchView">Driver View</li> */}
-            <li><Link to="/password-change">Change Password</Link></li>
+            <li onClick={() => navigate("/password-change")}>Change Password</li>
         </>
     )
 }
 
 // Buttons for all admin actions.
-export function AdminButtons({ changeView }: ButtonProps) {
+export function AdminButtons() {
     const navigate = useNavigate();
     return (
         <>
-            <li id="viewUsers">
-                <Link to="/users">
-                    View Users
-                </Link>
-            </li>
-            <li id="pointsMgmt">Points Management</li>
-            <li id="adminApps">Review Applications</li>
-            <li id="viewLogs">View Audit Logs</li>
-            <li><Link to="/password-change">Change Password</Link></li>
+            <li onClick={() => navigate("/users")}>Manage Users</li>
+            <li>Points Management</li>
+            <li onClick={() => navigate("/review")}>Review Applications</li>
+            <li>View Audit Logs</li>
+            <li onClick={() => navigate("/password-change")}>Change Password</li>
         </>
     )
 }

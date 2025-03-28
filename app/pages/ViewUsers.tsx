@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { UserMgmt } from '../components/UserMgmt';
+import {fetchTotalPoints} from '../../backend/api';
 
 interface ViewUsersProps {
     adminID: string;
@@ -12,11 +14,12 @@ interface User {
     Username: string;
     Email: string;
     UserType: string;
-    CompanyID?: number | null; // Only for Sponsors
+    CompanyID?: number | null;
 }
 
 export default function ViewUsers({ adminID }: ViewUsersProps) {
     const [users, setUsers] = useState<User[]>([]);
+    const [curUser, setCurUser] = useState<User | null>(null);
     const [roleFilter, setRoleFilter] = useState("All");
     const [error, setError] = useState('');
 
@@ -24,8 +27,17 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
     useEffect(() => {
         axios.get('http://localhost:2999/api/get-users', { params: { adminID } })
             .then(response => {
-                console.log("Users received:", response.data); // Debug log
-                setUsers(response.data);
+                console.log("Users received:", response.data);
+
+                const normalizedUsers = response.data.map((user: any) => ({
+                    UserID: user.DriverID || user.AdminID || user.SponsorUserID,
+                    Name: user.Name,
+                    Username: user.Username,
+                    UserType: user.UserType,
+                    CompanyID: user.CompanyID ?? null
+                }));
+
+                setUsers(normalizedUsers);
             })
             .catch(err => {
                 console.error("API Error:", err);
@@ -39,53 +51,60 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
         : users.filter(user => user.UserType === roleFilter);
 
     return (
-        <div className="move-down">
-            <h2>View Users</h2>
-                {/* Role Filter Dropdown */}
-                <label>Filter by Role:</label>
-                <select onChange={(e) => setRoleFilter(e.target.value)}>
-                    <option value="All">All</option>
-                    <option value="Driver">Drivers</option>
-                    <option value="Sponsor">Sponsors</option>
-                </select>
+        <main>
+            <div className="move-down">
+                <h2>View Users</h2>
+                    {/* Role Filter Dropdown */}
+                    <label>Filter by Role:</label>
+                    <select onChange={(e) => setRoleFilter(e.target.value)}>
+                        <option value="All">All</option>
+                        <option value="Driver">Drivers</option>
+                        <option value="Sponsor">Sponsors</option>
+                    </select>
 
-                {/* Error Message */}
-                {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {/* Error Message */}
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
 
-                {/* Users List */}
-                <table border={1}>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Company ID (if Sponsor)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredUsers.length > 0 ? (
-                            filteredUsers.map(user => (
-                                <tr key={user.UserID}>
-                                    <td>{user.UserID}</td>
-                                    <td>{user.Name}</td>
-                                    <td>{user.Username}</td>
-                                    <td>{user.Email}</td>
-                                    <td>{user.UserType}</td>
-                                    <td>{user.UserType === "Sponsor" ? user.CompanyID || "N/A" : "—"}</td>
-                                </tr>
-                            ))
-                        ) : (
+                    {/* Users List */}
+                    <table border={1}>
+                        <thead>
                             <tr>
-                                <td colSpan={6} style={{ textAlign: "center" }}>No users found</td>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Username</th>
+                                <th>Role</th>
+                                <th>Company ID (if Sponsor)</th>
                             </tr>
-                        )}
-                    </tbody>
-                </table>
-                <div className="backButn">
-                    <Link to="/menu">{"<-- Back"}</Link>
+                        </thead>
+                        <tbody>
+                            {filteredUsers.length > 0 ? (
+                                filteredUsers.map(user => (
+                                    <tr key={user.UserID} onClick={() => {
+                                        if (curUser === null || curUser != user) {
+                                            setCurUser(user);
+                                        } else {
+                                            setCurUser(null);
+                                        }
+                                    }}>
+                                        <td>{user.UserID}</td>
+                                        <td>{user.Name}</td>
+                                        <td>{user.Username}</td>
+                                        <td>{user.UserType}</td>
+                                        <td>{user.UserType === "Sponsor" ? user.CompanyID || "N/A" : "—"}</td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan={6} style={{ textAlign: "center" }}>No users found</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                    {(curUser) && <UserMgmt user={curUser}/>}
+                    <div className="backButn">
+                        <Link to="/menu">{"<-- Back"}</Link>
+                    </div>
                 </div>
-            </div>
+            </main>
     );
 }

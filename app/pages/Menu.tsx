@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toggleNav } from '../../script/toggle';
 import {DriverButtons, SponsorButtons, AdminButtons} from '../components/MenuButtons';
-import { AdminView, SponsorView } from '../components/MenuViews';
+import {DriverContent, SponsorContent, AdminContent} from '../components/MenuContent'
 import { fetchTotalPoints} from '../../backend/api';
 
 export default function Menu() {
@@ -24,30 +24,30 @@ export default function Menu() {
 
     return (
         <main className="menu-page">
-            {user.usertype === 'Admin' && <AdminView user={user}/>}
-            {user.usertype === 'SponsorUser' && <SponsorView user={user}/>}
-
-            {/*
-                <div id="menuContent">
-                    <p>Menu</p>
-                    <p>Welcome, {user.username}</p>
-                    <p>User Type: {user.usertype}</p>
-                    <div className="userFuncContainer">
-                        <input type="text" placeholder="Enter # of points" />
-                        <button type="button">Submit</button>
-                    </div>
+            <ul className="side-menu">
+                {user.usertype == 'Driver' && <DriverButtons/>}
+                {user.usertype == 'SponsorUser' && <SponsorButtons/>}
+                {user.usertype == 'Admin' && <AdminButtons/>}
+            </ul>
+            <div id="menuContent">
+                <div className="menu-info">
+                    <h1>{user.usertype} Dashboard</h1>
+                    <h3>Welcome, {user.username}.</h3>
+                    <p>Use the sidebar to navigate your options.</p>
                 </div>
-                <ul className="side-menu">
-                    {user.usertype == 'Driver' && <DriverButtons changeView={setCurrentView}/>}
-                    {user.usertype == 'SponsorUser' && <SponsorButtons changeView={setCurrentView}/>}
-                    {user.usertype == 'Admin' && <AdminButtons changeView={setCurrentView}/>}
-                </ul>
+                {/* <p>Menu</p>
+                <p>Welcome, {user.username}</p>
+                <p>User Type: {user.usertype}</p>
                 <div className="userFuncContainer">
+                    <input type="text" placeholder="Enter # of points" />
+                    <button type="button">Submit</button>
+                </div> */}
+                {/* <div className="userFuncContainer">
                     {user.usertype === 'Driver' && <DriverContent totalPoints={totalPoints} user={user} />}
                     {user.usertype === 'SponsorUser' && <SponsorContent user={user} />}
                     {user.usertype === 'Admin' && <AdminContent user={user} />}
-                </div>
-            */}
+                </div> */}
+            </div>
         </main>
     );
 }

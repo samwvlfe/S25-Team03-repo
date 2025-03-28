@@ -329,13 +329,20 @@ app.post('/api/update-password', async (req, res) => {
 
 // get users
 app.get('/api/get-users', async (req, res) => {
-    const query = await db.execute('SELECT UserID, Name, Username, Email, UserType, CompanyID FROM AllUsers WHERE UserType IN ("Driver", "Sponsor")');
+    const dQuery = 'SELECT DriverID, Username, Name, CompanyID, UserType FROM Driver';
+    const sQuery = 'SELECT SponsorUserID, Username, CompanyID, UserType FROM SponsorUser';
+    const aQuery = 'SELECT AdminID, Username, UserType FROM Admin';
 
-    db.query(query, (err, results) => {
+    db.query(dQuery, (err, drivers) => {
         if (err) {
             res.status(500).json({ error: 'Database query failed', details: err });
         } else {
-            res.json(results);
+            db.query(sQuery, (err, sponsors) => {
+                db.query(aQuery, (err, admins) => {
+                    const mergedData = [...drivers, ...sponsors, ...admins];
+                    res.json(mergedData);
+                })
+            })
         }
     });
 });
