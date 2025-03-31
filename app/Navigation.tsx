@@ -17,7 +17,7 @@ import Menu from './pages/Menu';
 import FakeStore from "./pages/FakeStore";
 import PasswordChange from "./pages/PasswordChange";
 import PointTransaction from "./pages/PointTransaction";
-
+import CreateProduct from "./pages/CreateProduct";
 
 import {handleSignOut, toggleNav} from '../script/toggle'
 
@@ -101,6 +101,7 @@ export default function Navigation() {
                 <Route path="/fake-store" element={<FakeStore />} />
                 <Route path="/password-change" element={<PasswordChange />} />
                 <Route path="/point-transaction" element={<PointTransaction />} />
+                <Route path="/create-product" element={<CreateProduct />} />
                 <Route path="/" element={<About/>} />
             </Routes>
         </Router>

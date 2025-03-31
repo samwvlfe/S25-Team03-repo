@@ -428,7 +428,31 @@ app.get('/api/fake-store', async (req, res) => {
     }
 });
 
-app.get('/api/create-product');
+app.post('/api/create-product', async (req, res) => {
+    const { title, price, description, image, category } = req.body;
+
+    if (!title || !price || !description || !image || !category) {
+        return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    try {
+        const response = await axios.post('https://fakestoreapi.com/products', {
+            title,
+            price,
+            description,
+            image,
+            category
+        });
+
+        res.status(201).json({
+            message: "Product created successfully",
+            product: response.data
+        });
+    } catch (error) {
+        console.error('Error creating product:', error);
+        res.status(500).json({ error: 'Failed to create product', details: error.message });
+    }
+});
 
 // get points from driver table based on driver ID
 app.get('/getTotalPoints', (req, res) => {
