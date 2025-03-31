@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Product } from "../types/Product";
 import { Link } from 'react-router-dom';
+import { fetchTotalPoints } from "../../backend/api";
 
 
 const FakeStore: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
+    const [availablePoints, setAvailablePoints] = useState<number | null>(null);
 
     useEffect(() => {
         fetch("http://127.0.0.1:2999/api/fake-store")
@@ -13,15 +15,21 @@ const FakeStore: React.FC = () => {
             .catch(error => console.error("Error fetching products:", error));
     }, []);
 
+    // fetch points
+    useEffect(() => {
+        const userData = JSON.parse(localStorage.getItem("user") || "{}");
+        if (userData && userData.id) {
+            fetchTotalPoints(userData.id)
+                .then(points => setAvailablePoints(points))
+                .catch(error => console.error("Error fetching total points:", error));
+        }
+    }, []);
 
-    // when redeem buttom is pressed, item is added to cart
+    // redeem buttom is pressed, item is added to cart
     const addToCart = (product: Product) => {
         const cartJSON = localStorage.getItem('cart');
-        // empty array to add more products to 
         let cart: Product[] = cartJSON ? JSON.parse(cartJSON) : [];
-        // add new product
         cart.push(product);
-        //save whole cart
         localStorage.setItem('cart', JSON.stringify(cart));
     };
 
@@ -31,7 +39,8 @@ const FakeStore: React.FC = () => {
                 <Link to="/cart" className="black-link" ><h1>View Cart</h1></Link>
             </div>
             <h1>Redeem Your Points</h1>
-            <p>Available Points: <strong>Loading...</strong></p>
+            {/* // POINTS HERE */}
+            <p>Available Points: <strong>{availablePoints !== null ? availablePoints : "Loading..."}</strong></p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" }}>
                 {products.map(product => (
                     <div key={product.id} style={{ border: "1px solid #ccc", padding: "10px" }}>

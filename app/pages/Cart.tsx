@@ -47,7 +47,8 @@ const Cart: React.FC = () => {
     const updatedCart = [...aggregatedCart];
     if (updatedCart[index].quantity > 1) {
       updatedCart[index].quantity -= 1;
-    } else {
+    } 
+    else {
       updatedCart.splice(index, 1);
     }
     setAggregatedCart(updatedCart);
@@ -61,8 +62,50 @@ const Cart: React.FC = () => {
     updateCartStorage(updatedCart);
   };
 
+  const totalPrice = aggregatedCart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
+  // BE SURE TO ROUND THE PRICE UP OR DOWN TO WHOLE NUMBER
+  // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  const submitTotalPrice = async () => {
+    try {
+      const userData = JSON.parse(localStorage.getItem("user") || "{}");
+      const driverID = userData.id;
+      const priceRounded = Math.ceil(totalPrice);
+      const orderItems = aggregatedCart.map(item => item.title).join(', ');
+
+      // Replace with your actual API endpoint.
+      const response = await fetch("http://localhost:2999/api/purchase", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          u_DriverID: driverID,
+          u_CartPrice: priceRounded,
+          uOrder: orderItems
+         }),
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      console.log("Purchase submitted successfully:", data);
+      window.alert("Thank you for your purchase!");
+      // Empty the cart when purchase is successful.
+      setAggregatedCart([]);
+      localStorage.removeItem("cart");
+    } catch (error) {
+      console.error("Error submitting purchase:", error);
+    }
+  };
+
+
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: "40px" }}>
       <h1>Your Shopping Cart</h1>
       {aggregatedCart.length === 0 ? (
         <p>Your cart is empty.</p>
@@ -100,6 +143,13 @@ const Cart: React.FC = () => {
           </tbody>
         </table>
       )}
+
+      {/* Buy button */}
+      <div className="buy-BTN">
+        <button onClick={submitTotalPrice}>PURCHASE</button>
+      </div>
+      
+
       <div className="backButn">
         <Link to="/menu" className="black-link">Back to Menu</Link>
       </div>

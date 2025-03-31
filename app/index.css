@@ -671,6 +671,20 @@ footer {
   right: 71px;
   }
 
+.buy-BTN{
+  margin-left: auto;
+  position: absolute;
+  right: 8vw;
+  border-radius: 20px;;
+}
+.buy-BTN:hover{
+  box-shadow: 5px 5px 10px grey;
+}
+.buy-BTN button{
+  height: 30px;
+  border-radius: 20px;;
+}
+
 .black-link{
   color: #231F20;
   text-decoration: none;

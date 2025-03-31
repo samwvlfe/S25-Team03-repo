@@ -6,7 +6,7 @@ interface PointHistoryRow {
   TransactionID: number;
   DriverID: number;
   PointChange: number;
-  SponsorUserID: number;
+  EditorUserID: number;
   Timestamp: string;
   reason: string;
 }
@@ -48,7 +48,7 @@ export default function DriverPointHistory() {
             <th>TransactionID</th>
             <th>DriverID</th>
             <th>PointChange</th>
-            <th>Editor's SponsorID</th>
+            <th>Editor's ID</th>
             <th>Timestamp</th>
             <th>Reason</th>
           </tr>
@@ -60,7 +60,7 @@ export default function DriverPointHistory() {
                 <td>{row.TransactionID}</td>
                 <td>{row.DriverID}</td>
                 <td>{row.PointChange}</td>
-                <td>{row.SponsorUserID}</td>
+                <td>{row.EditorUserID}</td>
                 <td>{row.Timestamp}</td>
                 <td>{row.reason}</td>
               </tr>
