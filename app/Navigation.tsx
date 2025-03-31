@@ -39,7 +39,7 @@ export default function Navigation() {
     useEffect(() => {
         toggleNav(); // Run function after component mounts
 
-        const handleClickOutside = (event: React.MouseEvent) => {
+        const handleClickOutside = (event: MouseEvent) => {
             if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
                 setMenuState("none");
             }
