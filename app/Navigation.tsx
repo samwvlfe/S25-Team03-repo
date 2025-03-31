@@ -18,6 +18,7 @@ import FakeStore from "./pages/FakeStore";
 import PasswordChange from "./pages/PasswordChange";
 import PointTransaction from "./pages/PointTransaction";
 import CreateProduct from "./pages/CreateProduct";
+import AddCompany from "./pages/AddCompany";
 
 import {handleSignOut, toggleNav} from '../script/toggle'
 
@@ -43,7 +44,7 @@ export default function Navigation() {
             <header>
                 <Link to="/">
                     <div className="logo">
-                        <img src="/media/logo.svg" alt="Logo"/>
+                        <img src="/media/logo.svg" alt="Logo" />
                         <p><b>AlienBaba</b>.com</p>
                     </div>
                 </Link>
@@ -51,7 +52,7 @@ export default function Navigation() {
                     <ul>
                         <li id="signin" style={{ display: "block" }}>
                             <Link to="/signin">
-                                <img src="/media/signin.svg" alt="Sign In"/>
+                                <img src="/media/signin.svg" alt="Sign In" />
                                 Sign In
                             </Link>
                         </li>
@@ -62,7 +63,7 @@ export default function Navigation() {
                             <Link to="/review">Applications</Link>
                         </li>
                         <li id="signout">
-                            <img src="/media/default-alien.svg" onClick={ toggleMenu }/>
+                            <img src="/media/default-alien.svg" onClick={toggleMenu} />
                             <div id="signoutMenu" style={{ display: menuState }}>
                                 <button className="account-button" onClick={handleSignOut}>Sign Out</button>
                             </div>
@@ -84,8 +85,9 @@ export default function Navigation() {
                 <Route path="/password-change" element={<PasswordChange />} />
                 <Route path="/point-transaction" element={<PointTransaction />} />
                 <Route path="/create-product" element={<CreateProduct />} />
-                <Route path="/" element={<About/>} />
+                <Route path="/add-company" element={<AddCompany />} />
+                <Route path="/" element={<About />} />
             </Routes>
         </Router>
-    )
+    );
 }

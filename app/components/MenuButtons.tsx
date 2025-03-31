@@ -57,8 +57,13 @@ export function AdminButtons({ changeView }: ButtonProps) {
             <li onClick={() => navigate("/create-product")} style={{ cursor: "pointer", textDecoration: "underline" }}>
                 Add New Product
             </li>
+            <li onClick={() => navigate("/add-company")} style={{ cursor: "pointer", textDecoration: "underline" }}>
+                Add Company
+            </li>
             <li id="viewLogs">View Audit Logs</li>
-            <li><Link to="/password-change">Change Password</Link></li>
+            <li>
+                <Link to="/password-change">Change Password</Link>
+            </li>
         </>
     )
 }

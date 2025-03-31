@@ -514,6 +514,29 @@ app.get('/pointHistory/', (req, res) => {
     );
 });
 
+// Add new company (Sponsor)
+app.post('/api/add-company', (req, res) => {
+    const { companyName, pointsInfo } = req.body;
+
+    if (!companyName) {
+        return res.status(400).json({ error: 'Company name is required' });
+    }
+
+    const query = `
+        INSERT INTO Sponsor (CompanyName, PointsInfo)
+        VALUES (?, ?)
+    `;
+
+    db.query(query, [companyName, pointsInfo || null], (err, result) => {
+        if (err) {
+            console.error('Error inserting company:', err);
+            return res.status(500).json({ error: 'Failed to add company', details: err });
+        }
+
+        res.status(201).json({ message: 'Company added successfully', companyID: result.insertId });
+    });
+});
+
 
 // Start server
 app.listen(port, () => {
