@@ -53,8 +53,6 @@ table {
   background-color: white;
   text-align: center;
 
-  width: 70%;
-
   border: 0;
   border-collapse: collapse;
 }
@@ -523,7 +521,43 @@ header a {
   display: flex;
 
   justify-content: center;
+  align-items: stretch;
+
+  gap: 5%;
+}
+
+.user-management {
+  display: flex;
+  flex-direction: column;
+
   align-items: center;
+  justify-content: space-between;
+
+  padding: 20px;
+
+  width: 20%;
+
+  background-color: white;
+}
+
+.delete-button {
+  font-family: 'Reddit Sans';
+  font-size: 11pt;
+
+  width: 90%;
+  text-align: center;
+
+  border: 0;
+  border-radius: 25px;
+
+  background-color: #e34045;
+  color: white;
+
+  padding: 10px;
+}
+
+.delete-button:hover {
+  cursor: pointer;
 }
 
 /* Footer formatting. */
@@ -623,15 +657,22 @@ footer {
   flex-direction: column;
 
   align-items: center;
+  justify-content: center;
+
+  width: 50%;
+}
+
+.table-layout table {
+  width: 100%;
 }
 
 .filter {
   display: flex;
+  justify-content: space-between;
 
   width: 100%;
 
-  justify-content: start;
-  align-items: center;
+  padding: 10px;
 }
 
 #viewUsers {

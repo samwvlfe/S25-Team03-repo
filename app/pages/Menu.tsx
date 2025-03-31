@@ -16,6 +16,7 @@ export default function Menu() {
 
     useEffect(() => {
         toggleNav(); 
+        console.log(user);
         if (user.usertype === 'Driver' && user.id) {
             fetchTotalPoints(user.id).then(setTotalPoints);
         }

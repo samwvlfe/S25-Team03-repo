@@ -62,7 +62,7 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
                             <select onChange={(e) => setRoleFilter(e.target.value)}>
                                 <option value="All">All</option>
                                 <option value="Driver">Drivers</option>
-                                <option value="Sponsor">Sponsors</option>
+                                <option value="SponsorUser">Sponsors</option>
                             </select>
                         </div>
 
@@ -94,7 +94,7 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
                                             <td>{user.Name}</td>
                                             <td>{user.Username}</td>
                                             <td>{user.UserType}</td>
-                                            <td>{user.UserType === "Sponsor" ? user.CompanyID || "N/A" : "—"}</td>
+                                            <td>{user.UserType === "SponsorUser" ? user.CompanyID || "N/A" : "—"}</td>
                                         </tr>
                                     ))
                                 ) : (
