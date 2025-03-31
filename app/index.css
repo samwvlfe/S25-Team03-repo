@@ -455,7 +455,7 @@ header a {
   cursor: pointer;
 }
 
-.account-form p {
+#loginMsg {
   text-align: center;
   border-radius: 20px;
 
@@ -519,6 +519,7 @@ header a {
 /* View Users formatting. */
 .view-users {
   display: flex;
+  flex: 1;
 
   justify-content: center;
   align-items: stretch;
@@ -689,21 +690,8 @@ footer {
 }
 
 #applicationReview table {
-  width: 50%;
+  width: 70%;
 }
-
-.password-change-container{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-  .password-change-container button{
-    margin: 10px 0px 10px 60px;
-    height: 30px;
-    width: 10vw;
-    background-color: #007AFF;
-    border-radius: 10px;
-  }
 
 .cp-input{
   padding-top: 15px;

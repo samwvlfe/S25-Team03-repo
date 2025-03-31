@@ -62,11 +62,10 @@ const PasswordChange: React.FC = () => {
 
     return (
         <main>
-            <div className="password-change-container">
+            <div className="account-form">
                 <h1>Change Password</h1>
 
-                <form onSubmit={handleSubmit}>
-                    <div className="cp-input">
+                <form className="application-form" onSubmit={handleSubmit}>
                         <label htmlFor="username">Username: </label>
                         <input 
                             type="text" 
@@ -75,8 +74,6 @@ const PasswordChange: React.FC = () => {
                             onChange={(e) => setUsername(e.target.value)}
                             required 
                         />
-                    </div>
-                    <div className="cp-input">
                         <label htmlFor="u_table">User Type: </label>
                         <input 
                             type="text" 
@@ -85,9 +82,7 @@ const PasswordChange: React.FC = () => {
                             onChange={(e) => setUTable(e.target.value)} 
                             required 
                         />
-                        <p>{"(1 - Admin, 2 - SponsorUser, 3 - Driver)"}</p>
-                    </div>
-                    <div className="cp-input">
+                        <p className="user-types">{"(1 - Admin, 2 - SponsorUser, 3 - Driver)"}</p>
                         <label htmlFor="currentPassword">Current Password: </label>
                         <input 
                             type="password" 
@@ -96,8 +91,6 @@ const PasswordChange: React.FC = () => {
                             onChange={(e) => setCurrentPassword(e.target.value)} 
                             required 
                         />
-                    </div>
-                    <div className="cp-input">
                         <label htmlFor="newPassword">New Password: </label>
                         <input 
                             type="password" 
@@ -106,8 +99,7 @@ const PasswordChange: React.FC = () => {
                             onChange={(e) => setNewPassword(e.target.value)} 
                             required 
                         />
-                    </div>
-                    <button type="submit">Update Password</button>
+                        <input type="submit" value="Update Password"/>
                 </form>
 
                 {message && <p>{message}</p>}
