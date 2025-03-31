@@ -684,6 +684,14 @@ footer {
   cursor: pointer;
 }
 
+#applicationReview {
+  width: 100%;
+}
+
+#applicationReview table {
+  width: 50%;
+}
+
 .password-change-container{
   display: flex;
   flex-direction: column;
