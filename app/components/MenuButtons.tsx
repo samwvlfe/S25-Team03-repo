@@ -44,13 +44,11 @@ export function AdminButtons() {
     return (
         <>
             <li onClick={() => navigate("/users")}>Manage Users</li>
-            <li>Points Management</li>
+            <li>Add User</li>
             <li onClick={() => navigate("/review")}>Review Applications</li>
             <li>View Audit Logs</li>
             <li onClick={() => navigate("/password-change")}>Change Password</li>
-            <li onClick={() => navigate("/create-product")} style={{ cursor: "pointer", textDecoration: "underline" }}>
-                Add New Product
-            </li>
+            <li onClick={() => navigate("/create-product")}>Add New Product</li>
         </>
     )
 }
