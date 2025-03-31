@@ -53,54 +53,60 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
     return (
         <main>
             <div className="move-down">
-                <h2>View Users</h2>
-                {/* Role Filter Dropdown */}
-                <label>Filter by Role:</label>
-                <select onChange={(e) => setRoleFilter(e.target.value)}>
-                    <option value="All">All</option>
-                    <option value="Driver">Drivers</option>
-                    <option value="Sponsor">Sponsors</option>
-                </select>
+                <div className="view-users">
+                    <div className="table-layout">
+                        <h2>View Users</h2>
+                        {/* Role Filter Dropdown */}
+                        <div className="filter">
+                            <label>Filter by Role:</label>
+                            <select onChange={(e) => setRoleFilter(e.target.value)}>
+                                <option value="All">All</option>
+                                <option value="Driver">Drivers</option>
+                                <option value="Sponsor">Sponsors</option>
+                            </select>
+                        </div>
 
-                {/* Error Message */}
-                {error && <p style={{ color: 'red' }}>{error}</p>}
+                        {/* Error Message */}
+                        {error && <p style={{ color: 'red' }}>{error}</p>}
 
-                {/* Users List */}
-                <table border={1}>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Username</th>
-                            <th>Role</th>
-                            <th>Company ID (if Sponsor)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredUsers.length > 0 ? (
-                            filteredUsers.map(user => (
-                                <tr key={user.UserID} onClick={() => {
-                                    if (curUser === null || curUser != user) {
-                                        setCurUser(user);
-                                    } else {
-                                        setCurUser(null);
-                                    }
-                                }}>
-                                    <td>{user.UserID}</td>
-                                    <td>{user.Name}</td>
-                                    <td>{user.Username}</td>
-                                    <td>{user.UserType}</td>
-                                    <td>{user.UserType === "Sponsor" ? user.CompanyID || "N/A" : "—"}</td>
+                        {/* Users List */}
+                        <table border={1} id="viewUsers">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Role</th>
+                                    <th>Company ID (if Sponsor)</th>
                                 </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan={6} style={{ textAlign: "center" }}>No users found</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-                {(curUser) && <UserMgmt user={curUser}/>}
+                            </thead>
+                            <tbody>
+                                {filteredUsers.length > 0 ? (
+                                    filteredUsers.map(user => (
+                                        <tr key={user.UserID} onClick={() => {
+                                            if (curUser === null || curUser != user) {
+                                                setCurUser(user);
+                                            } else {
+                                                setCurUser(null);
+                                            }
+                                        }}>
+                                            <td>{user.UserID}</td>
+                                            <td>{user.Name}</td>
+                                            <td>{user.Username}</td>
+                                            <td>{user.UserType}</td>
+                                            <td>{user.UserType === "Sponsor" ? user.CompanyID || "N/A" : "—"}</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={6} style={{ textAlign: "center" }}>No users found</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                    {(curUser) && <UserMgmt user={curUser}/>}
+                </div>
                 <div className="backButn">
                     <Link to="/menu">{"<-- Back"}</Link>
                 </div>

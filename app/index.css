@@ -518,6 +518,14 @@ header a {
   align-items: center;
 }
 
+/* View Users formatting. */
+.view-users {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
 /* Footer formatting. */
 footer {
   display: flex;
@@ -610,40 +618,30 @@ footer {
   background-color: white;
 }
 
-.userFuncContainer{
+.table-layout {
   display: flex;
-  padding: 20px;
+  flex-direction: column;
+
   align-items: center;
-  gap: 10px;
-  }
-  .widget{
-    width: 300px;
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 2px solid #e9e9e9;
-    padding-top: 20px;
-  }
-  .widgetTitle{
-    font-weight: bold;
-    font-size: 15px;;
-  }
-  .widget input{
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  .widget button{
-    cursor: pointer;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: black;
-    color: white;
-  }
-  .widget button:hover{
-    background-color: #e9e9e9;
-    color: white;
-  }
+}
+
+.filter {
+  display: flex;
+
+  width: 100%;
+
+  justify-content: start;
+  align-items: center;
+}
+
+#viewUsers {
+  table-layout: fixed;
+}
+
+#viewUsers tr:hover {
+  background-color: rgba(0,0,0,0.3);
+  cursor: pointer;
+}
 
 .password-change-container{
   display: flex;
