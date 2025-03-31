@@ -411,31 +411,40 @@ app.get('/api/fake-store', async (req, res) => {
     }
 });
 
-app.post('/api/create-product', async (req, res) => {
-    const { title, price, description, image, category } = req.body;
-
-    if (!title || !price || !description || !image || !category) {
-        return res.status(400).json({ error: 'All fields are required' });
+app.post('/api/create-product', (req, res) => {
+    const { productName, priceInPoints, description, imageURL, companyID } = req.body;
+  
+    if (!productName || !priceInPoints || !companyID) {
+      return res.status(400).json({ error: 'Missing required fields' });
     }
+  
+    const query = `
+      INSERT INTO ProductCatalog (ProductName, PriceInPoints, Description, ImageURL, CompanyID)
+      VALUES (?, ?, ?, ?, ?)
+    `;
+  
+    db.query(query, [productName, priceInPoints, description || null, imageURL || null, companyID], (err, result) => {
+      if (err) {
+        console.error("Failed to insert product:", err);
+        return res.status(500).json({ error: 'Database insert failed', details: err.message });
+      }
+      res.status(201).json({ message: 'Product created successfully', productID: result.insertId });
+    });
+  });
 
-    try {
-        const response = await axios.post('https://fakestoreapi.com/products', {
-            title,
-            price,
-            description,
-            image,
-            category
-        });
-
-        res.status(201).json({
-            message: "Product created successfully",
-            product: response.data
-        });
-    } catch (error) {
-        console.error('Error creating product:', error);
-        res.status(500).json({ error: 'Failed to create product', details: error.message });
-    }
-});
+app.get('/api/products', (req, res) => {
+    const { companyID } = req.query;
+    const query = companyID
+      ? `SELECT * FROM ProductCatalog WHERE CompanyID = ?`
+      : `SELECT * FROM ProductCatalog`;
+  
+    db.query(query, companyID ? [companyID] : [], (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: 'Failed to fetch products', details: err.message });
+      }
+      res.json(results);
+    });
+});  
 
 // get points from driver table based on driver ID
 app.get('/getTotalPoints', (req, res) => {

@@ -11,27 +11,23 @@ const CreateProduct: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     try {
       const res = await axios.post("http://127.0.0.1:2999/api/create-product", {
-        title,
-        price: parseFloat(price),
+        productName: title,
+        priceInPoints: parseInt(price),
         description,
-        image,
-        category,
+        imageURL: image,
+        companyID: 1 // or get it from logged-in admin's sponsor info
       });
-
-      setMessage("✅ Product created successfully!");
-      setTitle("");
-      setPrice("");
-      setDescription("");
-      setImage("");
-      setCategory("");
+  
+      setMessage("✅ Product created!");
     } catch (error) {
-      console.error("Product creation failed:", error);
-      setMessage("❌ Failed to create product.");
+      console.error("Error:", error);
+      setMessage("❌ Error creating product.");
     }
   };
+  
 
   return (
     <div style={{ maxWidth: 500, margin: "0 auto", padding: "1rem" }}>
