@@ -39,42 +39,46 @@ export default function DriverPointHistory() {
   }, []);
 
   return (
-    <div className="move-down">
-      <h2>Point History</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <table border={1}>
-        <thead>
-          <tr>
-            <th>TransactionID</th>
-            <th>DriverID</th>
-            <th>PointChange</th>
-            <th>Editor's SponsorID</th>
-            <th>Timestamp</th>
-            <th>Reason</th>
-          </tr>
-        </thead>
-        <tbody>
-          {history.length > 0 ? (
-            history.map(row => (
-              <tr key={row.TransactionID}>
-                <td>{row.TransactionID}</td>
-                <td>{row.DriverID}</td>
-                <td>{row.PointChange}</td>
-                <td>{row.SponsorUserID}</td>
-                <td>{row.Timestamp}</td>
-                <td>{row.reason}</td>
+    <main>
+      <div className="move-down">
+        <div className="table-layout" id="applicationReview">
+        <h2>Point History</h2>
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+          <table border={1}>
+            <thead>
+              <tr>
+                <th>TransactionID</th>
+                <th>DriverID</th>
+                <th>PointChange</th>
+                <th>Editor's SponsorID</th>
+                <th>Timestamp</th>
+                <th>Reason</th>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={6} style={{ textAlign: "center" }}>No point history found</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+              {history.length > 0 ? (
+                history.map(row => (
+                  <tr key={row.TransactionID}>
+                    <td>{row.TransactionID}</td>
+                    <td>{row.DriverID}</td>
+                    <td>{row.PointChange}</td>
+                    <td>{row.SponsorUserID}</td>
+                    <td>{row.Timestamp}</td>
+                    <td>{row.reason}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} style={{ textAlign: "center" }}>No point history found</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
       <div className="backButn">
         <Link to="/menu">{"<-- Back"}</Link>
       </div>
-    </div>
+    </main>
   );
 }
