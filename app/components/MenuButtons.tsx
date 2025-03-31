@@ -28,7 +28,7 @@ export function SponsorButtons() {
     const navigate = useNavigate();
     return (
         <>
-            {/* <li id="viewRoster">View Roster</li> */}
+            <li onClick={() => navigate("/users")} id="viewRoster">View Roster</li>
             {/* <li id="poinstMgmt">Points Management</li> */}
             {/* <li id="catalogMgmt">Catalog Management</li> */}
             {/* <li id="sponsorApps">Review Applications</li> */}

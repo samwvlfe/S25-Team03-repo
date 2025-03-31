@@ -10,7 +10,6 @@ export default function Menu() {
 
     // Retrieve user info from localStorage
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-    console.log(user);
 
     // get points and companyID only if user is driver
     const [totalPoints, setTotalPoints] = useState<number | null>(null);

@@ -360,11 +360,11 @@ app.post('/api/admin/create-user', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const query = `
-            INSERT INTO AllUsers (Name, Username, Email, PasswordHash, UserType, CompanyID, CreatedAt)
+            INSERT INTO ?? (Name, Username, Email, PasswordHash, UserType, CompanyID, CreatedAt)
             VALUES (?, ?, ?, ?, ?, ?, NOW())
         `;
 
-        db.query(query, [name, username, email, hashedPassword, userType, companyID || null], (err, result) => {
+        db.query(query, [userType, name, username, email, hashedPassword, userType, companyID || null], (err, result) => {
             if (err) {
                 console.error('User creation failed:', err);
                 return res.status(500).json({ error: 'User creation failed', details: err.message });
@@ -378,16 +378,28 @@ app.post('/api/admin/create-user', async (req, res) => {
 });
 
 // admin delete user
-app.delete('/api/admin/delete-user/:id', (req, res) => {
-    const userId = req.params.id;
+app.delete('/api/admin/delete-user/:userType/:id', (req, res) => {
+    const { userType, id: userId } = req.params;
 
     if (!userId) {
         return res.status(400).json({ error: 'User ID is required' });
     }
 
-    const query = `DELETE FROM AllUsers WHERE UserID = ?`;
+    const allowedTables = {
+        Driver: 'DriverID',
+        SponsorUser: 'SponsorUserID',
+        Admin: 'AdminID'
+    };
 
-    db.query(query, [userId], (err, result) => {
+    const idColumn = allowedTables[userType];
+
+    if (!idColumn) {
+        return res.status(400).json({ error: 'Invalid table' });
+    }
+
+    const query = `DELETE FROM ?? WHERE ?? = ?`;
+
+    db.query(query, [userType, idColumn, userId], (err, result) => {
         if (err) {
             console.error('User deletion failed:', err);
             return res.status(500).json({ error: 'User deletion failed', details: err.message });
