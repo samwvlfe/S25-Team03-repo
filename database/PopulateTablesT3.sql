@@ -54,13 +54,13 @@ CREATE TABLE IF NOT EXISTS AllUsers (
 -- Product Catalog
 CREATE TABLE IF NOT EXISTS ProductCatalog (
     ProductID INT AUTO_INCREMENT PRIMARY KEY,
-    CompanyID INT,
+    -- CompanyID INT,
     ProductName VARCHAR(255) NOT NULL,
     PriceInPoints INT NOT NULL,
     Availability BOOLEAN DEFAULT TRUE,
     Description TEXT NULL,
     ImageURL VARCHAR(512) NULL,
-    FOREIGN KEY (CompanyID) REFERENCES Sponsor(CompanyID) ON DELETE CASCADE
+    -- FOREIGN KEY (CompanyID) REFERENCES Sponsor(CompanyID) ON DELETE CASCADE
 );
 
 -- Purchases
