@@ -37,6 +37,7 @@ export function SponsorButtons({ changeView }: ButtonProps) {
             {/* <li id="catalogMgmt">Catalog Management</li> */}
             {/* <li id="sponsorApps">Review Applications</li> */}
             {/* <li id="switchView">Driver View</li> */}
+            <li><Link to="/sponsor-catalog">Manage Product Catalog</Link></li>
             <li><Link to="/password-change">Change Password</Link></li>
         </>
     )
