@@ -4,6 +4,6 @@ export interface Product {
   ProductName: string;
   PriceInPoints: number;
   Availability: boolean;
-  Description?: string;
-  ImageURL?: string;
+  Description: string;
+  ImageURL: string;
 }
