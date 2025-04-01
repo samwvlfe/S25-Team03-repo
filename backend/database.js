@@ -429,18 +429,18 @@ app.get('/api/fake-store', async (req, res) => {
 });
 
 app.post('/api/create-product', (req, res) => {
-    const { productName, priceInPoints, description, imageURL, companyID } = req.body;
+    const { productName, priceInPoints, description, imageURL } = req.body;
   
-    if (!productName || !priceInPoints || !companyID) {
+    if (!productName || !priceInPoints) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
   
     const query = `
-      INSERT INTO ProductCatalog (ProductName, PriceInPoints, Description, ImageURL, CompanyID)
+      INSERT INTO ProductCatalog (ProductName, PriceInPoints, Description, ImageURL)
       VALUES (?, ?, ?, ?, ?)
     `;
   
-    db.query(query, [productName, priceInPoints, description || null, imageURL || null, companyID], (err, result) => {
+    db.query(query, [productName, priceInPoints, description || null, imageURL || null], (err, result) => {
       if (err) {
         console.error("Failed to insert product:", err);
         return res.status(500).json({ error: 'Database insert failed', details: err.message });
@@ -449,7 +449,7 @@ app.post('/api/create-product', (req, res) => {
     });
   });
 
-  app.get('/api/products', (req, res) => {
+  /*app.get('/api/products', (req, res) => {
     const { companyID } = req.query;
   
     if (!companyID) {
@@ -464,7 +464,7 @@ app.post('/api/create-product', (req, res) => {
       }
       res.status(200).json(results);
     });
-  });  
+  });*/  
 
 // get points from driver table based on driver ID
 app.get('/getTotalPoints', (req, res) => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Product } from "../types/Product";
 import { Link } from 'react-router-dom';
+import axios from "axios";
 
 const FakeStore: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -10,11 +11,10 @@ const FakeStore: React.FC = () => {
     const [affordableOnly, setAffordableOnly] = useState<boolean>(false);
 
     useEffect(() => {
-        fetch("http://127.0.0.1:2999/api/fake-store")
-            .then(response => response.json())
-            .then(data => setProducts(data))
-            .catch(error => console.error("Error fetching products:", error));
-    }, []);
+        axios.get("http://127.0.0.1:2999/api/products")
+          .then(res => setProducts(res.data))
+          .catch(err => console.error("Error loading products", err));
+      }, []);
 
     const handleRedeem = (product: Product) => {
         if (userPoints >= product.PriceInPoints) {
