@@ -417,10 +417,10 @@ app.get('/api/fake-store', async (req, res) => {
     try {
         const response = await axios.get('https://fakestoreapi.com/products');
         const products = response.data.map(product => ({
-            id: product.id,
-            title: product.title,
-            price: product.price,
-            image: product.image
+            id: product.ProductID,
+            title: product.ProductName,
+            price: product.PriceInPoints,
+            image: product.ImageURL
         }));
         res.json(products);
     } catch (error) {
