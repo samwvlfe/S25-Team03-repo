@@ -78,7 +78,7 @@ export default function Login() {
                     />
                     <input type="submit" value="Log in"/>
                 </form>
-                {message != '' && <p>{message}</p>}
+                {message != '' && <p id="loginMsg">{message}</p>}
             </div>
         </main>
     );

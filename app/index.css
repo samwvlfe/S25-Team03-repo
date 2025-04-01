@@ -53,8 +53,6 @@ table {
   background-color: white;
   text-align: center;
 
-  width: 70%;
-
   border: 0;
   border-collapse: collapse;
 }
@@ -239,6 +237,24 @@ header a {
 
   background-color: white;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.15);
+}
+
+#signout div::before {
+  content: '';
+
+  position: absolute;
+  top: -8px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  height: 0;
+  width: 0;
+
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+
+  border-bottom: 8px solid white;
 }
 
 #signout .account-button {
@@ -439,7 +455,7 @@ header a {
   cursor: pointer;
 }
 
-.account-form p {
+#loginMsg {
   text-align: center;
   border-radius: 20px;
 
@@ -452,6 +468,46 @@ header a {
 
   background-color: white;
   box-shadow: 0 5px 5px lightgrey;
+}
+
+/* Formatting for the catalog page. */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 20px;
+}
+
+.product-grid div {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: white;
+  border-radius: 20px;
+
+  padding: 20px;
+
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.15);
+}
+
+.product-grid div button {
+  font-size: 12pt;
+  font-family: "Reddit Sans";
+
+  border-radius: 20px;
+  border: 0;
+
+  margin-top: 20px;
+  padding: 8px;
+
+  width: 100%;
+}
+
+.product-grid div button:hover {
+  cursor: pointer;
 }
 
 /* Formatting for the menu page. */
@@ -481,9 +537,68 @@ header a {
   color: #231F20;
 }
 
-
 #menuContent {
+  display: flex;
+  flex-direction: row;
+
+  background-color: rgba(255, 255, 255, 0.75);
+  background-image: url('/media/logo.svg');
+  background-blend-mode: lighten;
+  background-size: 40%;
+  background-repeat: no-repeat;
+  background-position: center;
+
   flex: 1;
+
+  gap: 20px;
+
+  justify-content: center;
+  align-items: center;
+}
+
+/* View Users formatting. */
+.view-users {
+  display: flex;
+  flex: 1;
+
+  justify-content: center;
+  align-items: stretch;
+
+  gap: 5%;
+}
+
+.user-management {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 20px;
+
+  width: 20%;
+
+  background-color: white;
+}
+
+.delete-button {
+  font-family: 'Reddit Sans';
+  font-size: 11pt;
+
+  width: 90%;
+  text-align: center;
+
+  border: 0;
+  border-radius: 25px;
+
+  background-color: #e34045;
+  color: white;
+
+  padding: 10px;
+}
+
+.delete-button:hover {
+  cursor: pointer;
 }
 
 /* Footer formatting. */
@@ -578,68 +693,44 @@ footer {
   background-color: white;
 }
 
-.table-container {
+.table-layout {
   display: flex;
-
   flex-direction: column;
 
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
+  width: 50%;
+}
+
+.table-layout table {
   width: 100%;
 }
 
-
-.userFuncContainer{
+.filter {
   display: flex;
-  padding: 20px;
-  align-items: center;
-  gap: 10px;
-  }
-  .widget{
-    width: 300px;
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 2px solid #e9e9e9;
-    padding-top: 20px;
-  }
-  .widgetTitle{
-    font-weight: bold;
-    font-size: 15px;;
-  }
-  .widget input{
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  .widget button{
-    cursor: pointer;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: black;
-    color: white;
-  }
-  .widget button:hover{
-    background-color: #e9e9e9;
-    color: white;
-  }
+  justify-content: space-between;
 
-.password-change-container{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100%;
+
+  padding: 10px;
 }
-  .password-change-container button{
-    margin: 10px 0px 10px 60px;
-    height: 30px;
-    width: 10vw;
-    background-color: #007AFF;
-    border-radius: 10px;
-  }
 
-.cp-input{
-  padding-top: 15px;
+#viewUsers {
+  table-layout: fixed;
+}
+
+#viewUsers tr:hover {
+  background-color: rgba(0,0,0,0.3);
+  cursor: pointer;
+}
+
+#applicationReview {
+  width: 100%;
+}
+
+#applicationReview table {
+  width: 70%;
 }
 
 .backButn{
