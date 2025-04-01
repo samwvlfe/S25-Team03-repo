@@ -18,7 +18,7 @@ import FakeStore from "./pages/FakeStore";
 import PasswordChange from "./pages/PasswordChange";
 import PointTransaction from "./pages/PointTransaction";
 import CreateProduct from "./pages/CreateProduct";
-import SponsorCatalog from "./pages/SponsorCatalog";
+//import SponsorCatalog from "./pages/SponsorCatalog";
 import AddCompany from "./pages/AddCompany";
 import SponsorRequestForm from './pages/SponsorRequestForm';
 import ReviewDriverRequests from './pages/ReviewDriverRequests';
@@ -106,7 +106,6 @@ export default function Navigation() {
                 <Route path="/password-change" element={<PasswordChange />} />
                 <Route path="/point-transaction" element={<PointTransaction />} />
                 <Route path="/create-product" element={<CreateProduct />} />
-                <Route path="/sponsor-catalog" element={<SponsorCatalog />} />
                 <Route path="/add-company" element={<AddCompany />} />
                 <Route path="/request-sponsor" element={<SponsorRequestForm />} />
                 <Route path="/review-sponsor-requests" element={<ReviewDriverRequests />} />
