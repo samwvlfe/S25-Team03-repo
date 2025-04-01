@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from 'react-router-dom';
+
 
 const CreateProduct: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -41,6 +43,10 @@ const CreateProduct: React.FC = () => {
         <button type="submit">Create Product</button>
       </form>
       <p>{message}</p>
+          {/* Back button */}
+      <div className="backButn" style={{ marginTop: "20px" }}>
+        <Link to="/menu">{"<-- Back"}</Link>
+      </div>
     </div>
   );
 };

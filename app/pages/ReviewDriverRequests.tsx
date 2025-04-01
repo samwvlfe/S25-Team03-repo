@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from 'react-router-dom';
+
 
 interface Request {
   RequestID: number;
@@ -60,6 +62,10 @@ const ReviewDriverRequests = () => {
           ))}
         </tbody>
       </table>
+            {/* Back button */}
+      <div className="backButn" style={{ marginTop: "20px" }}>
+        <Link to="/menu">{"<-- Back"}</Link>
+      </div>
     </div>
   );
 };

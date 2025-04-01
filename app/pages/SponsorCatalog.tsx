@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Product } from "../types/Product";
+import { Link } from 'react-router-dom';
+
 
 const SponsorCatalog = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -48,6 +50,10 @@ const SponsorCatalog = () => {
           <button onClick={() => handleDelete(product.ProductID)}>Delete</button>
         </div>
       ))}
+      {/* Back button */}
+      <div className="backButn" style={{ marginTop: "20px" }}>
+          <Link to="/menu">{"<-- Back"}</Link>
+      </div>
     </div>
   );
 };
