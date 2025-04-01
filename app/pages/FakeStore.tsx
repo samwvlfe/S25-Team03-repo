@@ -3,7 +3,6 @@ import { Product } from "../types/Product";
 import { Link } from 'react-router-dom';
 import { fetchTotalPoints } from "../../backend/api";
 
-
 const FakeStore: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [availablePoints, setAvailablePoints] = useState<number | null>(null);
@@ -25,16 +24,44 @@ const FakeStore: React.FC = () => {
         }
     }, []);
 
+    // update cart count 
+    useEffect(() => {
+        const updateCartCount = () => {
+            let total = 0;
+            const cartJSON = localStorage.getItem("cart");
+            const cartInfo = cartJSON ? JSON.parse(cartJSON) : [];
+            if (Array.isArray(cartInfo)) {
+                total = cartInfo.reduce((sum: number, item: any) => sum + (item.quantity || 1), 0);
+            }
+            const cartCountDiv = document.getElementById("insertCartNum");
+            if (cartCountDiv) {
+                cartCountDiv.innerHTML = total.toString();
+            }
+        };
+
+        updateCartCount();
+    }, []);
+
     // redeem buttom is pressed, item is added to cart
     const addToCart = (product: Product) => {
         const cartJSON = localStorage.getItem('cart');
         let cart: Product[] = cartJSON ? JSON.parse(cartJSON) : [];
         cart.push(product);
         localStorage.setItem('cart', JSON.stringify(cart));
+        // update the cart count after adding item
+        let total = 0;
+        if (cart) {
+            total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        }
+        const cartCountDiv = document.getElementById("insertCartNum");
+        if (cartCountDiv) {
+            cartCountDiv.innerHTML = total.toString();
+        }
     };
 
     return (
         <div style={{ textAlign: "center", padding: "20px" }}>
+            <div id ="insertCartNum"></div>
             <div className="shopping-cart">
                 <Link to="/cart" className="black-link" ><h1>View Cart</h1></Link>
             </div>

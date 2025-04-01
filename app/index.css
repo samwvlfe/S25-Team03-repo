@@ -693,3 +693,22 @@ footer {
     color: red;
     text-decoration: underline;
   }
+
+.overflow-table{
+  height: 77vh;
+  overflow-x: auto;
+}
+
+#insertCartNum{
+  position: absolute;
+  right: 228px;
+  top: 115px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50px;
+  background-color: black;
+  color: white;
+  text-align: center;
+  align-content: center;
+  font-size: 30px;
+}

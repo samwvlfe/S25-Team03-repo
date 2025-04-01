@@ -472,7 +472,7 @@ app.get('/pointHistory/', (req, res) => {
 
     // Query the table for all rows that match driverID
     db.query(
-        'SELECT * FROM GoodDriverIncentiveT3.PointHistory WHERE DriverID = ?',
+        'SELECT * FROM GoodDriverIncentiveT3.PointHistory WHERE DriverID = ? ORDER BY TransactionID DESC',
         [driverID],
         (err, results) => {
             if(err){

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Product } from "../types/Product";
+import { fetchTotalPoints } from "../../backend/api";
+import { Message } from "@aws-amplify/ui-react";
 
 
 // Extend the Product type to include quantity.
@@ -10,6 +12,7 @@ interface AggregatedCartItem extends Product {
 
 const Cart: React.FC = () => {
   const [aggregatedCart, setAggregatedCart] = useState<AggregatedCartItem[]>([]);
+  const [availablePoints, setAvailablePoints] = useState<number | null>(null);
 
   useEffect(() => {
     // Get the cart items from local storage.
@@ -28,6 +31,16 @@ const Cart: React.FC = () => {
 
         // Convert the aggregated object into an array.
         setAggregatedCart(Object.values(aggregated));
+    }
+  }, []);
+
+  // fetch points
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user") || "{}");
+    if (userData && userData.id) {
+      fetchTotalPoints(userData.id)
+        .then(points => setAvailablePoints(points))
+        .catch(error => console.error("Error fetching total points:", error));
     }
   }, []);
 
@@ -76,6 +89,11 @@ const Cart: React.FC = () => {
       const priceRounded = Math.ceil(totalPrice);
       const orderItems = aggregatedCart.map(item => item.title).join(', ');
 
+      //make sure user has enough points
+      if(((availablePoints !== null ? availablePoints : 0) - priceRounded) < 0){
+        window.alert("Not Enough Points!");
+        return -1;
+      }
       // Replace with your actual API endpoint.
       const response = await fetch("http://localhost:2999/api/purchase", {
         method: "POST",

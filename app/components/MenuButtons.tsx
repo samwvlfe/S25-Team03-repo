@@ -52,9 +52,9 @@ export function AdminButtons({ changeView }: ButtonProps) {
                     View Users
                 </Link>
             </li>
-            <li id="pointsMgmt">Points Management</li>
+            {/* <li id="pointsMgmt">Points Management</li>
             <li id="adminApps">Review Applications</li>
-            <li id="viewLogs">View Audit Logs</li>
+            <li id="viewLogs">View Audit Logs</li> */}
             <li><Link to="/password-change">Change Password</Link></li>
         </>
     )

@@ -31,3 +31,18 @@ async function bcryptCompare(plainPassword, hashedPassword) {
 //   const isMatch = await bcryptCompare(plainPassword, hashedPassword);
 //   console.log("Passwords match:", isMatch);
 // })();
+
+
+export function addCartNum(){
+  let total = 0;
+  const cartInfo = JSON.parse(localStorage.getItem("cart") || "{}");
+
+  if(cartInfo){
+    total = cartInfo.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  }
+
+  const cartCountDiv = document.getElementById('insertCartNum');
+  if(cartCountDiv){
+    cartCountDiv.innerHTML = total.toString();
+  }
+}
