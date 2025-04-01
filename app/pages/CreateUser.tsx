@@ -31,6 +31,7 @@ export default function CreateUser() {
     return (
         <main>
             <div className="account-form">
+                <h2>Add a New User</h2>
                 <form className="application-form" onSubmit={handleCreate}>
                     <label>Full Name:</label>
                     <input type="text" name="name" placeholder="Name" onChange={handleChange} />
