@@ -21,6 +21,7 @@ export function DriverButtons({ changeView }: ButtonProps) {
             <li id="partnerMgmt">Manage Partnership</li> */}
             <li><Link to="/point-transaction">Point History</Link></li>
             <li id="pointsShop" onClick={() => navigate("/fake-store")}>Redeem Points</li>
+            <li><Link to="/request-sponsor">Request Sponsor</Link></li>
             <li><Link to="/password-change">Change Password</Link></li>
 
         </>
@@ -39,6 +40,9 @@ export function SponsorButtons({ changeView }: ButtonProps) {
             {/* <li id="switchView">Driver View</li> */}
             <li><Link to="/sponsor-catalog">Manage Product Catalog</Link></li>
             <li><Link to="/password-change">Change Password</Link></li>
+            <li onClick={() => navigate("/review-sponsor-requests")} style={{ cursor: "pointer", textDecoration: "underline" }}> 
+                Review Driver Requests </li>
+
         </>
     )
 }

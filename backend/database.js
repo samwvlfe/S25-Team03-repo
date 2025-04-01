@@ -549,6 +549,84 @@ app.post('/api/add-company', (req, res) => {
     });
 });
 
+//Gets sponsor companies
+app.get('/api/get-sponsors', (req, res) => {
+    db.query('SELECT CompanyID, CompanyName FROM Sponsor', (err, results) => {
+        if (err) {
+            console.error('Failed to fetch sponsors:', err);
+            return res.status(500).json({ error: 'Failed to retrieve sponsors' });
+        }
+        res.status(200).json(results);
+    });
+});
+
+//Submits sponsor request
+app.post('/api/request-sponsor', (req, res) => {
+    const { driverID, sponsorCompanyID } = req.body;
+
+    if (!driverID || !sponsorCompanyID) {
+        return res.status(400).json({ error: 'Missing driver ID or sponsor company ID' });
+    }
+
+    const query = `
+        INSERT INTO DriverSponsorRequests (DriverID, SponsorCompanyID, RequestDate, Status)
+        VALUES (?, ?, NOW(), 'Pending')
+    `;
+
+    db.query(query, [driverID, sponsorCompanyID], (err, result) => {
+        if (err) {
+            console.error('Sponsor request failed:', err);
+            return res.status(500).json({ error: 'Failed to submit sponsor request' });
+        }
+        res.status(201).json({ message: 'Sponsor request submitted successfully' });
+    });
+});
+
+// Get pending requests for sponsor company
+app.get("/api/sponsor/driver-requests/:companyID", (req, res) => {
+    const { companyID } = req.params;
+  
+    const query = `
+      SELECT r.RequestID, r.DriverID, r.SponsorCompanyID, r.RequestDate, r.Status, d.Username
+      FROM DriverSponsorRequests r
+      JOIN Driver d ON r.DriverID = d.DriverID
+      WHERE r.SponsorCompanyID = ? AND r.Status = 'Pending'
+    `;
+  
+    db.query(query, [companyID], (err, results) => {
+      if (err) return res.status(500).json({ error: "Query failed", details: err });
+      res.json(results);
+    });
+  });
+  
+  // Approve or reject request
+  app.post("/api/sponsor/handle-request", (req, res) => {
+    const { requestID, driverID, decision } = req.body;
+  
+    const updateRequestQuery = `
+      UPDATE DriverSponsorRequests SET Status = ? WHERE RequestID = ?
+    `;
+  
+    const updateDriverQuery = `
+      UPDATE Driver SET CompanyID = (
+        SELECT SponsorCompanyID FROM DriverSponsorRequests WHERE RequestID = ?
+      ) WHERE DriverID = ?
+    `;
+  
+    db.query(updateRequestQuery, [decision, requestID], (err) => {
+      if (err) return res.status(500).json({ error: "Failed to update request", details: err });
+  
+      if (decision === "Approved") {
+        db.query(updateDriverQuery, [requestID, driverID], (err2) => {
+          if (err2) return res.status(500).json({ error: "Failed to update driver", details: err2 });
+          res.json({ message: "Driver approved and updated" });
+        });
+      } else {
+        res.json({ message: "Request rejected" });
+      }
+    });
+  });
+  
 
 // Start server
 app.listen(port, () => {
