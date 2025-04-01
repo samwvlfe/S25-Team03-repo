@@ -18,6 +18,10 @@ import FakeStore from "./pages/FakeStore";
 import PasswordChange from "./pages/PasswordChange";
 import PointTransaction from "./pages/PointTransaction";
 import CreateProduct from "./pages/CreateProduct";
+import SponsorCatalog from "./pages/SponsorCatalog";
+import AddCompany from "./pages/AddCompany";
+import SponsorRequestForm from './pages/SponsorRequestForm';
+import ReviewDriverRequests from './pages/ReviewDriverRequests';
 
 import {handleSignOut, toggleNav} from '../script/toggle'
 
@@ -61,7 +65,7 @@ export default function Navigation() {
             <header>
                 <Link to="/">
                     <div className="logo">
-                        <img src="/media/logo.svg" alt="Logo"/>
+                        <img src="/media/logo.svg" alt="Logo" />
                         <p><b>AlienBaba</b>.com</p>
                     </div>
                 </Link>
@@ -69,7 +73,7 @@ export default function Navigation() {
                     <ul>
                         <li id="signin" style={{ display: "block" }}>
                             <Link to="/signin">
-                                <img src="/media/signin.svg" alt="Sign In"/>
+                                <img src="/media/signin.svg" alt="Sign In" />
                                 Sign In
                             </Link>
                         </li>
@@ -102,8 +106,12 @@ export default function Navigation() {
                 <Route path="/password-change" element={<PasswordChange />} />
                 <Route path="/point-transaction" element={<PointTransaction />} />
                 <Route path="/create-product" element={<CreateProduct />} />
-                <Route path="/" element={<About/>} />
+                <Route path="/sponsor-catalog" element={<SponsorCatalog />} />
+                <Route path="/add-company" element={<AddCompany />} />
+                <Route path="/request-sponsor" element={<SponsorRequestForm />} />
+                <Route path="/review-sponsor-requests" element={<ReviewDriverRequests />} />
+                <Route path="/" element={<About />} />
             </Routes>
         </Router>
-    )
+    );
 }

@@ -17,9 +17,9 @@ const FakeStore: React.FC = () => {
     }, []);
 
     const handleRedeem = (product: Product) => {
-        if (userPoints >= product.price) {
-            setUserPoints(userPoints - product.price);
-            alert(`You redeemed ${product.title} for ${product.price} points!`);
+        if (userPoints >= product.PriceInPoints) {
+            setUserPoints(userPoints - product.PriceInPoints);
+            alert(`You redeemed ${product.ProductName} for ${product.PriceInPoints} points!`);
         } else {
             alert("Not enough points!");
         }
@@ -32,14 +32,14 @@ const FakeStore: React.FC = () => {
 
     const filteredProducts = products
         .filter(product =>
-            product.title.toLowerCase().includes(searchTerm.toLowerCase())
+            product.ProductName.toLowerCase().includes(searchTerm.toLowerCase())
         )
         .filter(product =>
-            !affordableOnly || product.price <= userPoints
+            !affordableOnly || product.PriceInPoints <= userPoints
         )
         .sort((a, b) => {
-            if (sortOrder === "lowToHigh") return a.price - b.price;
-            if (sortOrder === "highToLow") return b.price - a.price;
+            if (sortOrder === "lowToHigh") return a.PriceInPoints - b.PriceInPoints;
+            if (sortOrder === "highToLow") return b.PriceInPoints - a.PriceInPoints;
             return 0;
         });
 
@@ -75,18 +75,18 @@ const FakeStore: React.FC = () => {
                         />
                         Show affordable only
                     </label>
-                </div>
 
-                {/* Product Grid */}
-                <div className="product-grid">
-                    {filteredProducts.map(product => (
-                        <div key={product.id}>
-                            <img src={product.image} alt={product.title} width="100" height="100" />
-                            <h3>{product.title}</h3>
-                            <p>Price: {product.price} points</p>
-                            <button onClick={() => handleRedeem(product)}>Redeem</button>
-                        </div>
-                    ))}
+                    {/* Product Grid */}
+                    <div className="product-grid">
+                        {filteredProducts.map(product => (
+                            <div key={product.ProductID}>
+                                <img src={product.ImageURL} alt={product.ProductName} width="100" height="100" />
+                                <h3>{product.ProductName}</h3>
+                                <p>Price: {product.PriceInPoints} points</p>
+                                <button onClick={() => handleRedeem(product)}>Redeem</button>
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Back button */}

@@ -131,3 +131,14 @@ CREATE TABLE IF NOT EXISTS Orders (
     FOREIGN KEY (DriverID) REFERENCES Driver(DriverID) ON DELETE CASCADE,
     FOREIGN KEY (SponsorID) REFERENCES Sponsor(CompanyID) ON DELETE CASCADE
 );
+
+-- DriverSponsorRequests table
+CREATE TABLE IF NOT EXISTS DriverSponsorRequests (
+    RequestID INT AUTO_INCREMENT PRIMARY KEY,
+    DriverID INT NOT NULL,
+    SponsorCompanyID INT NOT NULL,
+    Status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
+    RequestDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (DriverID) REFERENCES Driver(DriverID) ON DELETE CASCADE,
+    FOREIGN KEY (SponsorCompanyID) REFERENCES Sponsor(CompanyID) ON DELETE CASCADE
+);
