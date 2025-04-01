@@ -18,7 +18,7 @@ const CreateProduct: React.FC = () => {
         priceInPoints: parseInt(price),
         description,
         imageURL: image,
-        companyID: 1 // or get it from logged-in admin's sponsor info
+        companyID: 3 // or get it from logged-in admin's sponsor info
       });
   
       setMessage("✅ Product created!");
