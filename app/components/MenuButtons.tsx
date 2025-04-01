@@ -18,6 +18,7 @@ export function DriverButtons() {
             <li id="partnerMgmt">Manage Partnership</li> */}
             <li onClick={() => navigate("/point-transaction")}>Point History</li>
             <li onClick={() => navigate("/fake-store")}>Redeem Points</li>
+            <li><Link to="/request-sponsor">Request Sponsor</Link></li>
             <li onClick={() => navigate("/password-change")}>Change Password</li>
         </>
     )
