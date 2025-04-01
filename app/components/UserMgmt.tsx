@@ -98,7 +98,7 @@ export function UserMgmt({ user }:UserMgmtProps) {
             </div>
             {user.UserType === "Driver" && <PointsMgmt user={user} localUser={localUser}/>}
             {(localUser.usertype === "SponsorUser" && (user.UserType === "Driver" || user.UserType === "SponsorUser")) && <DeleteButton user={user}/>}
-            {localUser.usertype === "Admin" && <DeleteButton user={user}/>}
+            {(localUser.usertype === "Admin" && user.UserType != "Admin") && <DeleteButton user={user}/>}
         </div>
     )
 }
