@@ -581,11 +581,16 @@ header a {
   background-color: white;
 }
 
+.user-info {
+  text-align: center;
+}
+
 .delete-button {
   font-family: 'Reddit Sans';
-  font-size: 11pt;
+  font-size: 12pt;
 
-  width: 90%;
+  width: 80%;
+
   text-align: center;
 
   border: 0;
@@ -731,6 +736,37 @@ footer {
 
 #applicationReview table {
   width: 70%;
+}
+
+.inline-form {
+  display: flex;
+
+  flex-direction: column;
+}
+
+.inline-form label:nth-of-type(1) {
+  margin-top: 0;
+}
+
+.inline-form label {
+  margin-top: 15px;
+}
+
+.inline-form input[type="submit"] {
+  font-size: 12pt;
+  font-family: "Reddit Sans";
+
+  border-radius: 20px;
+  border: 0;
+
+  margin-top: 20px;
+  padding: 8px;
+
+  width: 100%;
+}
+
+.inline-form input[type="submit"]:hover {
+  cursor: pointer;
 }
 
 .backButn{

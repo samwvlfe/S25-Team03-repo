@@ -47,7 +47,7 @@ export function AdminButtons() {
     return (
         <>
             <li onClick={() => navigate("/users")}>Manage Users</li>
-            <li>Add User</li>
+            <li onClick={() => navigate("/create-user")}>Add User</li>
             <li onClick={() => navigate("/review")}>Review Applications</li>
             <li>View Audit Logs</li>
             <li onClick={() => navigate("/password-change")}>Change Password</li>

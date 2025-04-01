@@ -36,6 +36,7 @@ export default function ProfileManagement({ adminID }: ProfileManagementProps) {
             <select name="role" onChange={handleChange}>
                 <option value="Driver">Driver</option>
                 <option value="Sponsor">Sponsor</option>
+                <option value="Admin">Admin</option>
             </select>
             {formData.role === 'Sponsor' && (
                 <input type="text" name="companyID" placeholder="Company ID" onChange={handleChange} />

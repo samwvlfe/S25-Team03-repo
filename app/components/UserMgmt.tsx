@@ -68,7 +68,7 @@ function PointsMgmt({ user, localUser }:PointsMgmtProps) {
     return (
         <div className="points-management">
             <h2>Points Management</h2>
-            <form onSubmit={handleSubmit}>
+            <form className="inline-form" onSubmit={handleSubmit}>
                 <label>Points:</label>
                 <input type="number" value={pointsInc} onChange={(event) => {setPointsInc(event.target.value)}} required/>
                 <label>Reason:</label>
@@ -91,10 +91,10 @@ export function UserMgmt({ user }:UserMgmtProps) {
 
     return (
         <div className="user-management">
-            <h2>User Options</h2>
-            <p>Selected user: { user?.Name }</p>
             <div className="user-info">
-                {user.UserType === "Driver" && <p>Points: {points !== null ? points : "Loading..."}</p>}
+                <h2>User Information</h2>
+                <p><b>Selected user:</b> { user?.Name }</p>
+                {user.UserType === "Driver" && <p><b>Points:</b> {points !== null ? points : "Loading..."}</p>}
             </div>
             {user.UserType === "Driver" && <PointsMgmt user={user} localUser={localUser}/>}
             {(localUser.usertype === "SponsorUser" && (user.UserType === "Driver" || user.UserType === "SponsorUser")) && <DeleteButton user={user}/>}
