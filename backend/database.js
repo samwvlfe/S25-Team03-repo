@@ -432,19 +432,22 @@ app.post('/api/create-product', (req, res) => {
     });
   });
 
-app.get('/api/products', (req, res) => {
+  app.get('/api/products', (req, res) => {
     const { companyID } = req.query;
-    const query = companyID
-      ? `SELECT * FROM ProductCatalog WHERE CompanyID = ?`
-      : `SELECT * FROM ProductCatalog`;
   
-    db.query(query, companyID ? [companyID] : [], (err, results) => {
+    if (!companyID) {
+      return res.status(400).json({ error: "Missing companyID" });
+    }
+  
+    const query = `SELECT * FROM ProductCatalog WHERE CompanyID = ?`;
+  
+    db.query(query, [companyID], (err, results) => {
       if (err) {
-        return res.status(500).json({ error: 'Failed to fetch products', details: err.message });
+        return res.status(500).json({ error: "Database query failed", details: err.message });
       }
-      res.json(results);
+      res.status(200).json(results);
     });
-});  
+  });  
 
 // get points from driver table based on driver ID
 app.get('/getTotalPoints', (req, res) => {
