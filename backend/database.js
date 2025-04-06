@@ -494,15 +494,15 @@ app.get('/getTotalPoints', (req, res) => {
 
 // change points by Driver ID 
 app.post('/updatePoints', (req, res) => {
-    const { userDriverID, Points_inc, SponsorUserID, reason } = req.body; 
+    const { userDriverID, Points_inc, EditorUserID, reason } = req.body; 
 
-    if (!userDriverID || !Points_inc || !SponsorUserID || !reason) {
+    if (!userDriverID || !Points_inc || !EditorUserID || !reason) {
         return res.status(400).json({ error: 'All parameters are required' });
     }
 
     db.query(
         'CALL PointChange(?, ?, ?, ?)', // Call the stored procedure
-        [parseInt(userDriverID), parseInt(Points_inc), parseInt(SponsorUserID), reason], // Convert to integers
+        [parseInt(userDriverID), parseInt(Points_inc), parseInt(EditorUserID), reason], // Convert to integers
         (err, results) => {
             if (err) {
                 console.error('Database error:', err);
@@ -525,7 +525,7 @@ app.get('/pointHistory/', (req, res) => {
 
     // Query the table for all rows that match driverID
     db.query(
-        'SELECT * FROM GoodDriverIncentiveT3.PointHistory WHERE DriverID = ?',
+        'SELECT * FROM GoodDriverIncentiveT3.PointHistory WHERE DriverID = ? ORDER BY TransactionID DESC',
         [driverID],
         (err, results) => {
             if(err){
@@ -541,6 +541,23 @@ app.get('/pointHistory/', (req, res) => {
             }            
         }
     );
+});
+
+// process purchase
+app.post('/api/purchase', (req, res) => {
+    const { u_DriverID, u_CartPrice, uOrder } = req.body;
+    // make sure parameters are there
+    if (u_DriverID == null || u_CartPrice == null || !uOrder) {
+        return res.status(400).json({ error: 'Missing required parameters.' });
+    }
+    // execute the stored procedure 
+    db.query('CALL Buy_Sum(?, ?, ?)', [u_DriverID, u_CartPrice, uOrder], (error, results) => {
+        if (error) {
+            console.error('Error executing stored procedure:', error);
+            return res.status(500).json({ error: 'Database error occurred.' });
+        }
+        res.json({ message: 'Purchase processed successfully.', results });
+    });
 });
 
 // Add new company (Sponsor)

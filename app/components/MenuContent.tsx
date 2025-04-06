@@ -143,14 +143,6 @@ export function AdminContent({ user }: GeneralProps) {
                 <p>User Type: {user.usertype}</p>
             </div>
             <div className="widget">
-                <div className="widgetTitle">User Management</div>
-                <p>** Manage user accounts and permissions **</p>
-            </div>
-            <div className="widget">
-                <div className="widgetTitle">Review Applications</div>
-                <p>** put link here **</p>
-            </div>
-            <div className="widget">
                 <div className="widgetTitle">Points Management</div>
                 <DriverPointChangeForm />
             </div>

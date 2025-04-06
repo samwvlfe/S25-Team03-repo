@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Product } from "../types/Product";
 import { Link } from 'react-router-dom';
+import { fetchTotalPoints } from "../../backend/api";
 import axios from "axios";
 
 const FakeStore: React.FC = () => {
@@ -9,6 +10,7 @@ const FakeStore: React.FC = () => {
     const [sortOrder, setSortOrder] = useState<string>("none");
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [affordableOnly, setAffordableOnly] = useState<boolean>(false);
+    const [availablePoints, setAvailablePoints] = useState<number | null>(null);
 
     useEffect(() => {
         axios.get("http://127.0.0.1:2999/api/fake-store")
@@ -16,12 +18,49 @@ const FakeStore: React.FC = () => {
           .catch(err => console.error("Error loading products", err));
       }, []);
 
-    const handleRedeem = (product: Product) => {
-        if (userPoints >= product.PriceInPoints) {
-            setUserPoints(userPoints - product.PriceInPoints);
-            alert(`You redeemed ${product.ProductName} for ${product.PriceInPoints} points!`);
-        } else {
-            alert("Not enough points!");
+
+    // fetch points
+    useEffect(() => {
+        const userData = JSON.parse(localStorage.getItem("user") || "{}");
+        if (userData && userData.id) {
+            fetchTotalPoints(userData.id)
+                .then(points => setAvailablePoints(points))
+                .catch(error => console.error("Error fetching total points:", error));
+        }
+    }, []);
+
+    // update cart count 
+    useEffect(() => {
+        const updateCartCount = () => {
+            let total = 0;
+            const cartJSON = localStorage.getItem("cart");
+            const cartInfo = cartJSON ? JSON.parse(cartJSON) : [];
+            if (Array.isArray(cartInfo)) {
+                total = cartInfo.reduce((sum: number, item: any) => sum + (item.quantity || 1), 0);
+            }
+            const cartCountDiv = document.getElementById("insertCartNum");
+            if (cartCountDiv) {
+                cartCountDiv.innerHTML = total.toString();
+            }
+        };
+
+        updateCartCount();
+    }, []);
+
+    // redeem buttom is pressed, item is added to cart
+    const addToCart = (product: Product) => {
+        const cartJSON = localStorage.getItem('cart');
+        let cart: Product[] = cartJSON ? JSON.parse(cartJSON) : [];
+        cart.push(product);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        // update the cart count after adding item
+        let total = 0;
+        if (cart) {
+            total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        }
+        const cartCountDiv = document.getElementById("insertCartNum");
+        if (cartCountDiv) {
+            cartCountDiv.innerHTML = total.toString();
         }
     };
 
@@ -46,8 +85,12 @@ const FakeStore: React.FC = () => {
     return (
         <main>
             <div style={{ textAlign: "center", padding: "20px" }}>
+                <div id ="insertCartNum"></div>
+                <div className="shopping-cart">
+                    <Link to="/cart" className="black-link" ><h1>View Cart</h1></Link>
+                </div>
                 <h1>Redeem Your Points</h1>
-                <p>Available Points: <strong>{userPoints}</strong></p>
+                <p>Available Points: <strong>{availablePoints !== null ? availablePoints : "Loading..."}</strong></p>
 
                 {/* Filters */}
                 <div style={{ marginBottom: "20px" }}>
@@ -83,15 +126,15 @@ const FakeStore: React.FC = () => {
                                 <img src={product.ImageURL} alt={product.ProductName} width="100" height="100" />
                                 <h3>{product.ProductName}</h3>
                                 <p>Price: {product.PriceInPoints} points</p>
-                                <button onClick={() => handleRedeem(product)}>Redeem</button>
+                                <button onClick={() => addToCart(product)}>Add To Cart</button>
                             </div>
                         ))}
                     </div>
                 </div>
 
                 {/* Back button */}
-                <div className="backButn" style={{ marginTop: "20px" }}>
-                    <Link to="/menu">{"<-- Back"}</Link>
+                <div className="backButn">
+                    <Link to="/menu" className="black-link" >{"<-- Back"}</Link>
                 </div>
             </div>
         </main>
