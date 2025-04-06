@@ -44,8 +44,8 @@ const CreateProduct: React.FC = () => {
       </form>
       <p>{message}</p>
           {/* Back button */}
-      <div className="backButn" style={{ marginTop: "20px" }}>
-        <Link to="/menu">{"<-- Back"}</Link>
+      <div className="backButn">
+        <Link to="/menu" className="black-link">{"<-- Back"}</Link>
       </div>
     </div>
   );

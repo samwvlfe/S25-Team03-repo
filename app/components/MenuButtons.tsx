@@ -35,7 +35,7 @@ export function SponsorButtons() {
             {/* <li id="sponsorApps">Review Applications</li> */}
             {/* <li id="switchView">Driver View</li> */}
             <li onClick={() => navigate("/password-change")}>Change Password</li>
-            <li onClick={() => navigate("/sponsor-catalog")}>Manage Product Catalog</li>
+            {/* <li onClick={() => navigate("/sponsor-catalog")}>Manage Product Catalog</li> */}
             <li onClick={() => navigate("/password-change")}>Change Password</li>
             <li onClick={() => navigate("/review-sponsor-requests")}>Review Driver Requests </li>
         </>

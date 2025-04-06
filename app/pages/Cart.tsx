@@ -20,11 +20,11 @@ const Cart: React.FC = () => {
     if (cartJSON) {
         const cart: Product[] = JSON.parse(cartJSON);
         const aggregated = cart.reduce((acc: { [key: number]: AggregatedCartItem }, item) => {
-            if (acc[item.id]) {
-                acc[item.id].quantity += 1;
+            if (acc[item.ProductID]) {
+                acc[item.ProductID].quantity += 1;
             }
             else {
-                acc[item.id] = { ...item, quantity: 1 };
+                acc[item.ProductID] = { ...item, quantity: 1 };
             }
             return acc;
         }, {});
@@ -76,7 +76,7 @@ const Cart: React.FC = () => {
   };
 
   const totalPrice = aggregatedCart.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) => sum + item.PriceInPoints * item.quantity,
     0
   );
 
@@ -87,7 +87,7 @@ const Cart: React.FC = () => {
       const userData = JSON.parse(localStorage.getItem("user") || "{}");
       const driverID = userData.id;
       const priceRounded = Math.ceil(totalPrice);
-      const orderItems = aggregatedCart.map(item => item.title).join(', ');
+      const orderItems = aggregatedCart.map(item => item.ProductName).join(', ');
 
       //make sure user has enough points
       if(((availablePoints !== null ? availablePoints : 0) - priceRounded) < 0){
@@ -140,16 +140,16 @@ const Cart: React.FC = () => {
           </thead>
           <tbody>
             {aggregatedCart.map((item, index) => (
-              <tr key={item.id}>
+              <tr key={item.ProductID}>
                 <td style={{ padding: "10px", textAlign: "center" }}>
                   <img
-                    src={item.image}
-                    alt={item.title}
+                    src={item.ImageURL}
+                    alt={item.ProductName}
                     style={{ width: "50px", height: "50px" }}
                   />
                 </td>
-                <td style={{ padding: "10px" }}>{item.title}</td>
-                <td style={{ padding: "10px" }}>{item.price} points</td>
+                <td style={{ padding: "10px" }}>{item.ProductName}</td>
+                <td style={{ padding: "10px" }}>{item.PriceInPoints} points</td>
                 <td style={{ padding: "10px" }}>{item.quantity}</td>
                 <td style={{ padding: "10px" }}>
                   <button onClick={() => increaseQuantity(index)}>+</button>
