@@ -1,6 +1,6 @@
 "use client";  // Mark as a client component
 
-import React, {useState, useEffect, ReactEventHandler} from 'react';
+import React, {useState, useEffect, ReactEventHandler, useRef} from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -18,19 +18,21 @@ import FakeStore from "./pages/FakeStore";
 import PasswordChange from "./pages/PasswordChange";
 import PointTransaction from "./pages/PointTransaction";
 import Cart from "./pages/Cart";
-
+import CreateProduct from "./pages/CreateProduct";
+//import SponsorCatalog from "./pages/SponsorCatalog";
+import AddCompany from "./pages/AddCompany";
+import SponsorRequestForm from './pages/SponsorRequestForm';
+import ReviewDriverRequests from './pages/ReviewDriverRequests';
 
 import {handleSignOut, toggleNav} from '../script/toggle'
 
 export default function Navigation() {
-
-    useEffect(() => {
-        toggleNav(); // Run function after component mounts
-    }, []);
-    
     const [menuState, setMenuState] = useState("none");
+    const menuRef = useRef<HTMLDivElement | null>(null);
 
     const toggleMenu = (event: React.MouseEvent<HTMLImageElement>) => {
+        event.stopPropagation();
+
         if (menuState == "none") {
             setMenuState("block");
             return;
@@ -39,12 +41,32 @@ export default function Navigation() {
         setMenuState("none");
     }
 
+    useEffect(() => {
+        toggleNav(); // Run function after component mounts
+
+        const handleClickOutside = (event: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setMenuState("none");
+            }
+        };
+
+        if (menuState == "block") {
+            document.addEventListener("click", handleClickOutside);
+        } else {
+            document.removeEventListener("click", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        }
+    }, [menuState]);
+
     return (
         <Router>
             <header>
                 <Link to="/">
                     <div className="logo">
-                        <img src="/media/logo.svg" alt="Logo"/>
+                        <img src="/media/logo.svg" alt="Logo" />
                         <p><b>AlienBaba</b>.com</p>
                     </div>
                 </Link>
@@ -52,7 +74,7 @@ export default function Navigation() {
                     <ul>
                         <li id="signin" style={{ display: "block" }}>
                             <Link to="/signin">
-                                <img src="/media/signin.svg" alt="Sign In"/>
+                                <img src="/media/signin.svg" alt="Sign In" />
                                 Sign In
                             </Link>
                         </li>
@@ -64,7 +86,7 @@ export default function Navigation() {
                         </li>
                         <li id="signout">
                             <img src="/media/default-alien.svg" onClick={ toggleMenu }/>
-                            <div id="signoutMenu" style={{ display: menuState }}>
+                            <div id="signoutMenu" ref={menuRef} style={{ display: menuState }}>
                                 <button className="account-button" onClick={handleSignOut}>Sign Out</button>
                             </div>
                         </li>
@@ -85,8 +107,12 @@ export default function Navigation() {
                 <Route path="/password-change" element={<PasswordChange />} />
                 <Route path="/point-transaction" element={<PointTransaction />} />
                 <Route path="/cart" element={<Cart />} />
-                <Route path="/" element={<About/>} />
+                <Route path="/create-product" element={<CreateProduct />} />
+                <Route path="/add-company" element={<AddCompany />} />
+                <Route path="/request-sponsor" element={<SponsorRequestForm />} />
+                <Route path="/review-sponsor-requests" element={<ReviewDriverRequests />} />
+                <Route path="/" element={<About />} />
             </Routes>
         </Router>
-    )
+    );
 }

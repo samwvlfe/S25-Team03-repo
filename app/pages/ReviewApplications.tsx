@@ -37,7 +37,7 @@ export default function ReviewApplications() {
 
     return (
         <main>
-            <div className="table-container">
+            <div className="table-layout" id="applicationReview">
                 <h2>Review Applications</h2>
                 <table border={1}>
                     <thead>

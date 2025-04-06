@@ -233,13 +233,12 @@ app.post('/api/submit-application', async (req, res) => {
 
 // log in
 app.post('/api/login', async (req, res) => {
-    const { username, password} = req.body;
+    const { username, password } = req.body;
 
     if (!username || !password) {
         return res.status(400).json({ error: 'Username and/or password not sent in request' });
     }
     try{
-
         verifyLogin(username, async (err, result) => {
             if (err) {
                 return res.status(500).json({ error: 'Database error', details: err.message });
@@ -260,7 +259,6 @@ app.post('/api/login', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: 'An error occurred', details: error.message });
     }
-
 });
 
 // Function to Call Stored Procedure and Verify Password
@@ -331,22 +329,29 @@ app.post('/api/update-password', async (req, res) => {
 
 // get users
 app.get('/api/get-users', async (req, res) => {
-    const query = await db.execute('SELECT UserID, Name, Username, Email, UserType, CompanyID FROM AllUsers WHERE UserType IN ("Driver", "Sponsor")');
+    const dQuery = 'SELECT DriverID, Username, Name, CompanyID, UserType FROM Driver';
+    const sQuery = 'SELECT SponsorUserID, Username, CompanyID, UserType FROM SponsorUser';
+    const aQuery = 'SELECT AdminID, Username, UserType FROM Admin';
 
-    db.query(query, (err, results) => {
+    db.query(dQuery, (err, drivers) => {
         if (err) {
             res.status(500).json({ error: 'Database query failed', details: err });
         } else {
-            res.json(results);
+            db.query(sQuery, (err, sponsors) => {
+                db.query(aQuery, (err, admins) => {
+                    const mergedData = [...drivers, ...sponsors, ...admins];
+                    res.json(mergedData);
+                })
+            })
         }
     });
 });
 
 // admin add user
 app.post('/api/admin/create-user', async (req, res) => {
-    const { name, username, email, password, role, companyID } = req.body;
+    const { name, username, email, password, userType, companyID } = req.body;
 
-    if (!name || !username || !email || !password || !role) {
+    if (!name || !username || !email || !password || !userType) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
@@ -355,11 +360,11 @@ app.post('/api/admin/create-user', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const query = `
-            INSERT INTO Users (Name, Username, Email, PasswordHash, Role, CompanyID, CreatedAt)
+            INSERT INTO ?? (Name, Username, Email, PasswordHash, UserType, CompanyID, CreatedAt)
             VALUES (?, ?, ?, ?, ?, ?, NOW())
         `;
 
-        db.query(query, [name, username, email, hashedPassword, role, companyID || null], (err, result) => {
+        db.query(query, [userType, name, username, email, hashedPassword, userType, companyID || null], (err, result) => {
             if (err) {
                 console.error('User creation failed:', err);
                 return res.status(500).json({ error: 'User creation failed', details: err.message });
@@ -373,16 +378,28 @@ app.post('/api/admin/create-user', async (req, res) => {
 });
 
 // admin delete user
-app.delete('/api/admin/delete-user/:id', (req, res) => {
-    const userId = req.params.id;
+app.delete('/api/admin/delete-user/:userType/:id', (req, res) => {
+    const { userType, id: userId } = req.params;
 
     if (!userId) {
         return res.status(400).json({ error: 'User ID is required' });
     }
 
-    const query = `DELETE FROM Users WHERE ID = ?`;
+    const allowedTables = {
+        Driver: 'DriverID',
+        SponsorUser: 'SponsorUserID',
+        Admin: 'AdminID'
+    };
 
-    db.query(query, [userId], (err, result) => {
+    const idColumn = allowedTables[userType];
+
+    if (!idColumn) {
+        return res.status(400).json({ error: 'Invalid table' });
+    }
+
+    const query = `DELETE FROM ?? WHERE ?? = ?`;
+
+    db.query(query, [userType, idColumn, userId], (err, result) => {
         if (err) {
             console.error('User deletion failed:', err);
             return res.status(500).json({ error: 'User deletion failed', details: err.message });
@@ -400,10 +417,10 @@ app.get('/api/fake-store', async (req, res) => {
     try {
         const response = await axios.get('https://fakestoreapi.com/products');
         const products = response.data.map(product => ({
-            id: product.id,
-            title: product.title,
-            price: product.price,
-            image: product.image
+            ProductID: product.id,                    
+            ProductName: product.title,               
+            PriceInPoints: Math.round(product.price), 
+            ImageURL: product.image                   
         }));
         res.json(products);
     } catch (error) {
@@ -411,7 +428,43 @@ app.get('/api/fake-store', async (req, res) => {
     }
 });
 
-app.get('/api/create-product')
+app.post('/api/create-product', (req, res) => {
+    const { productName, priceInPoints, description, imageURL } = req.body;
+  
+    if (!productName || !priceInPoints) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+  
+    const query = `
+      INSERT INTO ProductCatalog (ProductName, PriceInPoints, Description, ImageURL)
+      VALUES (?, ?, ?, ?, ?)
+    `;
+  
+    db.query(query, [productName, priceInPoints, description || null, imageURL || null], (err, result) => {
+      if (err) {
+        console.error("Failed to insert product:", err);
+        return res.status(500).json({ error: 'Database insert failed', details: err.message });
+      }
+      res.status(201).json({ message: 'Product created successfully', productID: result.insertId });
+    });
+  });
+
+  /*app.get('/api/products', (req, res) => {
+    const { companyID } = req.query;
+  
+    if (!companyID) {
+      return res.status(400).json({ error: "Missing companyID" });
+    }
+  
+    const query = `SELECT * FROM ProductCatalog WHERE CompanyID = ?`;
+  
+    db.query(query, [companyID], (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: "Database query failed", details: err.message });
+      }
+      res.status(200).json(results);
+    });
+  });*/  
 
 // get points from driver table based on driver ID
 app.get('/getTotalPoints', (req, res) => {
@@ -507,6 +560,107 @@ app.post('/api/purchase', (req, res) => {
     });
 });
 
+// Add new company (Sponsor)
+app.post('/api/add-company', (req, res) => {
+    const { companyName, pointsInfo } = req.body;
+
+    if (!companyName) {
+        return res.status(400).json({ error: 'Company name is required' });
+    }
+
+    const query = `
+        INSERT INTO Sponsor (CompanyName, PointsInfo)
+        VALUES (?, ?)
+    `;
+
+    db.query(query, [companyName, pointsInfo || null], (err, result) => {
+        if (err) {
+            console.error('Error inserting company:', err);
+            return res.status(500).json({ error: 'Failed to add company', details: err });
+        }
+
+        res.status(201).json({ message: 'Company added successfully', companyID: result.insertId });
+    });
+});
+
+//Gets sponsor companies
+app.get('/api/get-sponsors', (req, res) => {
+    db.query('SELECT CompanyID, CompanyName FROM Sponsor', (err, results) => {
+        if (err) {
+            console.error('Failed to fetch sponsors:', err);
+            return res.status(500).json({ error: 'Failed to retrieve sponsors' });
+        }
+        res.status(200).json(results);
+    });
+});
+
+//Submits sponsor request
+app.post('/api/request-sponsor', (req, res) => {
+    const { driverID, sponsorCompanyID } = req.body;
+
+    if (!driverID || !sponsorCompanyID) {
+        return res.status(400).json({ error: 'Missing driver ID or sponsor company ID' });
+    }
+
+    const query = `
+        INSERT INTO DriverSponsorRequests (DriverID, SponsorCompanyID, RequestDate, Status)
+        VALUES (?, ?, NOW(), 'Pending')
+    `;
+
+    db.query(query, [driverID, sponsorCompanyID], (err, result) => {
+        if (err) {
+            console.error('Sponsor request failed:', err);
+            return res.status(500).json({ error: 'Failed to submit sponsor request' });
+        }
+        res.status(201).json({ message: 'Sponsor request submitted successfully' });
+    });
+});
+
+// Get pending requests for sponsor company
+app.get("/api/sponsor/driver-requests/:companyID", (req, res) => {
+    const { companyID } = req.params;
+  
+    const query = `
+      SELECT r.RequestID, r.DriverID, r.SponsorCompanyID, r.RequestDate, r.Status, d.Username
+      FROM DriverSponsorRequests r
+      JOIN Driver d ON r.DriverID = d.DriverID
+      WHERE r.SponsorCompanyID = ? AND r.Status = 'Pending'
+    `;
+  
+    db.query(query, [companyID], (err, results) => {
+      if (err) return res.status(500).json({ error: "Query failed", details: err });
+      res.json(results);
+    });
+  });
+  
+  // Approve or reject request
+  app.post("/api/sponsor/handle-request", (req, res) => {
+    const { requestID, driverID, decision } = req.body;
+  
+    const updateRequestQuery = `
+      UPDATE DriverSponsorRequests SET Status = ? WHERE RequestID = ?
+    `;
+  
+    const updateDriverQuery = `
+      UPDATE Driver SET CompanyID = (
+        SELECT SponsorCompanyID FROM DriverSponsorRequests WHERE RequestID = ?
+      ) WHERE DriverID = ?
+    `;
+  
+    db.query(updateRequestQuery, [decision, requestID], (err) => {
+      if (err) return res.status(500).json({ error: "Failed to update request", details: err });
+  
+      if (decision === "Approved") {
+        db.query(updateDriverQuery, [requestID, driverID], (err2) => {
+          if (err2) return res.status(500).json({ error: "Failed to update driver", details: err2 });
+          res.json({ message: "Driver approved and updated" });
+        });
+      } else {
+        res.json({ message: "Request rejected" });
+      }
+    });
+  });
+  
 
 // Start server
 app.listen(port, () => {
