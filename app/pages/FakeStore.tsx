@@ -11,7 +11,7 @@ const FakeStore: React.FC = () => {
     const [affordableOnly, setAffordableOnly] = useState<boolean>(false);
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:2999/api/products")
+        axios.get("http://127.0.0.1:2999/api/fake-store")
           .then(res => setProducts(res.data))
           .catch(err => console.error("Error loading products", err));
       }, []);
