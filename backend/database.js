@@ -449,22 +449,27 @@ app.post('/api/create-product', (req, res) => {
     });
   });
 
-  /*app.get('/api/products', (req, res) => {
-    const { companyID } = req.query;
+  app.post('/api/products', (req, res) => {
+    const { productName, priceInPoints, description, imageURL } = req.body;
   
-    if (!companyID) {
-      return res.status(400).json({ error: "Missing companyID" });
+    if (!productName || !priceInPoints) {
+      return res.status(400).json({ error: 'Missing required fields' });
     }
   
-    const query = `SELECT * FROM ProductCatalog WHERE CompanyID = ?`;
+    const query = `
+      INSERT INTO ProductCatalog (ProductName, PriceInPoints, Description, ImageURL)
+      VALUES (?, ?, ?, ?)
+    `;
   
-    db.query(query, [companyID], (err, results) => {
+    db.query(query, [productName, priceInPoints, description || null, imageURL || null], (err, result) => {
       if (err) {
-        return res.status(500).json({ error: "Database query failed", details: err.message });
+        console.error("Insert failed:", err);
+        return res.status(500).json({ error: 'Database error', details: err.message });
       }
-      res.status(200).json(results);
+  
+      res.status(201).json({ message: 'Product added', productID: result.insertId });
     });
-  });*/  
+  });  
 
 // get points from driver table based on driver ID
 app.get('/getTotalPoints', (req, res) => {

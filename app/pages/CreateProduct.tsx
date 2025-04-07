@@ -1,52 +1,46 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
-import { Link } from 'react-router-dom';
 
-
-const CreateProduct: React.FC = () => {
-  const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
+const CreateProduct = () => {
+  const [productName, setProductName] = useState("");
+  const [priceInPoints, setPriceInPoints] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
-  const [category, setCategory] = useState("");
+  const [imageURL, setImageURL] = useState("");
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     try {
-      const res = await axios.post("http://127.0.0.1:2999/api/create-product", {
-        productName: title,
-        priceInPoints: parseInt(price),
+      await axios.post("http://127.0.0.1:2999/api/products", {
+        productName,
+        priceInPoints: parseInt(priceInPoints),
         description,
-        imageURL: image,
-        //companyID: 3 
+        imageURL
       });
-  
-      setMessage("✅ Product created!");
-    } catch (error) {
-      console.error("Error:", error);
-      setMessage("❌ Error creating product.");
+
+      setMessage("✅ Product added!");
+      setProductName("");
+      setPriceInPoints("");
+      setDescription("");
+      setImageURL("");
+    } catch (err) {
+      setMessage("❌ Error adding product.");
+      console.error(err);
     }
   };
-  
 
   return (
-    <div style={{ maxWidth: 500, margin: "0 auto", padding: "1rem" }}>
-      <h2>Create New Product</h2>
+    <div style={{ maxWidth: "500px", margin: "auto", padding: "1rem" }}>
+      <h2>Create a Product</h2>
       <form onSubmit={handleSubmit}>
-        <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" required />
-        <input value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" type="number" required />
-        <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
-        <input value={image} onChange={(e) => setImage(e.target.value)} placeholder="Image URL" required />
-        <input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Category" required />
-        <button type="submit">Create Product</button>
+        <input placeholder="Name" value={productName} onChange={e => setProductName(e.target.value)} required />
+        <input placeholder="Price in Points" type="number" value={priceInPoints} onChange={e => setPriceInPoints(e.target.value)} required />
+        <input placeholder="Image URL" value={imageURL} onChange={e => setImageURL(e.target.value)} />
+        <textarea placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
+        <button type="submit">Add Product</button>
       </form>
       <p>{message}</p>
-          {/* Back button */}
-      <div className="backButn">
-        <Link to="/menu" className="black-link">{"<-- Back"}</Link>
-      </div>
     </div>
   );
 };
