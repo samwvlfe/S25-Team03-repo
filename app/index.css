@@ -803,3 +803,16 @@ footer {
   align-content: center;
   font-size: 30px;
 }
+
+.center-form{
+  margin: auto;
+}
+
+.formPage{
+  display: flex;
+  flex-direction: row;
+}
+
+.formCard{
+  margin: auto;
+}

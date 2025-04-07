@@ -514,7 +514,7 @@ app.post('/updatePoints', (req, res) => {
     );
 });
 
-// // show point log based on current DriverID
+// show point log based on current DriverID
 app.get('/pointHistory/', (req, res) => {
 
     const { driverID } = req.query;
@@ -660,7 +660,36 @@ app.get("/api/sponsor/driver-requests/:companyID", (req, res) => {
       }
     });
   });
-  
+
+// get driver actions for drop down
+app.get('/api/driver-actions', (req, res) => {
+    const query = 'SELECT * FROM DriverActions'; // no extra quotes
+    db.query(query, (err, results) => {
+        if (err) {
+            res.status(500).json({ error: 'Database query failed', details: err });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+// call stored procedure to get list of drivers purchases per sponsor
+app.post('/api/getdriverpurchases', (req, res) => {
+    const { inputCompanyID } = req.body;
+    // make sure parameters are there
+    if (!inputCompanyID) {
+        return res.status(400).json({ error: 'Missing required parameter.' });
+    }
+    // execute the stored procedure 
+    db.query('CALL GetDriverAndDetailsByCompany(?)', [inputCompanyID], (error, results) => {
+        if (error) {
+            console.error('Error executing stored procedure:', error);
+            return res.status(500).json({ error: 'Database error occurred.' });
+        }
+        res.json({results });
+    });
+});
+
 
 // Start server
 app.listen(port, () => {

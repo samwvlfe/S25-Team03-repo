@@ -1,3 +1,4 @@
+import { Nanum_Gothic } from 'next/font/google';
 import React, { ButtonHTMLAttributes } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
@@ -34,8 +35,10 @@ export function SponsorButtons() {
             {/* <li id="catalogMgmt">Catalog Management</li> */}
             {/* <li id="sponsorApps">Review Applications</li> */}
             {/* <li id="switchView">Driver View</li> */}
-            <li onClick={() => navigate("/password-change")}>Change Password</li>
+            {/* <li onClick={() => navigate("/password-change")}>Change Password</li> */}
             {/* <li onClick={() => navigate("/sponsor-catalog")}>Manage Product Catalog</li> */}
+            <li onClick={() => navigate("/update-driver-pts")}>Update Points</li>
+            <li onClick={() => navigate("/review")}>Review Applications</li>
             <li onClick={() => navigate("/password-change")}>Change Password</li>
             <li onClick={() => navigate("/review-sponsor-requests")}>Review Driver Requests </li>
         </>
@@ -51,6 +54,7 @@ export function AdminButtons() {
             <li>Add User</li>
             <li onClick={() => navigate("/review")}>Review Applications</li>
             <li>View Audit Logs</li>
+            <li onClick={() => navigate("/update-driver-pts")}>Update Points</li>
             <li onClick={() => navigate("/password-change")}>Change Password</li>
             <li onClick={() => navigate("/create-product")}>Add New Product</li>
             <li onClick={() => navigate("/add-company")}>Add Company</li>
