@@ -415,17 +415,38 @@ app.delete('/api/admin/delete-user/:userType/:id', (req, res) => {
 
 app.get('/api/fake-store', async (req, res) => {
     try {
-        const response = await axios.get('https://fakestoreapi.com/products');
-        const products = response.data.map(product => ({
-            ProductID: product.id,                    
-            ProductName: product.title,               
-            PriceInPoints: Math.round(product.price), 
-            ImageURL: product.image                   
+        // Fetch from fakestoreapi.com
+        const apiResponse = await axios.get('https://fakestoreapi.com/products');
+        const fakeStoreProducts = apiResponse.data.map(product => ({
+          ProductID: product.id,
+          ProductName: product.title,
+          PriceInPoints: Math.round(product.price),
+          ImageURL: product.image,
+          Source: "FakeStore"
         }));
-        res.json(products);
-    } catch (error) {
+    
+        // Fetch form database
+        db.query('SELECT ProductID, ProductName, PriceInPoints, ImageURL FROM ProductCatalog WHERE Availability = TRUE', (err, dbProducts) => {
+          if (err) {
+            return res.status(500).json({ error: "Database error", details: err.message });
+          }
+    
+          const localProducts = dbProducts.map(p => ({
+            ProductID: p.ProductID,
+            ProductName: p.ProductName,
+            PriceInPoints: p.PriceInPoints,
+            ImageURL: p.ImageURL,
+            Source: "Local"
+          }));
+    
+          // Return both catalogs
+          const combined = [...localProducts, ...fakeStoreProducts];
+          res.json(combined);
+        });
+      } catch (error) {
+        console.error("Error fetching from FakeStore:", error);
         res.status(500).json({ error: "Failed to fetch store products", details: error.message });
-    }
+      }
 });
 
 app.post('/api/create-product', (req, res) => {
