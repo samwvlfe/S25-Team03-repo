@@ -63,6 +63,7 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
                                 <option value="All">All</option>
                                 <option value="Driver">Drivers</option>
                                 <option value="SponsorUser">Sponsors</option>
+                                <option value="Admin">Admins</option>
                             </select>
                         </div>
 
@@ -77,7 +78,7 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
                                     <th>Name</th>
                                     <th>Username</th>
                                     <th>Role</th>
-                                    <th>Company ID (if Sponsor)</th>
+                                    <th>Company ID</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -94,7 +95,7 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
                                             <td>{user.Name}</td>
                                             <td>{user.Username}</td>
                                             <td>{user.UserType}</td>
-                                            <td>{user.UserType === "SponsorUser" ? user.CompanyID || "N/A" : "—"}</td>
+                                            <td>{user.CompanyID != null ? user.CompanyID : "—"}</td>
                                         </tr>
                                     ))
                                 ) : (

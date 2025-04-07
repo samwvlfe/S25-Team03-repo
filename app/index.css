@@ -532,7 +532,8 @@ header a {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.15);
 }
-.side-menu a{
+
+.side-menu a {
   text-decoration: none;
   color: #231F20;
 }
@@ -554,6 +555,10 @@ header a {
 
   justify-content: center;
   align-items: center;
+}
+
+#menuContent p {
+  margin: 0;
 }
 
 /* View Users formatting. */
