@@ -19,7 +19,6 @@ import PasswordChange from "./pages/PasswordChange";
 import PointTransaction from "./pages/PointTransaction";
 import Cart from "./pages/Cart";
 import CreateProduct from "./pages/CreateProduct";
-//import SponsorCatalog from "./pages/SponsorCatalog";
 import AddCompany from "./pages/AddCompany";
 import SponsorRequestForm from './pages/SponsorRequestForm';
 import ReviewDriverRequests from './pages/ReviewDriverRequests';
