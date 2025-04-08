@@ -33,25 +33,19 @@ const CreateProduct = () => {
   return (
     <main>
       <div className="account-form">
-        <h2>Create New Product</h2>
+        <h2>Create a Product</h2>
         <form className="application-form" onSubmit={handleSubmit}>
-          <label>Product Title:</label>
-          <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" required />
+          <label>Product Name:</label>
+          <input placeholder="Name" value={productName} onChange={e => setProductName(e.target.value)} required />
           <label>Price:</label>
-          <input value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" type="number" required />
-          <label>Description:</label>
-          <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
+          <input placeholder="Price in Points" type="number" value={priceInPoints} onChange={e => setPriceInPoints(e.target.value)} required />
           <label>Image URL:</label>
-          <input value={image} onChange={(e) => setImage(e.target.value)} placeholder="Image URL" required />
-          <label>Category:</label>
-          <input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Category" required />
-          <input value="Create Product" type="submit" />
+          <input placeholder="Image URL" value={imageURL} onChange={e => setImageURL(e.target.value)} />
+          <label>Description:</label>
+          <textarea placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
+          <input type="submit" value="Create Product" />
         </form>
         <p>{message}</p>
-            {/* Back button */}
-        <div className="backButn" style={{ marginTop: "20px" }}>
-          <Link to="/menu">{"<-- Back"}</Link>
-        </div>
       </div>
     </main>
   );

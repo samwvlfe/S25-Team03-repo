@@ -58,6 +58,7 @@ const AddCompany = () => {
           <input type="submit" value="Add Company"/>
         </form>
         {message && <p>{message}</p>}
+      </div>
       <div className="backButn">
         <Link to="/menu" className="black-link">{"<-- Back"}</Link>
       </div>
