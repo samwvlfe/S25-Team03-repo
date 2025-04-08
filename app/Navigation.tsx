@@ -81,17 +81,14 @@ export default function Navigation() {
                         <li id="apply" style={{ display: "block" }} className="account-button">
                             <Link to="/apply">Apply</Link>
                         </li>
-                        <li id="revApps">
-                            <Link to="/review">Applications</Link>
+                        <li id="goto">
+                            <Link to="/menu">Dashboard</Link>
                         </li>
                         <li id="signout">
                             <img src="/media/default-alien.svg" onClick={ toggleMenu }/>
                             <div id="signoutMenu" ref={menuRef} style={{ display: menuState }}>
                                 <button className="account-button" onClick={handleSignOut}>Sign Out</button>
                             </div>
-                        </li>
-                        <li id="goto">
-                            <Link to="/menu">Go to Menu</Link>
                         </li>
                     </ul>
                 </nav>
