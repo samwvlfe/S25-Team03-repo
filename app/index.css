@@ -777,20 +777,83 @@ footer {
 .backButn{
   position: absolute;
   display: flex;
-  top: 70px;
-  left: 0px;
-  height: 40px;
-  width: 70px;
+  top: 85px;
+  left: 10px;
   place-content: center;
   place-items: center;
-  text-decoration: underline;
   }
-  .backButn link{
-    color: #231F20;
+.back-to-store{
+  position: absolute;
+  display: flex;
+  top: 85px;
+  left: 200px;
+  place-content: center;
+  place-items: center;
   }
 
 .move-down{
   display: flex;
   flex-direction: column;
   margin-top: 20px;
+}
+
+.shopping-cart{
+  position: absolute;
+  top: 98px;
+  right: 71px;
+  }
+
+.buy-BTN{
+  margin-left: auto;
+  position: absolute;
+  right: 8vw;
+  border-radius: 20px;;
+}
+.buy-BTN:hover{
+  box-shadow: 5px 5px 10px grey;
+}
+.buy-BTN button{
+  height: 30px;
+  border-radius: 20px;;
+}
+
+.black-link{
+  color: #231F20;
+  text-decoration: none;
+  }
+  .black-link:hover{
+    color: red;
+    text-decoration: underline;
+  }
+
+.overflow-table{
+  height: 77vh;
+  overflow-x: auto;
+}
+
+#insertCartNum{
+  position: absolute;
+  right: 228px;
+  top: 115px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50px;
+  background-color: black;
+  color: white;
+  text-align: center;
+  align-content: center;
+  font-size: 30px;
+}
+
+.center-form{
+  margin: auto;
+}
+
+.formPage{
+  display: flex;
+  flex-direction: row;
+}
+
+.formCard{
+  margin: auto;
 }

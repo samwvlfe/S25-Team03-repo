@@ -17,12 +17,13 @@ import Menu from './pages/Menu';
 import FakeStore from "./pages/FakeStore";
 import PasswordChange from "./pages/PasswordChange";
 import PointTransaction from "./pages/PointTransaction";
+import Cart from "./pages/Cart";
 import CreateProduct from "./pages/CreateProduct";
-//import SponsorCatalog from "./pages/SponsorCatalog";
 import AddCompany from "./pages/AddCompany";
 import SponsorRequestForm from './pages/SponsorRequestForm';
 import ReviewDriverRequests from './pages/ReviewDriverRequests';
 import CreateUser from './pages/CreateUser';
+import UpdateDriverPoints from './pages/UpdateDriverPoints';
 
 import {handleSignOut, toggleNav} from '../script/toggle'
 
@@ -103,12 +104,14 @@ export default function Navigation() {
                 <Route path="/fake-store" element={<FakeStore />} />
                 <Route path="/password-change" element={<PasswordChange />} />
                 <Route path="/point-transaction" element={<PointTransaction />} />
+                <Route path="/cart" element={<Cart />} />
                 <Route path="/create-product" element={<CreateProduct />} />
                 <Route path="/add-company" element={<AddCompany />} />
                 <Route path="/request-sponsor" element={<SponsorRequestForm />} />
                 <Route path="/review-sponsor-requests" element={<ReviewDriverRequests />} />
                 <Route path="/create-user" element={<CreateUser />}/>
                 <Route path="/" element={<About />} />
+                <Route path="/update-driver-pts" element={<UpdateDriverPoints />} />
             </Routes>
         </Router>
     );

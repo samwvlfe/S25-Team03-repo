@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import CircularLoading from '../components/CircularLoading';
+import { Link } from 'react-router-dom';
+
 
 interface Sponsor {
   CompanyID: number;
@@ -70,6 +72,9 @@ export default function SponsorRequestForm() {
           <button type="submit">Submit Request</button>
         </form>
         {message && <p>{message}</p>}
+        <div className="backButn">
+          <Link to="/menu" className="black-link">{"<-- Back"}</Link>
+        </div>
       </div>
     </main>
   );

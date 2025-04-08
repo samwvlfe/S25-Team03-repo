@@ -75,7 +75,6 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
 
                         {/* Error Message */}
                         {error && <p style={{ color: 'red' }}>{error}</p>}
-
                         {/* Users List */}
                         <table border={1} id="viewUsers">
                             <thead>
@@ -115,7 +114,7 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
                     {(curUser) && <UserMgmt user={curUser}/>}
                 </div>
                 <div className="backButn">
-                    <Link to="/menu">{"<-- Back"}</Link>
+                    <Link to="/menu" className="black-link">{"<-- Back"}</Link>
                 </div>
             </div>
         </main>

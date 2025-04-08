@@ -1,35 +1,34 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
-import { Link } from 'react-router-dom';
 
-
-const CreateProduct: React.FC = () => {
-  const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
+const CreateProduct = () => {
+  const [productName, setProductName] = useState("");
+  const [priceInPoints, setPriceInPoints] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
-  const [category, setCategory] = useState("");
+  const [imageURL, setImageURL] = useState("");
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     try {
-      const res = await axios.post("http://127.0.0.1:2999/api/create-product", {
-        productName: title,
-        priceInPoints: parseInt(price),
+      await axios.post("http://127.0.0.1:2999/api/products", {
+        productName,
+        priceInPoints: parseInt(priceInPoints),
         description,
-        imageURL: image,
-        //companyID: 3 
+        imageURL
       });
-  
-      setMessage("✅ Product created!");
-    } catch (error) {
-      console.error("Error:", error);
-      setMessage("❌ Error creating product.");
+
+      setMessage("✅ Product added!");
+      setProductName("");
+      setPriceInPoints("");
+      setDescription("");
+      setImageURL("");
+    } catch (err) {
+      setMessage("❌ Error adding product.");
+      console.error(err);
     }
   };
-  
 
   return (
     <main>

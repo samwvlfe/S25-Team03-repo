@@ -415,17 +415,38 @@ app.delete('/api/admin/delete-user/:userType/:id', (req, res) => {
 
 app.get('/api/fake-store', async (req, res) => {
     try {
-        const response = await axios.get('https://fakestoreapi.com/products');
-        const products = response.data.map(product => ({
-            ProductID: product.id,                    
-            ProductName: product.title,               
-            PriceInPoints: Math.round(product.price), 
-            ImageURL: product.image                   
+        // Fetch from fakestoreapi.com
+        const apiResponse = await axios.get('https://fakestoreapi.com/products');
+        const fakeStoreProducts = apiResponse.data.map(product => ({
+          ProductID: product.id,
+          ProductName: product.title,
+          PriceInPoints: Math.round(product.price),
+          ImageURL: product.image,
+          Source: "FakeStore"
         }));
-        res.json(products);
-    } catch (error) {
+    
+        // Fetch form database
+        db.query('SELECT ProductID, ProductName, PriceInPoints, ImageURL FROM ProductCatalog WHERE Availability = TRUE', (err, dbProducts) => {
+          if (err) {
+            return res.status(500).json({ error: "Database error", details: err.message });
+          }
+    
+          const localProducts = dbProducts.map(p => ({
+            ProductID: p.ProductID,
+            ProductName: p.ProductName,
+            PriceInPoints: p.PriceInPoints,
+            ImageURL: p.ImageURL,
+            Source: "Local"
+          }));
+    
+          // Return both catalogs
+          const combined = [...localProducts, ...fakeStoreProducts];
+          res.json(combined);
+        });
+      } catch (error) {
+        console.error("Error fetching from FakeStore:", error);
         res.status(500).json({ error: "Failed to fetch store products", details: error.message });
-    }
+      }
 });
 
 app.post('/api/create-product', (req, res) => {
@@ -449,22 +470,27 @@ app.post('/api/create-product', (req, res) => {
     });
   });
 
-  /*app.get('/api/products', (req, res) => {
-    const { companyID } = req.query;
+  app.post('/api/products', (req, res) => {
+    const { productName, priceInPoints, description, imageURL } = req.body;
   
-    if (!companyID) {
-      return res.status(400).json({ error: "Missing companyID" });
+    if (!productName || !priceInPoints) {
+      return res.status(400).json({ error: 'Missing required fields' });
     }
   
-    const query = `SELECT * FROM ProductCatalog WHERE CompanyID = ?`;
+    const query = `
+      INSERT INTO ProductCatalog (ProductName, PriceInPoints, Description, ImageURL)
+      VALUES (?, ?, ?, ?)
+    `;
   
-    db.query(query, [companyID], (err, results) => {
+    db.query(query, [productName, priceInPoints, description || null, imageURL || null], (err, result) => {
       if (err) {
-        return res.status(500).json({ error: "Database query failed", details: err.message });
+        console.error("Insert failed:", err);
+        return res.status(500).json({ error: 'Database error', details: err.message });
       }
-      res.status(200).json(results);
+  
+      res.status(201).json({ message: 'Product added', productID: result.insertId });
     });
-  });*/  
+  });  
 
 // get points from driver table based on driver ID
 app.get('/getTotalPoints', (req, res) => {
@@ -494,15 +520,15 @@ app.get('/getTotalPoints', (req, res) => {
 
 // change points by Driver ID 
 app.post('/updatePoints', (req, res) => {
-    const { userDriverID, Points_inc, SponsorUserID, reason } = req.body; 
+    const { userDriverID, Points_inc, EditorUserID, reason } = req.body; 
 
-    if (!userDriverID || !Points_inc || !SponsorUserID || !reason) {
+    if (!userDriverID || !Points_inc || !EditorUserID || !reason) {
         return res.status(400).json({ error: 'All parameters are required' });
     }
 
     db.query(
         'CALL PointChange(?, ?, ?, ?)', // Call the stored procedure
-        [parseInt(userDriverID), parseInt(Points_inc), parseInt(SponsorUserID), reason], // Convert to integers
+        [parseInt(userDriverID), parseInt(Points_inc), parseInt(EditorUserID), reason], // Convert to integers
         (err, results) => {
             if (err) {
                 console.error('Database error:', err);
@@ -514,7 +540,7 @@ app.post('/updatePoints', (req, res) => {
     );
 });
 
-// // show point log based on current DriverID
+// show point log based on current DriverID
 app.get('/pointHistory/', (req, res) => {
 
     const { driverID } = req.query;
@@ -525,7 +551,7 @@ app.get('/pointHistory/', (req, res) => {
 
     // Query the table for all rows that match driverID
     db.query(
-        'SELECT * FROM GoodDriverIncentiveT3.PointHistory WHERE DriverID = ?',
+        'SELECT * FROM GoodDriverIncentiveT3.PointHistory WHERE DriverID = ? ORDER BY TransactionID DESC',
         [driverID],
         (err, results) => {
             if(err){
@@ -541,6 +567,23 @@ app.get('/pointHistory/', (req, res) => {
             }            
         }
     );
+});
+
+// process purchase
+app.post('/api/purchase', (req, res) => {
+    const { u_DriverID, u_CartPrice, uOrder } = req.body;
+    // make sure parameters are there
+    if (u_DriverID == null || u_CartPrice == null || !uOrder) {
+        return res.status(400).json({ error: 'Missing required parameters.' });
+    }
+    // execute the stored procedure 
+    db.query('CALL Buy_Sum(?, ?, ?)', [u_DriverID, u_CartPrice, uOrder], (error, results) => {
+        if (error) {
+            console.error('Error executing stored procedure:', error);
+            return res.status(500).json({ error: 'Database error occurred.' });
+        }
+        res.json({ message: 'Purchase processed successfully.', results });
+    });
 });
 
 // Add new company (Sponsor)
@@ -643,7 +686,36 @@ app.get("/api/sponsor/driver-requests/:companyID", (req, res) => {
       }
     });
   });
-  
+
+// get driver actions for drop down
+app.get('/api/driver-actions', (req, res) => {
+    const query = 'SELECT * FROM DriverActions'; // no extra quotes
+    db.query(query, (err, results) => {
+        if (err) {
+            res.status(500).json({ error: 'Database query failed', details: err });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+// call stored procedure to get list of drivers purchases per sponsor
+app.post('/api/getdriverpurchases', (req, res) => {
+    const { inputCompanyID } = req.body;
+    // make sure parameters are there
+    if (!inputCompanyID) {
+        return res.status(400).json({ error: 'Missing required parameter.' });
+    }
+    // execute the stored procedure 
+    db.query('CALL GetDriverAndDetailsByCompany(?)', [inputCompanyID], (error, results) => {
+        if (error) {
+            console.error('Error executing stored procedure:', error);
+            return res.status(500).json({ error: 'Database error occurred.' });
+        }
+        res.json({results });
+    });
+});
+
 
 // Start server
 app.listen(port, () => {

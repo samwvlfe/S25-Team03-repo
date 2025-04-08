@@ -4,5 +4,6 @@ export interface Product {
   PriceInPoints: number;
   Availability: boolean;
   Description: string;
-  ImageURL: string;
+  ImageURL: string;    
+  quantity: number;
 }
