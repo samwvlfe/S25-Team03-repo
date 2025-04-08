@@ -21,6 +21,7 @@ export function DriverButtons() {
             <li onClick={() => navigate("/fake-store")}>Redeem Points</li>
             <li><Link to="/request-sponsor">Request Sponsor</Link></li>
             <li onClick={() => navigate("/password-change")}>Change Password</li>
+            <li onClick={() => navigate("/driver-orders")}>View Orders</li>
         </>
     )
 }
@@ -41,6 +42,7 @@ export function SponsorButtons() {
             <li onClick={() => navigate("/review")}>Review Applications</li>
             <li onClick={() => navigate("/password-change")}>Change Password</li>
             <li onClick={() => navigate("/review-sponsor-requests")}>Review Driver Requests </li>
+            <li onClick={() => navigate("/driver-transactions")}>View Driver Transactions</li>
         </>
     )
 }
@@ -58,6 +60,7 @@ export function AdminButtons() {
             <li onClick={() => navigate("/password-change")}>Change Password</li>
             <li onClick={() => navigate("/create-product")}>Add New Product</li>
             <li onClick={() => navigate("/add-company")}>Add Company</li>
+            <li onClick={() => navigate("/catalog-purchases")}>View Driver Transactions</li>
         </>
     )
 }

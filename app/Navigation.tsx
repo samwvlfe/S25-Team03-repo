@@ -23,6 +23,10 @@ import AddCompany from "./pages/AddCompany";
 import SponsorRequestForm from './pages/SponsorRequestForm';
 import ReviewDriverRequests from './pages/ReviewDriverRequests';
 import UpdateDriverPoints from './pages/UpdateDriverPoints';
+import DriverTransactions from './pages/DriverTransactions'
+import DriverOrders from './pages/DriverOrders'
+import CatalogPurchases from './pages/CatalogPurchases';
+
 
 import {handleSignOut, toggleNav} from '../script/toggle'
 
@@ -113,6 +117,9 @@ export default function Navigation() {
                 <Route path="/review-sponsor-requests" element={<ReviewDriverRequests />} />
                 <Route path="/" element={<About />} />
                 <Route path="/update-driver-pts" element={<UpdateDriverPoints />} />
+                <Route path="/driver-transactions" element={<DriverTransactions />} />
+                <Route path="/driver-orders" element={<DriverOrders />} />
+                <Route path="/catalog-purchases" element={<CatalogPurchases />} />
             </Routes>
         </Router>
     );

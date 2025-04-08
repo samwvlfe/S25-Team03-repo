@@ -689,7 +689,7 @@ app.get("/api/sponsor/driver-requests/:companyID", (req, res) => {
 
 // get driver actions for drop down
 app.get('/api/driver-actions', (req, res) => {
-    const query = 'SELECT * FROM DriverActions'; // no extra quotes
+    const query = 'SELECT * FROM DriverActions';
     db.query(query, (err, results) => {
         if (err) {
             res.status(500).json({ error: 'Database query failed', details: err });
@@ -700,21 +700,87 @@ app.get('/api/driver-actions', (req, res) => {
 });
 
 // call stored procedure to get list of drivers purchases per sponsor
-app.post('/api/getdriverpurchases', (req, res) => {
+app.post('/api/getdriverpurchases', async (req, res) => {
     const { inputCompanyID } = req.body;
-    // make sure parameters are there
+
     if (!inputCompanyID) {
-        return res.status(400).json({ error: 'Missing required parameter.' });
+        return res.status(400).json({ error: 'Company ID is required' });
     }
-    // execute the stored procedure 
-    db.query('CALL GetDriverAndDetailsByCompany(?)', [inputCompanyID], (error, results) => {
-        if (error) {
-            console.error('Error executing stored procedure:', error);
-            return res.status(500).json({ error: 'Database error occurred.' });
+
+    try {
+        const conn = await pool.getConnection();
+        try {
+            const [results] = await conn.query('CALL drivertransactions(?)', [inputCompanyID]);
+            res.json({ results });
+        } finally {
+            conn.release();
         }
-        res.json({results });
+    } catch (err) {
+        console.error('Database error:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// show orders by Driver
+app.post('/driver-transactions', (req, res) => {
+    const companyID = req.body.companyID;
+  
+    if (!Number.isInteger(companyID)) {
+        return res.status(400).json({ error: "companyID must be an integer" });
+    }
+  
+    db.query('CALL GoodDriverIncentiveT3.drivertransactions(?)', [companyID], (err, results) => {
+        if (err) {
+            console.error("Stored procedure error:", err);
+            return res.status(500).json({ error: "Database error" });
+        }
+            res.json(results[0]); // typically the result set is at index 0
     });
 });
+
+//delete order
+app.get('/deleteOrder/', (req, res) => {
+
+    const { PurchaseID } = req.query;
+
+    if (!PurchaseID) {
+        return res.status(400).json({ error: 'Cannot access Purchase ID' });
+    }
+
+    db.query(
+        'DELETE FROM GoodDriverIncentiveT3.CataPurchases WHERE PurchaseID = ?',
+        [PurchaseID],
+        (err, results) => {
+            if (err) {
+                console.error('Database error:', err);
+                return res.status(500).json({ error: 'Database query error' });
+            }
+
+            if (results.affectedRows > 0) {
+                res.status(200).json({ message: 'Purchase deleted successfully', results });
+            } else {
+                res.status(404).json({ error: 'Purchase not found or already deleted' });
+            }
+        }
+    );
+});
+
+app.get('/catalog-purchases', (req, res) => {
+    const query = `
+      SELECT * 
+      FROM PointHistory 
+      WHERE reason = 'User Catalog Purchase' OR reason = 'Catalog Purchase'
+    `;
+  
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error('Database error:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+      res.json(results);
+    });
+});
+
 
 
 // Start server
