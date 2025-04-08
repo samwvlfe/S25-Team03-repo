@@ -79,6 +79,22 @@ function PointsMgmt({ user, localUser }:PointsMgmtProps) {
     )
 }
 
+function SponsorMgmt({ user, localUser }:PointsMgmtProps) {
+    if (user.CompanyID != null) {
+        return (
+            <div className="sponsor-management">
+                <p>Sponsor ID: {user.CompanyID}</p>
+            </div>
+        )
+    }
+
+    return (
+        <div className="sponsor-mangement">
+            <p>User is not partnered!</p>
+        </div>
+    )
+}
+
 export function UserMgmt({ user }:UserMgmtProps) {
     const [points, setPoints] = useState<number | null>(null);
     const localUser = JSON.parse(localStorage.getItem("user") || "{}");
@@ -96,6 +112,7 @@ export function UserMgmt({ user }:UserMgmtProps) {
                 <p><b>Selected user:</b> { user?.Name }</p>
                 {user.UserType === "Driver" && <p><b>Points:</b> {points !== null ? points : "Loading..."}</p>}
             </div>
+            {user.UserType === "Driver" && <SponsorMgmt user={user} localUser={localUser}/>}
             {user.UserType === "Driver" && <PointsMgmt user={user} localUser={localUser}/>}
             {(localUser.usertype === "SponsorUser" && (user.UserType === "Driver" || user.UserType === "SponsorUser")) && <DeleteButton user={user}/>}
             {(localUser.usertype === "Admin" && user.UserType != "Admin") && <DeleteButton user={user}/>}

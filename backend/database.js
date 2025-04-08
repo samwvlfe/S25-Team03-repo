@@ -330,8 +330,8 @@ app.post('/api/update-password', async (req, res) => {
 // get users
 app.get('/api/get-users', async (req, res) => {
     const dQuery = 'SELECT DriverID, Username, Name, CompanyID, UserType FROM Driver';
-    const sQuery = 'SELECT SponsorUserID, Username, CompanyID, UserType FROM SponsorUser';
-    const aQuery = 'SELECT AdminID, Username, UserType FROM Admin';
+    const sQuery = 'SELECT SponsorUserID, Username, Name, CompanyID, UserType FROM SponsorUser';
+    const aQuery = 'SELECT AdminID, Name, Username, UserType FROM Admin';
 
     db.query(dQuery, (err, drivers) => {
         if (err) {

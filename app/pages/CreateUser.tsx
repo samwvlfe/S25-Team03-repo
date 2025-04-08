@@ -38,7 +38,7 @@ export default function CreateUser() {
                     <label>Select User Type:</label>
                     <select name="userType" onChange={handleChange}>
                         <option value="Driver">Driver</option>
-                        <option value="Sponsor">Sponsor</option>
+                        <option value="SponsorUser">Sponsor</option>
                         {user.usertype === 'Admin' && <option value="Admin">Admin</option>}
                     </select>
                     <label>Username:</label>
@@ -47,8 +47,11 @@ export default function CreateUser() {
                     <input type="email" name="email" placeholder="Email" onChange={handleChange} />
                     <label>Password:</label>
                     <input type="password" name="password" placeholder="Password" onChange={handleChange} />
-                    {formData.userType === 'Sponsor' && (
-                        <input type="text" name="companyID" placeholder="Company ID" onChange={handleChange} />
+                    {formData.userType === 'SponsorUser' && (
+                        <div className="extra-field">
+                            <label>Company ID:</label>
+                            <input type="text" name="companyID" placeholder="Company ID" onChange={handleChange} />
+                        </div>
                     )}
                     <input type="submit" value="Create Profile"/>
                 </form>

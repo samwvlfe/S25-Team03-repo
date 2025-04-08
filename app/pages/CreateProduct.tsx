@@ -36,10 +36,15 @@ const CreateProduct: React.FC = () => {
       <div className="account-form">
         <h2>Create New Product</h2>
         <form className="application-form" onSubmit={handleSubmit}>
+          <label>Product Title:</label>
           <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" required />
+          <label>Price:</label>
           <input value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" type="number" required />
+          <label>Description:</label>
           <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
+          <label>Image URL:</label>
           <input value={image} onChange={(e) => setImage(e.target.value)} placeholder="Image URL" required />
+          <label>Category:</label>
           <input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Category" required />
           <input value="Create Product" type="submit" />
         </form>

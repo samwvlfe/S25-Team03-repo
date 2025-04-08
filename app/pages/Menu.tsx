@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toggleNav } from '../../script/toggle';
 import {DriverButtons, SponsorButtons, AdminButtons} from '../components/MenuButtons';
-import {DriverContent, SponsorContent, AdminContent} from '../components/MenuContent'
-import { fetchTotalPoints} from '../../backend/api';
 
 export default function Menu() {
     // Retrieve user info from localStorage
