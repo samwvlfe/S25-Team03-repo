@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { updatePoints } from '../../backend/api'; 
+
 
 interface Order {
   PurchaseID: number;
   DriverID: number;
   Timestamp: string;
   OrderItems: string;
+  Amount: number;
   Status: string;
 }
 
@@ -34,7 +37,7 @@ export default function DriverPointHistory() {
       });
   }, []);
 
-  const handleCancelOrder = async (purchaseID: number) => {
+  const handleCancelOrder = async (purchaseID: number, driverID: number, amount: number) => {
     const confirmed = window.confirm('Are you sure you want to cancel this order?');
     if (!confirmed) return;
   
@@ -63,6 +66,17 @@ export default function DriverPointHistory() {
         console.error('Error cancelling order:', err);
         alert('An error occurred while cancelling the order.');
     }
+    try{
+      const success = await updatePoints(driverID, amount, 999, 'refund');
+      if (success) {
+          alert("Points refunded successfully!");
+      }
+      else{
+          alert("Could not refund points");
+      }
+    } catch(err){
+
+    }
   };
   
 
@@ -79,6 +93,7 @@ export default function DriverPointHistory() {
                 <th>Driver ID</th>
                 <th>Timestamp</th>
                 <th>Order</th>
+                <th>Amount Spent</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -91,9 +106,10 @@ export default function DriverPointHistory() {
                     <td>{row.DriverID}</td>
                     <td>{row.Timestamp.slice(0, 10)}</td>
                     <td>{row.OrderItems}</td>
+                    <th>{row.Amount}</th>
                     <td>{row.Status}</td>
                     <td>
-                      <button onClick={() => handleCancelOrder(row.PurchaseID)}>
+                      <button onClick={() => handleCancelOrder(row.PurchaseID, row.DriverID, row.Amount)}>
                         Cancel
                       </button>
                     </td>

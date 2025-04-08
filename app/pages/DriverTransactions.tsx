@@ -63,7 +63,6 @@ const DriverTransactions: React.FC = () => {
             <tr>
               <th>Transaction ID</th>
               <th>Username</th>
-              <th>Total Points</th>
               <th>Point Change</th>
               <th>Timestamp</th>
             </tr>

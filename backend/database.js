@@ -699,29 +699,31 @@ app.get('/api/driver-actions', (req, res) => {
     });
 });
 
-// call stored procedure to get list of drivers purchases per sponsor
-app.post('/api/getdriverpurchases', async (req, res) => {
-    const { inputCompanyID } = req.body;
-
-    if (!inputCompanyID) {
-        return res.status(400).json({ error: 'Company ID is required' });
+// order history by driver ID
+app.get('/orderHistory', (req, res) => {
+    const { driverID } = req.query;
+  
+    if (!driverID || isNaN(driverID)) {
+      return res.status(400).json({ error: 'Invalid or missing driver ID' });
     }
+  
+    const query = `
+      SELECT * 
+      FROM CataPurchases 
+      WHERE DriverID = ?
+      ORDER BY PurchaseID DESC;
+    `;
+  
+    db.query(query, [driverID], (err, results) => {
+      if (err) {
+        console.error('Query error:', err);
+        return res.status(500).json({ error: 'Error retrieving order history' });
+      }
+      res.json(results);
+    });
+  });
 
-    try {
-        const conn = await pool.getConnection();
-        try {
-            const [results] = await conn.query('CALL drivertransactions(?)', [inputCompanyID]);
-            res.json({ results });
-        } finally {
-            conn.release();
-        }
-    } catch (err) {
-        console.error('Database error:', err);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-// show orders by Driver
+// show transactions by Driver
 app.post('/driver-transactions', (req, res) => {
     const companyID = req.body.companyID;
   
@@ -765,6 +767,7 @@ app.get('/deleteOrder/', (req, res) => {
     );
 });
 
+// get all driver purchases for admin
 app.get('/catalog-purchases', (req, res) => {
     const query = `
       SELECT * 
@@ -780,8 +783,6 @@ app.get('/catalog-purchases', (req, res) => {
       res.json(results);
     });
 });
-
-
 
 // Start server
 app.listen(port, () => {
