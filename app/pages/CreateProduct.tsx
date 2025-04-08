@@ -31,17 +31,23 @@ const CreateProduct = () => {
   };
 
   return (
-    <div style={{ maxWidth: "500px", margin: "auto", padding: "1rem" }}>
-      <h2>Create a Product</h2>
-      <form onSubmit={handleSubmit}>
-        <input placeholder="Name" value={productName} onChange={e => setProductName(e.target.value)} required />
-        <input placeholder="Price in Points" type="number" value={priceInPoints} onChange={e => setPriceInPoints(e.target.value)} required />
-        <input placeholder="Image URL" value={imageURL} onChange={e => setImageURL(e.target.value)} />
-        <textarea placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
-        <button type="submit">Add Product</button>
-      </form>
-      <p>{message}</p>
-    </div>
+    <main>
+      <div className="account-form">
+        <h2>Create a Product</h2>
+        <form className="application-form" onSubmit={handleSubmit}>
+          <label>Product Name:</label>
+          <input placeholder="Name" value={productName} onChange={e => setProductName(e.target.value)} required />
+          <label>Price:</label>
+          <input placeholder="Price in Points" type="number" value={priceInPoints} onChange={e => setPriceInPoints(e.target.value)} required />
+          <label>Image URL:</label>
+          <input placeholder="Image URL" value={imageURL} onChange={e => setImageURL(e.target.value)} />
+          <label>Description:</label>
+          <textarea placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
+          <input type="submit" value="Create Product" />
+        </form>
+        <p>{message}</p>
+      </div>
+    </main>
   );
 };
 

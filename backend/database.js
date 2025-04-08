@@ -330,8 +330,8 @@ app.post('/api/update-password', async (req, res) => {
 // get users
 app.get('/api/get-users', async (req, res) => {
     const dQuery = 'SELECT DriverID, Username, Name, CompanyID, UserType FROM Driver';
-    const sQuery = 'SELECT SponsorUserID, Username, CompanyID, UserType FROM SponsorUser';
-    const aQuery = 'SELECT AdminID, Username, UserType FROM Admin';
+    const sQuery = 'SELECT SponsorUserID, Username, Name, CompanyID, UserType FROM SponsorUser';
+    const aQuery = 'SELECT AdminID, Name, Username, UserType FROM Admin';
 
     db.query(dQuery, (err, drivers) => {
         if (err) {
@@ -360,8 +360,8 @@ app.post('/api/admin/create-user', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const query = `
-            INSERT INTO ?? (Name, Username, Email, PasswordHash, UserType, CompanyID, CreatedAt)
-            VALUES (?, ?, ?, ?, ?, ?, NOW())
+            INSERT INTO ?? (Name, Username, Email, PasswordHash, UserType, CompanyID)
+            VALUES (?, ?, ?, ?, ?, ?)
         `;
 
         db.query(query, [userType, name, username, email, hashedPassword, userType, companyID || null], (err, result) => {

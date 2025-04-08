@@ -22,6 +22,7 @@ import CreateProduct from "./pages/CreateProduct";
 import AddCompany from "./pages/AddCompany";
 import SponsorRequestForm from './pages/SponsorRequestForm';
 import ReviewDriverRequests from './pages/ReviewDriverRequests';
+import CreateUser from './pages/CreateUser';
 import UpdateDriverPoints from './pages/UpdateDriverPoints';
 
 import {handleSignOut, toggleNav} from '../script/toggle'
@@ -81,17 +82,14 @@ export default function Navigation() {
                         <li id="apply" style={{ display: "block" }} className="account-button">
                             <Link to="/apply">Apply</Link>
                         </li>
-                        <li id="revApps">
-                            <Link to="/review">Applications</Link>
+                        <li id="goto">
+                            <Link to="/menu">Dashboard</Link>
                         </li>
                         <li id="signout">
                             <img src="/media/default-alien.svg" onClick={ toggleMenu }/>
                             <div id="signoutMenu" ref={menuRef} style={{ display: menuState }}>
                                 <button className="account-button" onClick={handleSignOut}>Sign Out</button>
                             </div>
-                        </li>
-                        <li id="goto">
-                            <Link to="/menu">Go to Menu</Link>
                         </li>
                     </ul>
                 </nav>
@@ -111,6 +109,7 @@ export default function Navigation() {
                 <Route path="/add-company" element={<AddCompany />} />
                 <Route path="/request-sponsor" element={<SponsorRequestForm />} />
                 <Route path="/review-sponsor-requests" element={<ReviewDriverRequests />} />
+                <Route path="/create-user" element={<CreateUser />}/>
                 <Route path="/" element={<About />} />
                 <Route path="/update-driver-pts" element={<UpdateDriverPoints />} />
             </Routes>

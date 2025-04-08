@@ -37,31 +37,32 @@ const AddCompany = () => {
   }
 
   return (
-    <div className="account-form">
-      <h2>Add a New Company</h2>
-      <form onSubmit={handleSubmit}>
-        <label>Company Name:</label>
-        <input
-          type="text"
-          value={companyName}
-          onChange={(e) => setCompanyName(e.target.value)}
-          required
-        />
+    <main>
+      <div className="account-form">
+        <h2>Add a New Company</h2>
+        <form className="application-form" onSubmit={handleSubmit}>
+          <label>Company Name:</label>
+          <input
+            type="text"
+            value={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
+            required
+          />
 
-        <label>Points Info (optional):</label>
-        <textarea
-          value={pointsInfo}
-          onChange={(e) => setPointsInfo(e.target.value)}
-        ></textarea>
+          <label>Points Info (optional):</label>
+          <textarea
+            value={pointsInfo}
+            onChange={(e) => setPointsInfo(e.target.value)}
+          ></textarea>
 
-        <button type="submit">Add Company</button>
-      </form>
-      {message && <p>{message}</p>}
-
+          <input type="submit" value="Add Company"/>
+        </form>
+        {message && <p>{message}</p>}
+      </div>
       <div className="backButn">
         <Link to="/menu" className="black-link">{"<-- Back"}</Link>
       </div>
-    </div>
+    </main>
   );
 };
 
