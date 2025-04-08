@@ -360,8 +360,8 @@ app.post('/api/admin/create-user', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const query = `
-            INSERT INTO ?? (Name, Username, Email, PasswordHash, UserType, CompanyID, CreatedAt)
-            VALUES (?, ?, ?, ?, ?, ?, NOW())
+            INSERT INTO ?? (Name, Username, Email, PasswordHash, UserType, CompanyID)
+            VALUES (?, ?, ?, ?, ?, ?)
         `;
 
         db.query(query, [userType, name, username, email, hashedPassword, userType, companyID || null], (err, result) => {

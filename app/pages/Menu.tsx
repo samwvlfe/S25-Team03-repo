@@ -5,21 +5,12 @@ import {DriverContent, SponsorContent, AdminContent} from '../components/MenuCon
 import { fetchTotalPoints} from '../../backend/api';
 
 export default function Menu() {
-    // Creating a state for tracking the maximized element.
-    const [maximized, setMaximized] = useState<string | null>(null);
-
     // Retrieve user info from localStorage
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-
-    // get points and companyID only if user is driver
-    const [totalPoints, setTotalPoints] = useState<number | null>(null);
 
     useEffect(() => {
         toggleNav(); 
         console.log(user);
-        if (user.usertype === 'Driver' && user.id) {
-            fetchTotalPoints(user.id).then(setTotalPoints);
-        }
     }, []);
 
     return (

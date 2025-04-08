@@ -714,11 +714,7 @@ footer {
 }
 
 .table-layout table {
-  display: block;
-
   width: 100%;
-  height: 60vh;
-  overflow: scroll;
 }
 
 .filter {

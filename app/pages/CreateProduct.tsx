@@ -32,22 +32,24 @@ const CreateProduct: React.FC = () => {
   
 
   return (
-    <div style={{ maxWidth: 500, margin: "0 auto", padding: "1rem" }}>
-      <h2>Create New Product</h2>
-      <form onSubmit={handleSubmit}>
-        <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" required />
-        <input value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" type="number" required />
-        <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
-        <input value={image} onChange={(e) => setImage(e.target.value)} placeholder="Image URL" required />
-        <input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Category" required />
-        <button type="submit">Create Product</button>
-      </form>
-      <p>{message}</p>
-          {/* Back button */}
-      <div className="backButn" style={{ marginTop: "20px" }}>
-        <Link to="/menu">{"<-- Back"}</Link>
+    <main>
+      <div className="account-form">
+        <h2>Create New Product</h2>
+        <form className="application-form" onSubmit={handleSubmit}>
+          <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" required />
+          <input value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" type="number" required />
+          <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
+          <input value={image} onChange={(e) => setImage(e.target.value)} placeholder="Image URL" required />
+          <input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Category" required />
+          <input value="Create Product" type="submit" />
+        </form>
+        <p>{message}</p>
+            {/* Back button */}
+        <div className="backButn" style={{ marginTop: "20px" }}>
+          <Link to="/menu">{"<-- Back"}</Link>
+        </div>
       </div>
-    </div>
+    </main>
   );
 };
 
