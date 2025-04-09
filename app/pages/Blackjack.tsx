@@ -22,7 +22,7 @@ class Multideck {
     cards: Card[] = [];
     values: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10];
     types: string[] = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"];
-    suites: string[] = ["Xonics", "Dlords", "Goobus", "Sprockets"];
+    suites: string[] = ["Spades", "Clubs", "Hearts", "Diamonds"];
 
     constructor(decks: number) {
         // Repeating this process for number of decks desired.
