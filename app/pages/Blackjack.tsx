@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement , useState } from "react";
 
 // Class for card creation.
 class Card {
@@ -44,11 +44,8 @@ class Multideck {
         }
     }
 
-    printDeck():void {
-        for (const card of this.cards) {
-            console.log(card.info());
-        }
-        console.log(`Length: ${this.cards.length}\nTypes: ${this.types.length}\nValues: ${this.types.length}`);
+    drawCard():Card | undefined {
+        return this.cards.pop();
     }
 }
 
@@ -58,10 +55,10 @@ class Hand {
 
     calcVal():number {
         let handVal = 0;
-        let heldAces = [];
+        let heldAces: Card[] = [];
 
         // Calculating the value of all cards that are not aces.
-        for (const card in this.cards) {
+        for (const card of this.cards) {
             if (card.type === 'Ace') {
                 heldAces.push(card);
             } else {
@@ -69,31 +66,88 @@ class Hand {
             }
         }
 
-        for (const ace in heldAces) {
-            
+        for (const ace of heldAces) {
+            ace.value = (handVal + 11 > 21) ? 1 : 11;
+
+            handVal += ace.value;
+        }
+
+        return handVal;
+    }
+}
+
+class Game {
+    playerHand: Hand = new Hand();
+    dealerHand: Hand = new Hand();
+
+    deck: Multideck;
+
+    constructor(deckNumber: number) {
+        this.deck = new Multideck(deckNumber);
+    }
+
+    // Deals two cards to the dealer and the player.
+    startGame():void {
+        // Resetting the hands.
+        this.playerHand.cards = [];
+        this.dealerHand.cards = [];
+
+        this.deck.shuffle();
+
+        for (let i = 0; i < 4; i++) {
+            if (!(i % 2)) {
+                this.deal(this.dealerHand);
+            } else {
+                this.deal(this.playerHand);
+            }
+        }
+
+        if (this.dealerHand.calcVal() == 21) {
+            console.log("Dealer got blackjack!");
+        }
+
+        if (this.playerHand.calcVal() == 21) {
+            console.log("Player got blackjack!");
+        }
+    }
+
+    deal(hand: Hand):void {
+        let card = this.deck.drawCard();
+
+        if (card) {
+            hand.cards.push(card)
         }
     }
 }
 
-// Creating the class for the game.
-class BlackjackGame {
-    deck: Multideck;
-    playerHand: Card[] = [];
-    dealerHand: Card[] = [];
-
-    constructor(decks: number) {
-        this.deck = new Multideck(decks);
-    }
-}
 
 export default function Blackjack() {
-    const doubleDeck = new Multideck(2);
-    doubleDeck.shuffle();
-    console.log(doubleDeck.printDeck());
+    const [game] = useState(new Game(2));
+    const [, setRender] = useState(0);
+    const forceRender = () => setRender(prev => prev + 1);
+
+    const handleStart = () => {
+        game.startGame();
+        forceRender();
+    }
+
+    const handleDeal = () => {
+        game.deal(game.playerHand);
+        forceRender();
+    }
 
     return (
         <main>
-            <p>Check the console!</p>
+            <p>Dealer's Hand</p>
+            {game.dealerHand.cards.map(card => (
+                <p>{card.info()}</p>
+            ))}
+            <p>Player's Hand:</p>
+            {game.playerHand.cards.map(card => (
+                <p>{card.info()}</p>
+            ))}
+            <button onClick={handleStart}>Start Game</button>
+            <button onClick={handleDeal}>Deal</button>
         </main>
     )
 }
