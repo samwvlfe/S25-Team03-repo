@@ -9,14 +9,6 @@ export function DriverButtons() {
     const navigate = useNavigate();
     return (
         <>
-            {/* Only display these if driver doesn't have a sponsor. */ }
-            {/* <li id="createApp">Create Application</li>
-            <li id="dViewApps">Review Applications</li> */}
-
-            {/* Only display these if a driver is sponsored. */}
-            {/* <li id="viewSponsor">View Sponsor</li>
-            <li id="viewGuidelines">View Sponsor Guidelines</li>
-            <li id="partnerMgmt">Manage Partnership</li> */}
             <li onClick={() => navigate("/point-transaction")}>Point History</li>
             <li onClick={() => navigate("/fake-store")}>Redeem Points</li>
             <li><Link to="/request-sponsor">Request Sponsor</Link></li>
@@ -32,12 +24,8 @@ export function SponsorButtons() {
     return (
         <>
             <li onClick={() => navigate("/users")} id="viewRoster">View Roster</li>
-            {/* <li id="poinstMgmt">Points Management</li> */}
-            {/* <li id="catalogMgmt">Catalog Management</li> */}
-            {/* <li id="sponsorApps">Review Applications</li> */}
-            {/* <li id="switchView">Driver View</li> */}
-            {/* <li onClick={() => navigate("/password-change")}>Change Password</li> */}
-            {/* <li onClick={() => navigate("/sponsor-catalog")}>Manage Product Catalog</li> */}
+            <li onClick={() => navigate("/password-change")}>Change Password</li>
+            <li onClick={() => navigate("/sponsor-catalog")}>Manage Product Catalog</li>
             <li onClick={() => navigate("/update-driver-pts")}>Update Points</li>
             <li onClick={() => navigate("/review")}>Review Applications</li>
             <li onClick={() => navigate("/password-change")}>Change Password</li>
@@ -53,14 +41,14 @@ export function AdminButtons() {
     return (
         <>
             <li onClick={() => navigate("/users")}>Manage Users</li>
-            <li>Add User</li>
             <li onClick={() => navigate("/review")}>Review Applications</li>
-            <li>View Audit Logs</li>
+            <li onClick={() => navigate("/create-user")}>Add User</li>
             <li onClick={() => navigate("/update-driver-pts")}>Update Points</li>
             <li onClick={() => navigate("/password-change")}>Change Password</li>
             <li onClick={() => navigate("/create-product")}>Add New Product</li>
             <li onClick={() => navigate("/add-company")}>Add Company</li>
             <li onClick={() => navigate("/catalog-purchases")}>View Driver Transactions</li>
+            <li>View Audit Logs</li>
         </>
     )
 }

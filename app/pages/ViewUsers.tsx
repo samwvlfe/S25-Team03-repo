@@ -23,12 +23,13 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
     const [roleFilter, setRoleFilter] = useState("All");
     const [error, setError] = useState('');
 
+    // Determining who the local user is.
+    const localUser = JSON.parse(localStorage.getItem("user") || "{}");
+
     // Fetch users from backend
     useEffect(() => {
         axios.get('http://localhost:2999/api/get-users', { params: { adminID } })
             .then(response => {
-                console.log("Users received:", response.data);
-
                 const normalizedUsers = response.data.map((user: any) => ({
                     UserID: user.DriverID || user.AdminID || user.SponsorUserID,
                     Name: user.Name,
@@ -50,6 +51,11 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
         ? users 
         : users.filter(user => user.UserType === roleFilter);
 
+    // Filter users based upon whether the local user is an admin or sponsored user.
+    const visibleUsers = localUser.usertype === 'SponsorUser'
+        ? filteredUsers.filter(user => user.CompanyID === localUser.companyID)
+        : filteredUsers;
+
     return (
         <main>
             <div className="move-down">
@@ -63,6 +69,7 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
                                 <option value="All">All</option>
                                 <option value="Driver">Drivers</option>
                                 <option value="SponsorUser">Sponsors</option>
+                                {localUser.usertype === 'Admin' && <option value="Admin">Admins</option>}
                             </select>
                         </div>
 
@@ -76,12 +83,12 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
                                     <th>Name</th>
                                     <th>Username</th>
                                     <th>Role</th>
-                                    <th>Company ID (if Sponsor)</th>
+                                    <th>Company ID</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredUsers.length > 0 ? (
-                                    filteredUsers.map(user => (
+                                {visibleUsers.length > 0 ? (
+                                    visibleUsers.map(user => (
                                         <tr key={user.UserID} onClick={() => {
                                             if (curUser === null || curUser != user) {
                                                 setCurUser(user);
@@ -93,7 +100,7 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
                                             <td>{user.Name}</td>
                                             <td>{user.Username}</td>
                                             <td>{user.UserType}</td>
-                                            <td>{user.UserType === "SponsorUser" ? user.CompanyID || "N/A" : "—"}</td>
+                                            <td>{user.CompanyID != null ? user.CompanyID : "—"}</td>
                                         </tr>
                                     ))
                                 ) : (
