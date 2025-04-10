@@ -5,14 +5,20 @@ class Card {
     type: string;
     value: number;
     suite: string;
+    flipped: boolean;
 
-    constructor(type: string, value: number, suite: string) {
+    constructor(type: string, value: number, suite: string, flipped: boolean) {
         this.type = type;
         this.value = value;
         this.suite = suite;
+        this.flipped = flipped;
     }
 
     info():string {
+        if (this.flipped) {
+            return `Flipped`;
+        }
+
         return `${this.type} (${this.value}) of ${this.suite}`;
     }
 }
@@ -31,7 +37,7 @@ class Multideck {
             for (const suite of this.suites) {
                 // Assining type and value to card and adding it to the total cards.
                 for (let j = 0; j < this.values.length; j++) {
-                    this.cards.push(new Card(this.types[j], this.values[j], suite));
+                    this.cards.push(new Card(this.types[j], this.values[j], suite, false));
                 }
             }
         }
@@ -59,7 +65,7 @@ class Hand {
 
         // Calculating the value of all cards that are not aces.
         for (const card of this.cards) {
-            if (card.type === 'Ace') {
+            if (card.type === "Ace") {
                 heldAces.push(card);
             } else {
                 handVal += card.value;
@@ -80,10 +86,16 @@ class Game {
     playerHand: Hand = new Hand();
     dealerHand: Hand = new Hand();
 
+    playerState: string = "Bust";
+    dealerStand: number;
+
     deck: Multideck;
 
-    constructor(deckNumber: number) {
+    constructor(deckNumber: number, dealerStand: number) {
         this.deck = new Multideck(deckNumber);
+
+        // The target number of the dealer.
+        this.dealerStand = dealerStand;
     }
 
     // Deals two cards to the dealer and the player.
@@ -92,37 +104,97 @@ class Game {
         this.playerHand.cards = [];
         this.dealerHand.cards = [];
 
+        // Resetting player state.
+        this.playerState = "Playing";
+
         this.deck.shuffle();
 
         for (let i = 0; i < 4; i++) {
+            const flipped = !i ? true : false;
+
             if (!(i % 2)) {
-                this.deal(this.dealerHand);
+                this.deal(this.dealerHand, flipped);
             } else {
-                this.deal(this.playerHand);
+                this.deal(this.playerHand, flipped);
             }
         }
 
         if (this.dealerHand.calcVal() == 21) {
             console.log("Dealer got blackjack!");
+            this.playerState = "Lost";
         }
 
         if (this.playerHand.calcVal() == 21) {
             console.log("Player got blackjack!");
+            this.playerState = "Won";
         }
     }
 
-    deal(hand: Hand):void {
+    checkBust():void {
+        switch (true) {
+            case this.playerHand.calcVal() > 21:
+                console.log("Player has bust!");
+                this.playerState = "Lost";
+                break;
+            case this.dealerHand.calcVal() > 21:
+                console.log("Dealer has bust!");
+                this.playerState = "Won";
+                break;
+        }
+    }
+
+    checkCondition():void {
+        switch (true) {
+            case this.playerHand.calcVal() > this.dealerHand.calcVal():
+                console.log("Player has won!");
+                this.playerState = "Won";
+                break;
+            case this.playerHand.calcVal() < this.dealerHand.calcVal():
+                console.log("Dealer has won!");
+                this.playerState = "Lost";
+                break;
+            default:
+                console.log("Push!");
+                this.playerState = "Push";
+                break;
+        }
+    }
+
+    deal(hand: Hand, flipped: boolean):void {
         let card = this.deck.drawCard();
 
         if (card) {
+            card.flipped = flipped;
             hand.cards.push(card)
+        }
+
+        this.checkBust();
+    }
+
+    hold():void {
+        this.playerState = "Hold";
+
+        // The dealer will flip their first card over.
+        this.dealerHand.cards[0].flipped = false;
+
+        // The dealer will stand on 17 or above.
+        while(this.dealerHand.calcVal() < 17) {
+            this.deal(this.dealerHand, false);
+        }
+
+        // Checking to see if the dealer has gone bust.
+        this.checkBust();
+
+        if (this.playerState == "Hold") {
+            // Evaluating the final state of the game.
+            this.checkCondition();   
         }
     }
 }
 
 
 export default function Blackjack() {
-    const [game] = useState(new Game(2));
+    const [game] = useState(new Game(2, 17));
     const [, setRender] = useState(0);
     const forceRender = () => setRender(prev => prev + 1);
 
@@ -132,7 +204,12 @@ export default function Blackjack() {
     }
 
     const handleDeal = () => {
-        game.deal(game.playerHand);
+        game.deal(game.playerHand, false);
+        forceRender();
+    }
+
+    const handleHold = () => {
+        game.hold();
         forceRender();
     }
 
@@ -146,8 +223,9 @@ export default function Blackjack() {
             {game.playerHand.cards.map(card => (
                 <p>{card.info()}</p>
             ))}
-            <button onClick={handleStart}>Start Game</button>
-            <button onClick={handleDeal}>Deal</button>
+            {game.playerState != "Playing" && <button onClick={handleStart}>Start Game</button>}
+            {game.playerState == "Playing" && <button onClick={handleDeal}>Deal</button>}
+            {game.playerState == "Playing" && <button onClick={handleHold}>Hold</button>}
         </main>
     )
 }
