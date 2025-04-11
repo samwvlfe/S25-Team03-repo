@@ -27,6 +27,8 @@ import UpdateDriverPoints from './pages/UpdateDriverPoints';
 import DriverTransactions from './pages/DriverTransactions'
 import DriverOrders from './pages/DriverOrders'
 import CatalogPurchases from './pages/CatalogPurchases';
+import Profile from './pages/Profile';
+
 
 
 import {handleSignOut, toggleNav} from '../script/toggle'
@@ -66,6 +68,9 @@ export default function Navigation() {
         }
     }, [menuState]);
 
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const profileImage = user.profileImageURL || "/media/default-alien.svg";
+
     return (
         <Router>
             <header>
@@ -76,26 +81,40 @@ export default function Navigation() {
                     </div>
                 </Link>
                 <nav className="nav-bar">
-                    <ul>
-                        <li id="signin" style={{ display: "block" }}>
-                            <Link to="/signin">
-                                <img src="/media/signin.svg" alt="Sign In" />
-                                Sign In
-                            </Link>
-                        </li>
-                        <li id="apply" style={{ display: "block" }} className="account-button">
-                            <Link to="/apply">Apply</Link>
-                        </li>
-                        <li id="goto">
-                            <Link to="/menu">Dashboard</Link>
-                        </li>
-                        <li id="signout">
-                            <img src="/media/default-alien.svg" onClick={ toggleMenu }/>
-                            <div id="signoutMenu" ref={menuRef} style={{ display: menuState }}>
-                                <button className="account-button" onClick={handleSignOut}>Sign Out</button>
-                            </div>
-                        </li>
-                    </ul>
+                <ul>
+        <li id="signin" style={{ display: "block" }}>
+            <Link to="/signin">
+                <img src="/media/signin.svg" alt="Sign In" />
+                Sign In
+            </Link>
+        </li>
+        <li id="apply" style={{ display: "block" }} className="account-button">
+            <Link to="/apply">Apply</Link>
+        </li>
+        <li id="goto">
+            <Link to="/menu">Dashboard</Link>
+        </li>
+        <li id="signout">
+        <img
+                src={profileImage}
+                alt="User Avatar"
+                onClick={toggleMenu}
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = "/media/default-alien.svg";
+                }}
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  cursor: "pointer"
+                }}
+              />
+            <div id="signoutMenu" ref={menuRef} style={{ display: menuState }}>
+                <button className="account-button" onClick={handleSignOut}>Sign Out</button>
+            </div>
+        </li>
+    </ul>
                 </nav>
             </header>
             <Routes>
@@ -119,6 +138,7 @@ export default function Navigation() {
                 <Route path="/driver-transactions" element={<DriverTransactions />} />
                 <Route path="/driver-orders" element={<DriverOrders />} />
                 <Route path="/catalog-purchases" element={<CatalogPurchases />} />
+                <Route path="/profile" element={<Profile />} />
             </Routes>
         </Router>
     );

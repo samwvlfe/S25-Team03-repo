@@ -283,7 +283,8 @@ const verifyLogin = (Username, callback) => {
                 username: user.Username,
                 pass: user.PasswordHash,
                 usertype: user.UserType,
-                companyID: user.CompanyID
+                companyID: user.CompanyID,
+                profileImageURL: user.ProfileImageURL || null
             }
         });
     });
@@ -783,6 +784,80 @@ app.get('/catalog-purchases', (req, res) => {
       res.json(results);
     });
 });
+
+app.get('/api/profile/:username', (req, res) => {
+    const username = req.params.username;
+
+    const query = `
+        SELECT Username, Name, Email, ProfileImageURL, UserType
+        FROM AllUsers
+        WHERE Username = ?
+    `;
+
+    db.query(query, [username], (err, results) => {
+        if (err) {
+            console.error("Error fetching profile:", err);
+            return res.status(500).json({ error: "Failed to fetch profile" });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.json(results[0]);
+    });
+});
+
+
+app.put('/api/profile/update', (req, res) => {
+    const { username, name, email, profileImageURL, userType } = req.body;
+
+    if (!username || !userType) {
+        return res.status(400).json({ error: "Missing username or user type" });
+    }
+
+    // Step 1: Update AllUsers
+    const updateAllUsersQuery = `
+        UPDATE AllUsers
+        SET Name = ?, Email = ?, ProfileImageURL = ?
+        WHERE Username = ?
+    `;
+
+    db.query(updateAllUsersQuery, [name, email, profileImageURL, username], (err) => {
+        if (err) {
+            console.error("Error updating AllUsers:", err);
+            return res.status(500).json({ error: "Failed to update AllUsers" });
+        }
+
+        // Step 2: Update individual user table
+        let table;
+        if (userType === 'Admin') {
+            table = 'Admin';
+        } else if (userType === 'SponsorUser') {
+            table = 'SponsorUser';
+        } else if (userType === 'Driver') {
+            table = 'Driver';
+        } else {
+            return res.status(400).json({ error: "Invalid user type" });
+        }
+
+        const updateSpecificTableQuery = `
+            UPDATE ${table}
+            SET Name = ?, Email = ?, ProfileImageURL = ?
+            WHERE Username = ?
+        `;
+
+        db.query(updateSpecificTableQuery, [name, email, profileImageURL, username], (err) => {
+            if (err) {
+                console.error(`Error updating ${table}:`, err);
+                return res.status(500).json({ error: `Failed to update ${table}` });
+            }
+
+            return res.json({ message: "Profile updated successfully" });
+        });
+    });
+});
+
 
 // Start server
 app.listen(port, () => {

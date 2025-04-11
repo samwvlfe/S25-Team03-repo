@@ -15,7 +15,7 @@ export default function Menu() {
         <main className="menu-page">
             <ul className="side-menu">
                 {user.usertype == 'Driver' && <DriverButtons/>}
-                {user.usertype == 'SponsorUser' && <SponsorButtons/>}
+                {(user.usertype === 'SponsorUser' || user.usertype === 'Sponsor') && <SponsorButtons/>}
                 {user.usertype == 'Admin' && <AdminButtons/>}
             </ul>
             <div id="menuContent">
