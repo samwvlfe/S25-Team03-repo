@@ -519,6 +519,22 @@ app.get('/getTotalPoints', (req, res) => {
     );
 });
 
+app.get('/api/leaderboard', (req, res) => {
+    const query = `
+      SELECT Name, Username, TotalPoints 
+      FROM Driver 
+      ORDER BY TotalPoints DESC
+    `;
+  
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error("Leaderboard query failed:", err);
+        return res.status(500).json({ error: "Database query failed", details: err.message });
+      }
+      res.json(results);
+    });
+  });
+
 // change points by Driver ID 
 app.post('/updatePoints', (req, res) => {
     const { userDriverID, Points_inc, EditorUserID, reason } = req.body; 

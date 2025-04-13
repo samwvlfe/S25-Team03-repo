@@ -28,6 +28,7 @@ import DriverTransactions from './pages/DriverTransactions'
 import DriverOrders from './pages/DriverOrders'
 import CatalogPurchases from './pages/CatalogPurchases';
 import Profile from './pages/Profile';
+import Leaderboard from "./pages/Leaderboard";
 
 
 
@@ -139,6 +140,7 @@ export default function Navigation() {
                 <Route path="/driver-orders" element={<DriverOrders />} />
                 <Route path="/catalog-purchases" element={<CatalogPurchases />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/leaderboard" element={<Leaderboard />} />
             </Routes>
         </Router>
     );
