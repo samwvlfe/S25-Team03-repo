@@ -611,6 +611,45 @@ header a {
   cursor: pointer;
 }
 
+/* Blackjack. */
+.card {
+  display: flex;
+  flex-direction: column;
+
+  align-items: stretch;
+  justify-content: space-between;
+
+  border: 1px solid black;
+
+  width: 150px;
+  height: 210px;
+}
+
+.card p {
+  display: inline-block;
+
+  text-align: center;
+}
+
+.card-row {
+  display: flex;
+  justify-content: space-around;
+
+  font-size: 14pt;
+}
+
+.card-info, .card-info-alt {
+  display: flex;
+}
+
+.card-info {
+  justify-content: left;
+}
+
+.card-info-alt {
+  justify-content: right;
+}
+
 /* Footer formatting. */
 footer {
   display: flex;

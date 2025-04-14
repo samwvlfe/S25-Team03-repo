@@ -1,3 +1,4 @@
+import { useBreakpointValue } from "@aws-amplify/ui-react";
 import React, { ReactElement , useState } from "react";
 
 // Class for card creation.
@@ -14,12 +15,42 @@ class Card {
         this.flipped = flipped;
     }
 
-    info():string {
-        if (this.flipped) {
-            return `Flipped`;
+    info():ReactElement {
+        let display: number | string = this.value;
+
+        if (this.type[0] == "A" || this.type[0] == "J" || this.type[0] == "Q" || this.type[0] == "K") {
+            display = this.type[0];
         }
 
-        return `${this.type} (${this.value}) of ${this.suite}`;
+        const layouts:Record<string, number[][]> = {
+            "Ace": [[1]],
+            "Jack": [[1]],
+            "Queen": [[1]],
+            "King": [[1]],
+            "Two": [[1], [1]],
+            "Three": [[1], [1], [1]],
+            "Four": [[2], [2]],
+            "Five": [[2], [1], [2]],
+            "Six": [[2], [2], [2]],
+            "Seven": [[2], [1], [2], [2]],
+            "Eight": [[2], [1], [2], [1], [2]],
+            "Nine": [[2], [2], [1], [2], [2]],
+            "Ten": [[2], [1], [2], [1], [2]]
+        }
+
+        return (
+            <div className="card">
+                <div className="card-info"><p>{display}<br />{this.suite}</p></div>
+                {layouts[this.type].map((row, rowIndex) => (
+                    <div key={rowIndex} className="card-row">
+                        {Array.from({ length: row[0] }).map((_, i) => (
+                            <span key={i}>{this.suite}</span>
+                        ))}
+                    </div>
+                ))}
+                <div className="card-info-alt"><p>{display}<br />{this.suite}</p></div>
+            </div>
+        )
     }
 }
 
@@ -28,7 +59,7 @@ class Multideck {
     cards: Card[] = [];
     values: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10];
     types: string[] = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"];
-    suites: string[] = ["Spades", "Clubs", "Hearts", "Diamonds"];
+    suites: string[] = ["♠", "♣", "♥", "♦"];
 
     constructor(decks: number) {
         // Repeating this process for number of decks desired.
@@ -119,14 +150,19 @@ class Game {
             }
         }
 
-        if (this.dealerHand.calcVal() == 21) {
-            console.log("Dealer got blackjack!");
-            this.playerState = "Lost";
-        }
-
-        if (this.playerHand.calcVal() == 21) {
-            console.log("Player got blackjack!");
-            this.playerState = "Won";
+        switch (true) {
+            case this.dealerHand.calcVal() == 21:
+                console.log("Dealer got blackjack!");
+                this.playerState = "Lost";
+                break;
+            case this.playerHand.calcVal() == 21:
+                console.log("Player got blackjack!");
+                this.playerState = "Blackjack";
+                break;
+            case this.dealerHand.calcVal() == 21 && this.playerHand.calcVal() == 21:
+                console.log("Push!");
+                this.playerState = "Push";
+                break;
         }
     }
 
@@ -216,13 +252,17 @@ export default function Blackjack() {
     return (
         <main>
             <p>Dealer's Hand</p>
-            {game.dealerHand.cards.map(card => (
-                <p>{card.info()}</p>
-            ))}
+            <div className="hand">
+                {game.dealerHand.cards.map(card => (
+                    card.info()
+                ))}
+            </div>
             <p>Player's Hand:</p>
-            {game.playerHand.cards.map(card => (
-                <p>{card.info()}</p>
-            ))}
+            <div className="hand">
+                {game.playerHand.cards.map(card => (
+                    card.info()
+                ))}
+            </div>
             {game.playerState != "Playing" && <button onClick={handleStart}>Start Game</button>}
             {game.playerState == "Playing" && <button onClick={handleDeal}>Deal</button>}
             {game.playerState == "Playing" && <button onClick={handleHold}>Hold</button>}
