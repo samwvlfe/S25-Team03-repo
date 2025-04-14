@@ -625,6 +625,7 @@ header a {
   display: flex;
 
   justify-content: center;
+  align-items: center;
 
   gap: 20px;
 
@@ -654,16 +655,15 @@ header a {
 
 .card {
   display: flex;
-  flex-direction: column;
 
-  align-items: stretch;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: stretch;
 
   border: 1px solid black;
   border-radius: 5px;
 
   width: 160px;
-  height: 250px;
+  height: 225px;
 
   padding: 5px;
 }
@@ -674,23 +674,35 @@ header a {
   text-align: center;
 }
 
+.card span {
+  text-align: center;
+  height: 8px;
+
+  font-size: 24pt;
+}
+
 .card-row {
   display: flex;
   justify-content: space-around;
-
-  font-size: 16pt;
 }
 
 .card-info, .card-info-alt {
+  position: absolute;
+
   display: flex;
+
+  margin: 0;
+  padding: 0;
 }
 
 .card-info {
-  justify-content: left;
+  top: 0;
+  left: 0;
 }
 
 .card-info-alt {
-  justify-content: right;
+  bottom: 0;
+  right: 0;
 }
 
 /* Footer formatting. */
