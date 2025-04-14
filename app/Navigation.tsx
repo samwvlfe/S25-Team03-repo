@@ -25,6 +25,11 @@ import ReviewDriverRequests from './pages/ReviewDriverRequests';
 import CreateUser from './pages/CreateUser';
 import UpdateDriverPoints from './pages/UpdateDriverPoints';
 import Blackjack from './pages/Blackjack';
+import DriverTransactions from './pages/DriverTransactions'
+import DriverOrders from './pages/DriverOrders'
+import CatalogPurchases from './pages/CatalogPurchases';
+import Profile from './pages/Profile';
+import Leaderboard from "./pages/Leaderboard";
 
 import {handleSignOut, toggleNav} from '../script/toggle'
 
@@ -63,6 +68,9 @@ export default function Navigation() {
         }
     }, [menuState]);
 
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const profileImage = user.profileImageURL || "/media/default-alien.svg";
+
     return (
         <Router>
             <header>
@@ -87,7 +95,21 @@ export default function Navigation() {
                             <Link to="/menu">Dashboard</Link>
                         </li>
                         <li id="signout">
-                            <img src="/media/default-alien.svg" onClick={ toggleMenu }/>
+                            <img
+                                    src={profileImage}
+                                    alt="User Avatar"
+                                    onClick={toggleMenu}
+                                    onError={(e) => {
+                                    (e.currentTarget as HTMLImageElement).src = "/media/default-alien.svg";
+                                    }}
+                                    style={{
+                                    width: "40px",
+                                    height: "40px",
+                                    borderRadius: "50%",
+                                    objectFit: "cover",
+                                    cursor: "pointer"
+                                    }}
+                                />
                             <div id="signoutMenu" ref={menuRef} style={{ display: menuState }}>
                                 <button className="account-button" onClick={handleSignOut}>Sign Out</button>
                             </div>
@@ -114,6 +136,11 @@ export default function Navigation() {
                 <Route path="/blackjack" element={<Blackjack />}/>
                 <Route path="/" element={<About />} />
                 <Route path="/update-driver-pts" element={<UpdateDriverPoints />} />
+                <Route path="/driver-transactions" element={<DriverTransactions />} />
+                <Route path="/driver-orders" element={<DriverOrders />} />
+                <Route path="/catalog-purchases" element={<CatalogPurchases />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/leaderboard" element={<Leaderboard />} />
             </Routes>
         </Router>
     );

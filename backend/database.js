@@ -283,7 +283,8 @@ const verifyLogin = (Username, callback) => {
                 username: user.Username,
                 pass: user.PasswordHash,
                 usertype: user.UserType,
-                companyID: user.CompanyID
+                companyID: user.CompanyID,
+                profileImageURL: user.ProfileImageURL || null
             }
         });
     });
@@ -518,6 +519,22 @@ app.get('/getTotalPoints', (req, res) => {
     );
 });
 
+app.get('/api/leaderboard', (req, res) => {
+    const query = `
+      SELECT Name, Username, TotalPoints 
+      FROM Driver 
+      ORDER BY TotalPoints DESC
+    `;
+  
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error("Leaderboard query failed:", err);
+        return res.status(500).json({ error: "Database query failed", details: err.message });
+      }
+      res.json(results);
+    });
+  });
+
 // change points by Driver ID 
 app.post('/updatePoints', (req, res) => {
     const { userDriverID, Points_inc, EditorUserID, reason } = req.body; 
@@ -689,7 +706,7 @@ app.get("/api/sponsor/driver-requests/:companyID", (req, res) => {
 
 // get driver actions for drop down
 app.get('/api/driver-actions', (req, res) => {
-    const query = 'SELECT * FROM DriverActions'; // no extra quotes
+    const query = 'SELECT * FROM DriverActions';
     db.query(query, (err, results) => {
         if (err) {
             res.status(500).json({ error: 'Database query failed', details: err });
@@ -699,20 +716,161 @@ app.get('/api/driver-actions', (req, res) => {
     });
 });
 
-// call stored procedure to get list of drivers purchases per sponsor
-app.post('/api/getdriverpurchases', (req, res) => {
-    const { inputCompanyID } = req.body;
-    // make sure parameters are there
-    if (!inputCompanyID) {
-        return res.status(400).json({ error: 'Missing required parameter.' });
+// order history by driver ID
+app.get('/orderHistory', (req, res) => {
+    const { driverID } = req.query;
+  
+    if (!driverID || isNaN(driverID)) {
+      return res.status(400).json({ error: 'Invalid or missing driver ID' });
     }
-    // execute the stored procedure 
-    db.query('CALL GetDriverAndDetailsByCompany(?)', [inputCompanyID], (error, results) => {
-        if (error) {
-            console.error('Error executing stored procedure:', error);
-            return res.status(500).json({ error: 'Database error occurred.' });
+  
+    const query = `
+      SELECT * 
+      FROM CataPurchases 
+      WHERE DriverID = ?
+      ORDER BY PurchaseID DESC;
+    `;
+  
+    db.query(query, [driverID], (err, results) => {
+      if (err) {
+        console.error('Query error:', err);
+        return res.status(500).json({ error: 'Error retrieving order history' });
+      }
+      res.json(results);
+    });
+  });
+
+// show transactions by Driver
+app.post('/driver-transactions', (req, res) => {
+    const companyID = req.body.companyID;
+  
+    if (!Number.isInteger(companyID)) {
+        return res.status(400).json({ error: "companyID must be an integer" });
+    }
+  
+    db.query('CALL GoodDriverIncentiveT3.drivertransactions(?)', [companyID], (err, results) => {
+        if (err) {
+            console.error("Stored procedure error:", err);
+            return res.status(500).json({ error: "Database error" });
         }
-        res.json({results });
+            res.json(results[0]); // typically the result set is at index 0
+    });
+});
+
+//delete order
+app.get('/deleteOrder/', (req, res) => {
+
+    const { PurchaseID } = req.query;
+
+    if (!PurchaseID) {
+        return res.status(400).json({ error: 'Cannot access Purchase ID' });
+    }
+
+    db.query(
+        'DELETE FROM GoodDriverIncentiveT3.CataPurchases WHERE PurchaseID = ?',
+        [PurchaseID],
+        (err, results) => {
+            if (err) {
+                console.error('Database error:', err);
+                return res.status(500).json({ error: 'Database query error' });
+            }
+
+            if (results.affectedRows > 0) {
+                res.status(200).json({ message: 'Purchase deleted successfully', results });
+            } else {
+                res.status(404).json({ error: 'Purchase not found or already deleted' });
+            }
+        }
+    );
+});
+
+// get all driver purchases for admin
+app.get('/catalog-purchases', (req, res) => {
+    const query = `
+      SELECT * 
+      FROM PointHistory 
+      WHERE reason = 'User Catalog Purchase' OR reason = 'Catalog Purchase'
+    `;
+  
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error('Database error:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+      res.json(results);
+    });
+});
+
+app.get('/api/profile/:username', (req, res) => {
+    const username = req.params.username;
+
+    const query = `
+        SELECT Username, Name, Email, ProfileImageURL, UserType
+        FROM AllUsers
+        WHERE Username = ?
+    `;
+
+    db.query(query, [username], (err, results) => {
+        if (err) {
+            console.error("Error fetching profile:", err);
+            return res.status(500).json({ error: "Failed to fetch profile" });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.json(results[0]);
+    });
+});
+
+
+app.put('/api/profile/update', (req, res) => {
+    const { username, name, email, profileImageURL, userType } = req.body;
+
+    if (!username || !userType) {
+        return res.status(400).json({ error: "Missing username or user type" });
+    }
+
+    // Step 1: Update AllUsers
+    const updateAllUsersQuery = `
+        UPDATE AllUsers
+        SET Name = ?, Email = ?, ProfileImageURL = ?
+        WHERE Username = ?
+    `;
+
+    db.query(updateAllUsersQuery, [name, email, profileImageURL, username], (err) => {
+        if (err) {
+            console.error("Error updating AllUsers:", err);
+            return res.status(500).json({ error: "Failed to update AllUsers" });
+        }
+
+        // Step 2: Update individual user table
+        let table;
+        if (userType === 'Admin') {
+            table = 'Admin';
+        } else if (userType === 'SponsorUser') {
+            table = 'SponsorUser';
+        } else if (userType === 'Driver') {
+            table = 'Driver';
+        } else {
+            return res.status(400).json({ error: "Invalid user type" });
+        }
+
+        const updateSpecificTableQuery = `
+            UPDATE ${table}
+            SET Name = ?, Email = ?, ProfileImageURL = ?
+            WHERE Username = ?
+        `;
+
+        db.query(updateSpecificTableQuery, [name, email, profileImageURL, username], (err) => {
+            if (err) {
+                console.error(`Error updating ${table}:`, err);
+                return res.status(500).json({ error: `Failed to update ${table}` });
+            }
+
+            return res.json({ message: "Profile updated successfully" });
+        });
     });
 });
 

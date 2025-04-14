@@ -12,13 +12,14 @@ CREATE TABLE IF NOT EXISTS Sponsor (
 
 -- Sponsor User
 CREATE TABLE IF NOT EXISTS SponsorUser (
-    EditorUserID INT AUTO_INCREMENT PRIMARY KEY,
+    SponsorUserID INT AUTO_INCREMENT PRIMARY KEY,
     Username VARCHAR(100) UNIQUE NOT NULL,
     Name VARCHAR(100) NOT NULL,
     Email VARCHAR(255) NOT NULL,
     PasswordHash VARCHAR(255) NOT NULL,
     CompanyID INT,
     ProfileImageURL TEXT NULL,
+    UserType ENUM('Sponsor') DEFAULT 'Sponsor',
     FOREIGN KEY (CompanyID) REFERENCES Sponsor(CompanyID) ON DELETE CASCADE
 );
 
@@ -28,8 +29,9 @@ CREATE TABLE IF NOT EXISTS Admin (
     Name VARCHAR(100) NOT NULL,
     Email VARCHAR(255) NOT NULL,
     Username VARCHAR(100) UNIQUE NOT NULL,
+    PasswordHash VARCHAR(255) NOT NULL,
     ProfileImageURL TEXT NULL,
-    PasswordHash VARCHAR(255) NOT NULL
+    UserType ENUM('Admin') DEFAULT 'Admin'
 );
 
 -- Driver User
@@ -42,16 +44,17 @@ CREATE TABLE IF NOT EXISTS Driver (
     TotalPoints INT DEFAULT 0,
     CompanyID INT,
     ProfileImageURL TEXT NULL,
+    UserType ENUM('Driver') DEFAULT 'Driver',
     FOREIGN KEY (CompanyID) REFERENCES Sponsor(CompanyID) ON DELETE CASCADE
 );
 
--- All Users
 CREATE TABLE IF NOT EXISTS AllUsers (
     UserID INT AUTO_INCREMENT PRIMARY KEY,
     Username VARCHAR(100) UNIQUE NOT NULL,
     Email VARCHAR(255) NOT NULL,
     PasswordHash VARCHAR(255) NOT NULL,
-    UserType ENUM('Driver', 'Sponsor', 'Admin') NOT NULL,
+    UserType ENUM('Driver', 'SponsorUser', 'Sponsor','Admin') NOT NULL,
+    ProfileImageURL TEXT NULL,
     Name VARCHAR(255) NULL,  -- Only for Drivers
     TotalPoints INT DEFAULT 0, -- Only for Drivers
     CompanyID INT NULL,  -- Only for Sponsors and Drivers
