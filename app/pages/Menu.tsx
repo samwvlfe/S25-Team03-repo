@@ -8,7 +8,6 @@ export default function Menu() {
 
     useEffect(() => {
         toggleNav(); 
-        console.log(user);
     }, []);
 
     return (

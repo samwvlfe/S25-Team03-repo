@@ -611,6 +611,88 @@ header a {
   cursor: pointer;
 }
 
+/* Blackjack. */
+.blackjack {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+
+  justify-content: space-around;
+}
+
+.game-controls {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 20px;
+
+  align-items: center;
+}
+
+.game-controls button {
+  font-size: 12pt;
+  font-family: "Reddit Sans";
+
+  border-radius: 20px;
+  border: 0;
+
+  margin-top: 20px;
+  padding: 8px;
+
+  width: 20%;
+}
+
+.hand {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 10px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+
+  align-items: stretch;
+  justify-content: space-between;
+
+  border: 1px solid black;
+  border-radius: 5px;
+
+  width: 160px;
+  height: 250px;
+
+  padding: 5px;
+}
+
+.card p {
+  display: inline-block;
+
+  text-align: center;
+}
+
+.card-row {
+  display: flex;
+  justify-content: space-around;
+
+  font-size: 16pt;
+}
+
+.card-info, .card-info-alt {
+  display: flex;
+}
+
+.card-info {
+  justify-content: left;
+}
+
+.card-info-alt {
+  justify-content: right;
+}
+
 /* Footer formatting. */
 footer {
   display: flex;

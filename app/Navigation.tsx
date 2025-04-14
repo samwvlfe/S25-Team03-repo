@@ -24,13 +24,12 @@ import SponsorRequestForm from './pages/SponsorRequestForm';
 import ReviewDriverRequests from './pages/ReviewDriverRequests';
 import CreateUser from './pages/CreateUser';
 import UpdateDriverPoints from './pages/UpdateDriverPoints';
+import Blackjack from './pages/Blackjack';
 import DriverTransactions from './pages/DriverTransactions'
 import DriverOrders from './pages/DriverOrders'
 import CatalogPurchases from './pages/CatalogPurchases';
 import Profile from './pages/Profile';
 import Leaderboard from "./pages/Leaderboard";
-
-
 
 import {handleSignOut, toggleNav} from '../script/toggle'
 
@@ -82,40 +81,40 @@ export default function Navigation() {
                     </div>
                 </Link>
                 <nav className="nav-bar">
-                <ul>
-        <li id="signin" style={{ display: "block" }}>
-            <Link to="/signin">
-                <img src="/media/signin.svg" alt="Sign In" />
-                Sign In
-            </Link>
-        </li>
-        <li id="apply" style={{ display: "block" }} className="account-button">
-            <Link to="/apply">Apply</Link>
-        </li>
-        <li id="goto">
-            <Link to="/menu">Dashboard</Link>
-        </li>
-        <li id="signout">
-        <img
-                src={profileImage}
-                alt="User Avatar"
-                onClick={toggleMenu}
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = "/media/default-alien.svg";
-                }}
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  cursor: "pointer"
-                }}
-              />
-            <div id="signoutMenu" ref={menuRef} style={{ display: menuState }}>
-                <button className="account-button" onClick={handleSignOut}>Sign Out</button>
-            </div>
-        </li>
-    </ul>
+                    <ul>
+                        <li id="signin" style={{ display: "block" }}>
+                            <Link to="/signin">
+                                <img src="/media/signin.svg" alt="Sign In" />
+                                Sign In
+                            </Link>
+                        </li>
+                        <li id="apply" style={{ display: "block" }} className="account-button">
+                            <Link to="/apply">Apply</Link>
+                        </li>
+                        <li id="goto">
+                            <Link to="/menu">Dashboard</Link>
+                        </li>
+                        <li id="signout">
+                            <img
+                                    src={profileImage}
+                                    alt="User Avatar"
+                                    onClick={toggleMenu}
+                                    onError={(e) => {
+                                    (e.currentTarget as HTMLImageElement).src = "/media/default-alien.svg";
+                                    }}
+                                    style={{
+                                    width: "40px",
+                                    height: "40px",
+                                    borderRadius: "50%",
+                                    objectFit: "cover",
+                                    cursor: "pointer"
+                                    }}
+                                />
+                            <div id="signoutMenu" ref={menuRef} style={{ display: menuState }}>
+                                <button className="account-button" onClick={handleSignOut}>Sign Out</button>
+                            </div>
+                        </li>
+                    </ul>
                 </nav>
             </header>
             <Routes>
@@ -134,6 +133,7 @@ export default function Navigation() {
                 <Route path="/request-sponsor" element={<SponsorRequestForm />} />
                 <Route path="/review-sponsor-requests" element={<ReviewDriverRequests />} />
                 <Route path="/create-user" element={<CreateUser />}/>
+                <Route path="/blackjack" element={<Blackjack />}/>
                 <Route path="/" element={<About />} />
                 <Route path="/update-driver-pts" element={<UpdateDriverPoints />} />
                 <Route path="/driver-transactions" element={<DriverTransactions />} />

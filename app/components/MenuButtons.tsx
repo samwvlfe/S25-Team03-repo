@@ -11,6 +11,7 @@ export function DriverButtons() {
         <>
             <li onClick={() => navigate("/point-transaction")}>Point History</li>
             <li onClick={() => navigate("/fake-store")}>Redeem Points</li>
+            <li onClick={() => navigate("/blackjack")}>GAMBLING!</li>
             <li><Link to="/request-sponsor">Request Sponsor</Link></li>
             <li onClick={() => navigate("/password-change")}>Change Password</li>
             <li onClick={() => navigate("/driver-orders")}>View Orders</li>
