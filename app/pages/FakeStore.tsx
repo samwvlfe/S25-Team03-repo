@@ -6,7 +6,6 @@ import axios from "axios";
 
 const FakeStore: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
-    const [userPoints, setUserPoints] = useState<number>(100);
     const [sortOrder, setSortOrder] = useState<string>("none");
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [affordableOnly, setAffordableOnly] = useState<boolean>(false);
@@ -74,7 +73,7 @@ const FakeStore: React.FC = () => {
             product.ProductName.toLowerCase().includes(searchTerm.toLowerCase())
         )
         .filter(product =>
-            !affordableOnly || product.PriceInPoints <= userPoints
+            !affordableOnly || (availablePoints !== null && product.PriceInPoints <= availablePoints)
         )
         .sort((a, b) => {
             if (sortOrder === "lowToHigh") return a.PriceInPoints - b.PriceInPoints;
