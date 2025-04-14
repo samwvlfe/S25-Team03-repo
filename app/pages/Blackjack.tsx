@@ -166,6 +166,7 @@ class Game {
         }
     }
 
+    // Check to see if hands are valid.
     checkBust():void {
         switch (true) {
             case this.playerHand.calcVal() > 21:
@@ -179,6 +180,7 @@ class Game {
         }
     }
 
+    // Check to see if the game ended in a win, loss, or a tie (push).
     checkCondition():void {
         switch (true) {
             case this.playerHand.calcVal() > this.dealerHand.calcVal():
@@ -196,6 +198,7 @@ class Game {
         }
     }
 
+    // Deals a card to the hand, determine whether or not it's flipped.
     deal(hand: Hand, flipped: boolean):void {
         let card = this.deck.drawCard();
 
@@ -207,6 +210,7 @@ class Game {
         this.checkBust();
     }
 
+    // Let the player hold their position.
     hold():void {
         this.playerState = "Hold";
 
@@ -251,21 +255,23 @@ export default function Blackjack() {
 
     return (
         <main>
-            <p>Dealer's Hand</p>
-            <div className="hand">
-                {game.dealerHand.cards.map(card => (
-                    card.info()
-                ))}
+            <div className="blackjack">
+                <div className="hand">
+                    {game.dealerHand.cards.map(card => (
+                        card.info()
+                    ))}
+                </div>
+                <div className="game-controls">
+                    {game.playerState != "Playing" && <button onClick={handleStart}>Start Game</button>}
+                    {game.playerState == "Playing" && <button onClick={handleDeal}>Deal</button>}
+                    {game.playerState == "Playing" && <button onClick={handleHold}>Hold</button>}
+                </div>
+                <div className="hand">
+                    {game.playerHand.cards.map(card => (
+                        card.info()
+                    ))}
+                </div>
             </div>
-            <p>Player's Hand:</p>
-            <div className="hand">
-                {game.playerHand.cards.map(card => (
-                    card.info()
-                ))}
-            </div>
-            {game.playerState != "Playing" && <button onClick={handleStart}>Start Game</button>}
-            {game.playerState == "Playing" && <button onClick={handleDeal}>Deal</button>}
-            {game.playerState == "Playing" && <button onClick={handleHold}>Hold</button>}
         </main>
     )
 }
