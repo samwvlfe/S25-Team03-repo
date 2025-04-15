@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+
 
 const Profile: React.FC = () => {
   let user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -112,6 +114,10 @@ const Profile: React.FC = () => {
         <button type="submit">Update Profile</button>
       </form>
       {message && <p>{message}</p>}
+                  {/* Back button */}
+      <div className="backButn" style={{ marginTop: "20px" }}>
+        <Link to="/menu">{"<-- Back"}</Link>
+      </div>
     </div>
   );
 };

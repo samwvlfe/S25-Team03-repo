@@ -508,6 +508,10 @@ header a {
 
 .product-grid div button:hover {
   cursor: pointer;
+  background-color: #8c8c8c;
+}
+.product-grid div button:active{
+  background-color: cornflowerblue;
 }
 
 /* Formatting for the menu page. */
