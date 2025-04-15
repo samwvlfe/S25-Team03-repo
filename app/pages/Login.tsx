@@ -35,9 +35,16 @@ export default function Login() {
             });
 
             if (response.data.success) {
-                setMessage('Login successful! Redirecting...');
-                setTimeout(() => navigate('/menu'), 2000);
-                localStorage.setItem('user', JSON.stringify(response.data.user)); // Save user data
+                const userData = response.data.user;
+
+        // Ensure profileImageURL exists
+        if (!userData.profileImageURL) {
+          userData.profileImageURL = '';
+        }
+
+        localStorage.setItem('user', JSON.stringify(userData));
+        setMessage('Login successful! Redirecting...');
+        setTimeout(() => navigate('/menu'), 2000);
             } else {
                 setMessage(response.data.error || 'Login failed!');
             }
