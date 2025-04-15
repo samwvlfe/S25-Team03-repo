@@ -874,6 +874,23 @@ app.put('/api/profile/update', (req, res) => {
     });
 });
 
+app.patch('/api/sponsor-update', (req, res) => {
+    const {driverID, sponsorID} = req.body;
+
+    if (!driverID || !sponsorID) {
+        return res.status(400).json({error: "Missing driverID and/or sponsorID."});
+    }
+
+    const query = `UPDATE Driver SET CompanyID = ? WHERE DriverID = ?`;
+
+    db.query(query, [sponsorID, driverID], (err) => {
+        if (err) {
+            return res.status(500).json({ error: err });
+        }
+
+        return res.status(200).json({ message: "Sponsor updated successfully!" });
+    })
+});
 
 // Start server
 app.listen(port, () => {
