@@ -27,17 +27,18 @@ interface PointsMgmtProps {
     localUser: LocalUser;
 }
 
-const deleteUser = async (userType: string | undefined, userId: number | undefined) => {
-    try {
-        console.log(`${userId} ${userType}`);
-        const response = await axios.delete(`http://localhost:2999/api/admin/delete-user/${userType}/${userId}`);
-        alert(response.data.message);
-    } catch (error) {
-        alert(error);
-    }
-}
 
 function DeleteButton({ user }:UserMgmtProps) {
+    const deleteUser = async (userType: string | undefined, userId: number | undefined) => {
+        try {
+            console.log(`${userId} ${userType}`);
+            const response = await axios.delete(`http://localhost:2999/api/admin/delete-user/${userType}/${userId}`);
+            alert(response.data.message);
+        } catch (error) {
+            alert(error);
+        }
+    }
+
     const userType = user.UserType;
     const userId = user.UserID;
 
@@ -98,27 +99,36 @@ function PointsMgmt({ user, localUser }:PointsMgmtProps) {
     };
 
     return (
-        <div className="points-management">
-            <h2>Points Management</h2>
-            <form className="inline-form" onSubmit={handleSubmit}>
-                <label>Points:</label>
-                <input type="number" value={pointsInc} onChange={(event) => {setPointsInc(event.target.value)}} required/>
-                <label>Reason:</label>
-                <input type="text" value={reason} onChange={(event) => {setReason(event.target.value)}} required/>
-                <input type="submit" value="Update Points"/>
-            </form>
-            <form className="inline-form" onSubmit={handleActionSubmit}>
-                <label>Choose an action:</label>
-                <select value={selectedAction} onChange={(e) => setSelectedAction(e.target.value)} required>
-                    {actions.map((action) => (
-                        <option key={action.value} value={action.value}>
-                            {action.label} ({action.points > 0 ? "+" : ""}{action.points} pts)
-                        </option>
-                    ))}
-                </select>
-                <input type="submit" value="Apply Action"/>
-            </form>
-        </div>
+        <>
+            <div className="menu-container">
+                <h2 className="menu-header">Point Management</h2>
+                <div className="menu-sector">
+                    <form className="inline-form" onSubmit={handleSubmit}>
+                        <label>Points:</label>
+                        <input type="number" value={pointsInc} onChange={(event) => {setPointsInc(event.target.value)}} required/>
+                        <label>Reason:</label>
+                        <input type="text" value={reason} onChange={(event) => {setReason(event.target.value)}} required/>
+                        <input type="submit" value="Update Points"/>
+                    </form>
+                </div>
+            </div>
+            <div className="menu-container">
+                <h2 className="menu-header">Quick Point Management</h2>
+                <div className="menu-sector">
+                    <form className="inline-form" onSubmit={handleActionSubmit}>
+                        <label>Choose an action:</label>
+                        <select value={selectedAction} onChange={(e) => setSelectedAction(e.target.value)} required>
+                            {actions.map((action) => (
+                                <option key={action.value} value={action.value}>
+                                    {action.label} ({action.points > 0 ? "+" : ""}{action.points} pts)
+                                </option>
+                            ))}
+                        </select>
+                        <input type="submit" value="Apply Action"/>
+                    </form>
+                </div>
+            </div>
+        </>
     )
 }
 
@@ -164,31 +174,34 @@ function SponsorMgmt({ user, localUser }:PointsMgmtProps) {
         }
     }
 
-    let sponsorDisplay:ReactElement = <p>User is not partnered!</p>;
+    let sponsorDisplay:ReactElement = <p>Sponsor: Unpartnered</p>;
 
     if (user.CompanyID != null) {
-        sponsorDisplay = <p>{user.CompanyID}</p>;
+        sponsorDisplay = <p>Sponsor: {user.CompanyID}</p>;
     }
 
     return (
-        <div className="sponsor-mangement">
-            {sponsorDisplay}
-            <form className="inline-form" onSubmit={handleSubmit}>
-                <label>Select Sponsor:</label>
-                <select
-                    value={selectedCompanyID}
-                    onChange={(e) => setSelectedCompanyID(e.target.value)}
-                    required
-                >
-                    <option value="">-- Choose a Sponsor --</option>
-                    {sponsors.map((sponsor) => (
-                    <option key={sponsor.CompanyID} value={sponsor.CompanyID}>
-                        {sponsor.CompanyName}
-                    </option>
-                    ))}
-                </select>
-                <input type="submit" value="Change Sponsor" />
-            </form>
+        <div className="menu-container">
+            <h2 className="menu-header">Sponsor Management</h2>
+            <div className="menu-sector">
+                {sponsorDisplay}
+                <form className="inline-form" onSubmit={handleSubmit}>
+                    <label>Select Sponsor:</label>
+                    <select
+                        value={selectedCompanyID}
+                        onChange={(e) => setSelectedCompanyID(e.target.value)}
+                        required
+                    >
+                        <option value="">-- Choose a Sponsor --</option>
+                        {sponsors.map((sponsor) => (
+                        <option key={sponsor.CompanyID} value={sponsor.CompanyID}>
+                            {sponsor.CompanyName}
+                        </option>
+                        ))}
+                    </select>
+                    <input type="submit" value="Change Sponsor" />
+                </form>
+            </div>
         </div>
     )
 }

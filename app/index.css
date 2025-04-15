@@ -579,29 +579,48 @@ header a {
   align-items: center;
   justify-content: space-between;
 
-  padding: 20px;
-
   width: 20%;
 
   background-color: white;
 }
 
-.user-info {
-  text-align: center;
+.menu-container {
+  display: inline-block;
+  text-align: left;
+
+  width: 100%;
+}
+
+.menu-header {
+  font-size: 14pt;
+
+  padding: 15px;
+  margin: 0;
+
+  background-color: white;
+}
+
+.menu-sector {
+  padding: 15px;
+
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.menu-sector p {
+  margin: 0;
 }
 
 .delete-button {
   font-family: 'Reddit Sans';
   font-size: 12pt;
 
-  width: 80%;
+  width: 100%;
 
   text-align: center;
 
   border: 0;
-  border-radius: 25px;
 
-  background-color: #e34045;
+  background-color: rgba(0, 0, 0, 0.8);
   color: white;
 
   padding: 10px;
@@ -855,7 +874,6 @@ footer {
   font-size: 12pt;
   font-family: "Reddit Sans";
 
-  border-radius: 20px;
   border: 0;
 
   margin-top: 20px;
