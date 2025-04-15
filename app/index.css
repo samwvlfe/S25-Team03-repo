@@ -156,6 +156,11 @@ header a {
   text-align: center;
 
   display: none;
+  }
+.prevU{
+  font-weight: bold;
+  position: absolute;
+  left: 10px;
 }
 
 .nav-bar a {
@@ -856,4 +861,9 @@ footer {
 
 .formCard{
   margin: auto;
+}
+
+#toggleUser{
+  position: absolute;
+  left: 120px;
 }
