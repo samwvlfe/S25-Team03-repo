@@ -9,7 +9,13 @@ const port = process.env.PORT || 2999;
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
+
+app.use(cors({
+    origin: 'https://main.d2pvc8dymu1dbr.amplifyapp.com/',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 //import hash func
 import {createHashPassword} from "../script/extra.js"
