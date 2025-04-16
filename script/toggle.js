@@ -11,6 +11,9 @@ export function toggleNav(){
     const revApps = document.querySelector("#revApps");
     const adminID = document.querySelector("#adminID");
     const goto = document.querySelector("#goto");
+    const assume = document.querySelector("#prevUser");
+    if (assume) assume.style.display = "block";
+
 
     // If signed in, hide apply and sign in elements and show goto
     if(user){ 

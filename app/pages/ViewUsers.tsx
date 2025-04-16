@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { UserMgmt } from '../components/UserMgmt';
 import {fetchTotalPoints} from '../../backend/api';
 
@@ -17,11 +18,20 @@ interface User {
     CompanyID?: number | null;
 }
 
+
 export default function ViewUsers({ adminID }: ViewUsersProps) {
+    const navigate = useNavigate();
+
     const [users, setUsers] = useState<User[]>([]);
     const [curUser, setCurUser] = useState<User | null>(null);
     const [roleFilter, setRoleFilter] = useState("All");
     const [error, setError] = useState('');
+    const [selectedUserObj, setSelectedUserObj] = useState<{ 
+        id: number, 
+        username: string, 
+        usertype: string, 
+        companyID: number | null 
+    } | null>(null); 
 
     // Determining who the local user is.
     const localUser = JSON.parse(localStorage.getItem("user") || "{}");
@@ -84,6 +94,7 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
                                     <th>Username</th>
                                     <th>Role</th>
                                     <th>Company ID</th>
+                                    <th>Assume Role</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -101,6 +112,37 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
                                             <td>{user.Username}</td>
                                             <td>{user.UserType}</td>
                                             <td>{user.CompanyID != null ? user.CompanyID : "—"}</td>
+                                            <td>
+                                            <button onClick={(e) => {
+                                                e.stopPropagation(); // prevent row toggle
+                                                const simplified = {
+                                                    id: user.UserID,
+                                                    username: user.Username,
+                                                    usertype: user.UserType,
+                                                    companyID: user.CompanyID ?? null
+                                                };
+
+                                                // Save current user to 'previousUser'
+                                                const currentUser = localStorage.getItem("user");
+                                                if (currentUser) {
+                                                    localStorage.setItem("previousUser", currentUser);
+                                                }
+                                                // Set new selected user
+                                                localStorage.setItem("user", JSON.stringify(simplified));
+                                                setSelectedUserObj(simplified);
+                                                //make toggle button visible in nav-bar
+                                                let toggleDiv = document.getElementById("toggleUser");
+                                                if(toggleDiv){
+                                                    toggleDiv.style.display = "block";
+                                                }
+                                                // navigate to menu
+                                                navigate("/");
+                                                
+                                            }}>
+                                                Select
+                                            </button>
+
+                                            </td>
                                         </tr>
                                     ))
                                 ) : (
