@@ -676,10 +676,15 @@ header a {
   display: flex;
 
   align-items: center;
-  justify-content: stretch;
+  justify-content: center;
 
-  border: 1px solid black;
-  border-radius: 5px;
+  gap: 10px;
+
+  background-color: white;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.15);
+
+  border-radius: 8px;
+  border: 5px solid white;
 
   width: 160px;
   height: 225px;
@@ -695,33 +700,53 @@ header a {
 
 .card span {
   text-align: center;
-  height: 8px;
 
   font-size: 24pt;
 }
 
 .card-row {
   display: flex;
+  flex-direction: column;
+
+  flex: 1;
+
+  height: 75%;
+
   justify-content: space-around;
 }
 
 .card-info, .card-info-alt {
-  position: absolute;
-
   display: flex;
+
+  height: 100%;
 
   margin: 0;
   padding: 0;
 }
 
 .card-info {
-  top: 0;
-  left: 0;
+  align-items: start;
 }
 
 .card-info-alt {
-  bottom: 0;
-  right: 0;
+  align-items: end;
+}
+
+/* Additional formatting for specific cards. */
+.Seven .card-row:nth-child(3) {
+  height: 42.5%;
+
+  justify-content: start;
+}
+
+.Eight .card-row:nth-child(3) {
+  height: 50%;
+}
+
+.Nine .card-row:nth-child(3) {
+  height: 54%;
+
+  justify-content: start;
 }
 
 /* Footer formatting. */

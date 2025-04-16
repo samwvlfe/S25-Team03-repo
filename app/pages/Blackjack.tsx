@@ -31,15 +31,17 @@ class Card {
             "Three": [[0], [3], [0]],
             "Four": [[2], [0], [2]],
             "Five": [[2], [1], [2]],
-            "Six": [[2], [2], [2]],
+            "Six": [[3], [0], [3]],
             "Seven": [[3], [1], [3]],
             "Eight": [[3], [2], [3]],
             "Nine": [[4], [1], [4]],
             "Ten": [[4], [2], [4]],
         }
 
+        const classes:string = "card " + this.type;
+
         return (
-            <div className="card">
+            <div className={classes}>
                 {!this.flipped && <>
                     <div className="card-info"><p>{display}<br />{this.suite}</p></div>
                     {layouts[this.type].map((row, rowIndex) => (
@@ -160,6 +162,7 @@ class Game {
         switch (true) {
             case this.dealerHand.calcVal() == 21:
                 console.log("Dealer got blackjack!");
+                this.dealerHand.cards[0].flipped = false;
                 this.playerState = "Lost";
                 break;
             case this.playerHand.calcVal() == 21:
