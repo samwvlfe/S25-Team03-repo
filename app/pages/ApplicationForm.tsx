@@ -31,7 +31,7 @@ export default function ApplicationForm() {
         setLoading(true);
 
         try {
-            const response = await axios.post('http://localhost:2999/api/submit-application', formData); 
+            const response = await axios.post('http://98.81.104.135:2999/api/submit-application', formData); 
             alert(response.data.message);
             navigate('/apply-success');
         } catch (error) {

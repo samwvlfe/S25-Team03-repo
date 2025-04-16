@@ -12,7 +12,7 @@ const FakeStore: React.FC = () => {
     const [availablePoints, setAvailablePoints] = useState<number | null>(null);
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:2999/api/fake-store")
+        axios.get("http://98.81.104.135:2999/api/fake-store")
           .then(res => setProducts(res.data))
           .catch(err => console.error("Error loading products", err));
       }, []);

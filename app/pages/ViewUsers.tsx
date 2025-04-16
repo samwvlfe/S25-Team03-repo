@@ -38,7 +38,7 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
 
     // Fetch users from backend
     useEffect(() => {
-        axios.get('http://localhost:2999/api/get-users', { params: { adminID } })
+        axios.get('http://98.81.104.135:2999/api/get-users', { params: { adminID } })
             .then(response => {
                 const normalizedUsers = response.data.map((user: any) => ({
                     UserID: user.DriverID || user.AdminID || user.SponsorUserID,
