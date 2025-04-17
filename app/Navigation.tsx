@@ -5,7 +5,8 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link
+  Link,
+  useNavigate
 } from "react-router-dom";
 import About from './pages/About';
 import Login from './pages/Login';
@@ -69,7 +70,7 @@ export default function Navigation() {
     }, [menuState]);
 
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const profileImage = user.profileImageURL || "/media/default-alien.svg";
+    const profileImage = user.profileImageURL || "/media/default-alien.svg";
 
     return (
         <Router>
@@ -111,6 +112,7 @@ export default function Navigation() {
                                     }}
                                 />
                             <div id="signoutMenu" ref={menuRef} style={{ display: menuState }}>
+                                <p><Link to="/profile">Profile</Link></p>
                                 <button className="account-button" onClick={handleSignOut}>Sign Out</button>
                             </div>
                         </li>

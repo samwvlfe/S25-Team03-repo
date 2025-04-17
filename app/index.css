@@ -233,7 +233,7 @@ header a {
 #signout div {
   position: absolute;
 
-  transform: translateY(150%);
+  transform: translateY(115%);
 
   width: 10%;
 
@@ -517,7 +517,15 @@ header a {
 
 /* Formatting for the menu page. */
 .menu-page {
+  display: flex;
+  flex-direction: row;
+}
+
+.reception {
+  display: flex;
   flex-direction: column;
+
+  flex: 1;
 
   justify-content: center;
   align-items: stretch;
@@ -527,12 +535,24 @@ header a {
   display: flex;
 
   justify-content: center;
+  align-items: center;
+
+  gap: 10px;
 }
 
 .floor-level {
   display: flex;
 
   justify-content: center;
+}
+
+.small-window {
+  aspect-ratio: 1/1;
+
+  height: 175px;
+
+  background-color: black;
+  border-radius: 300px;
 }
 
 .big-window {
@@ -550,7 +570,7 @@ header a {
   background-position-y: 100%;
   background-repeat: no-repeat;
 
-  height: 300px;
+  height: 100%;
   width: 100px;
 
   animation: 5s ease-in-out 0s infinite alternate levitate;
@@ -562,6 +582,17 @@ header a {
 
   justify-content: center;
   align-items: center;
+}
+
+.speech-bubble {
+  position: absolute;
+
+  transform: translateY(-110%);
+
+  padding: 25px;
+  border-radius: 25px;
+
+  background-color: white;
 }
 
 .blob-creature {
@@ -625,7 +656,7 @@ header a {
   background-repeat: no-repeat;
   background-position: bottom;
 
-  height: 300px;
+  height: 100%;
   width: 100px;
 }
 
@@ -650,29 +681,6 @@ header a {
 .side-menu a {
   text-decoration: none;
   color: #231F20;
-}
-
-#menuContent {
-  display: flex;
-  flex-direction: row;
-
-  background-color: rgba(255, 255, 255, 0.75);
-  background-image: url('/media/logo.svg');
-  background-blend-mode: lighten;
-  background-size: 40%;
-  background-repeat: no-repeat;
-  background-position: center;
-
-  flex: 1;
-
-  gap: 20px;
-
-  justify-content: center;
-  align-items: center;
-}
-
-#menuContent p {
-  margin: 0;
 }
 
 /* View Users formatting. */
