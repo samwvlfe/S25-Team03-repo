@@ -156,6 +156,11 @@ header a {
   text-align: center;
 
   display: none;
+  }
+.prevU{
+  font-weight: bold;
+  position: absolute;
+  left: 10px;
 }
 
 .nav-bar a {
@@ -508,6 +513,10 @@ header a {
 
 .product-grid div button:hover {
   cursor: pointer;
+  background-color: #8c8c8c;
+}
+.product-grid div button:active{
+  background-color: cornflowerblue;
 }
 
 /* Formatting for the menu page. */
@@ -993,4 +1002,9 @@ footer {
 
 .formCard{
   margin: auto;
+}
+
+#toggleUser{
+  position: absolute;
+  left: 120px;
 }
