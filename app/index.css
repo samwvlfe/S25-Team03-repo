@@ -27,6 +27,11 @@
   100% {transform: translate(-50%, -50%)  rotate(360deg);}
 }
 
+@keyframes levitate {
+  0% {background-position-y: 60%;}
+  100% {background-position-y: 90%}
+}
+
 /* All general formatting. */
 body {
   margin: 0;
@@ -512,7 +517,116 @@ header a {
 
 /* Formatting for the menu page. */
 .menu-page {
-  flex-direction: row;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: stretch;
+}
+
+.wall-area {
+  display: flex;
+
+  justify-content: center;
+}
+
+.floor-level {
+  display: flex;
+
+  justify-content: center;
+}
+
+.big-window {
+  aspect-ratio: 1/1;
+
+  height: 300px;
+
+  background-color: black;
+  border-radius: 300px;
+}
+
+.obelisk {
+  background-image: url('/media/obelisk.svg');
+  background-size: 100%;
+  background-position-y: 100%;
+  background-repeat: no-repeat;
+
+  height: 300px;
+  width: 100px;
+
+  animation: 5s ease-in-out 0s infinite alternate levitate;
+}
+
+.desk-area {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.blob-creature {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  background-image: url('/media/blob-creature.svg');
+  background-size: 100% 100%;
+
+  height: 200px;
+  width: 150px;
+
+  transform: translateY(100px);
+}
+
+.blob-eye {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  aspect-ratio: 1/1;
+
+  height: 40px;
+  margin-top: 30px;
+
+  border-radius: 100px;
+
+  background-color: white;
+}
+
+.blob-pupil {
+  position: absolute;
+
+  aspect-ratio: 1/1;
+
+  height: 25px;
+  border-radius: 100px;
+
+  background-color: black;
+
+  transition: transform 0.05s linear;
+}
+
+.desk {
+  background-image: url('/media/desk.svg');
+  background-size: 100% 100%;
+
+  height: 100px;
+  width: 400px;
+
+  position: relative;
+
+  z-index: 10;
+}
+
+.plant {
+  background-image: url('/media/plant-pot.svg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: bottom;
+
+  height: 300px;
+  width: 100px;
 }
 
 .side-menu {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toggleNav } from '../../script/toggle';
-import {DriverButtons, SponsorButtons, AdminButtons} from '../components/MenuButtons';
+import { Eye } from '../components/BlobEye';
 
 export default function Menu() {
     // Retrieve user info from localStorage
@@ -12,17 +12,18 @@ export default function Menu() {
 
     return (
         <main className="menu-page">
-            <ul className="side-menu">
-                {user.usertype == 'Driver' && <DriverButtons/>}
-                {(user.usertype === 'SponsorUser' || user.usertype === 'Sponsor') && <SponsorButtons/>}
-                {user.usertype == 'Admin' && <AdminButtons/>}
-            </ul>
-            <div id="menuContent">
-                <div className="menu-info">
-                    <h1>{user.usertype} Dashboard</h1>
-                    <h3>Welcome, {user.username}.</h3>
-                    <p>Use the sidebar to navigate your options.</p>
+            <div className="wall-area">
+                <div className="big-window"/>
+            </div>
+            <div className="floor-level">
+                <div className="obelisk" />
+                <div className="desk-area">
+                    <div className="blob-creature">
+                        <Eye />
+                    </div>
+                    <div className="desk" />
                 </div>
+                <div className="plant" />
             </div>
         </main>
     );
