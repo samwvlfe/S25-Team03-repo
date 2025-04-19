@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { AdminButtons, SponsorButtons, DriverButtons } from '../components/MenuButtons';
+import { updatePoints, fetchTotalPoints} from '../../backend/api';
 import { toggleNav } from '../../script/toggle';
 import { Eye } from '../components/BlobEye';
 
 export default function Menu() {
     // Retrieve user info from localStorage
     const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const [points, setPoints] = useState<number | null>(null);
 
     useEffect(() => {
+        if (user.usertype === "Driver") {
+            fetchTotalPoints(user.id).then(setPoints);
+        }
+
         toggleNav(); 
-    }, []);
+    }, [user]);
 
     return (
         <main className="menu-page">
@@ -31,7 +37,7 @@ export default function Menu() {
                             Hello, {user.username}! <br/>
                             Welcome to the {user.usertype} Dashboard!
                             {user.usertype === 'Driver' && <>
-                                <br/> You currently have x points.
+                                <br/> You currently have {points} points.
                             </>}
                         </span>
                         <div className="blob-creature">
