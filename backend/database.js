@@ -451,7 +451,7 @@ app.post('/api/create-product', (req, res) => {
   
     const query = `
       INSERT INTO ProductCatalog (ProductName, PriceInPoints, Description, ImageURL)
-      VALUES (?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, TRUE)
     `;
   
     db.query(query, [productName, priceInPoints, description || null, imageURL || null], (err, result) => {
