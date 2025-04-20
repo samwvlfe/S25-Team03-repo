@@ -85,7 +85,7 @@ export default function DriverPointHistory() {
       <div className="move-down">
         <h2>Point History</h2>
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        <div className="overflow-table">
+        <div className="table-layout">
           <table border={1}>
             <thead>
               <tr>

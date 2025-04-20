@@ -69,7 +69,7 @@ export default function SponsorRequestForm() {
               </option>
             ))}
           </select>
-          <button type="submit">Submit Request</button>
+          <input type="submit" value="Request Sponsor"/>
         </form>
         {message && <p>{message}</p>}
         <div className="backButn">

@@ -24,7 +24,6 @@ import AddCompany from "./pages/AddCompany";
 import SponsorRequestForm from './pages/SponsorRequestForm';
 import ReviewDriverRequests from './pages/ReviewDriverRequests';
 import CreateUser from './pages/CreateUser';
-import UpdateDriverPoints from './pages/UpdateDriverPoints';
 import Blackjack from './pages/Blackjack';
 import DriverTransactions from './pages/DriverTransactions'
 import DriverOrders from './pages/DriverOrders'
@@ -137,7 +136,6 @@ export default function Navigation() {
                 <Route path="/create-user" element={<CreateUser />}/>
                 <Route path="/blackjack" element={<Blackjack />}/>
                 <Route path="/" element={<About />} />
-                <Route path="/update-driver-pts" element={<UpdateDriverPoints />} />
                 <Route path="/driver-transactions" element={<DriverTransactions />} />
                 <Route path="/driver-orders" element={<DriverOrders />} />
                 <Route path="/catalog-purchases" element={<CatalogPurchases />} />

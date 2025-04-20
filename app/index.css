@@ -595,6 +595,24 @@ header a {
   background-color: white;
 }
 
+.speech-bubble::after {
+  content: '';
+
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+
+  transform: translateX(-50%) rotate(180deg);
+
+  height: 0;
+  width: 0;
+
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+
+  border-bottom: 8px solid white;
+}
+
 .blob-creature {
   display: flex;
   flex-direction: column;
