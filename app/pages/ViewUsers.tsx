@@ -68,21 +68,20 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
 
     return (
         <main>
-            <div className="move-down">
+            <div className="move-down center-flex">
+                <h2>View Users</h2>
+                {/* Role Filter Dropdown */}
+                <div className="filter">
+                    <label>Filter by Role:</label>
+                    <select onChange={(e) => setRoleFilter(e.target.value)}>
+                        <option value="All">All</option>
+                        <option value="Driver">Drivers</option>
+                        <option value="SponsorUser">Sponsors</option>
+                        {localUser.usertype === 'Admin' && <option value="Admin">Admins</option>}
+                    </select>
+                </div>
                 <div className="view-users">
                     <div className="table-layout">
-                        <h2>View Users</h2>
-                        {/* Role Filter Dropdown */}
-                        <div className="filter">
-                            <label>Filter by Role:</label>
-                            <select onChange={(e) => setRoleFilter(e.target.value)}>
-                                <option value="All">All</option>
-                                <option value="Driver">Drivers</option>
-                                <option value="SponsorUser">Sponsors</option>
-                                {localUser.usertype === 'Admin' && <option value="Admin">Admins</option>}
-                            </select>
-                        </div>
-
                         {/* Error Message */}
                         {error && <p style={{ color: 'red' }}>{error}</p>}
                         {/* Users List */}

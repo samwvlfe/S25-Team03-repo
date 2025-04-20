@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, ReactElement} from 'react';
 import axios from 'axios';
 import { updatePoints, fetchTotalPoints} from '../../backend/api';
 
@@ -27,17 +27,18 @@ interface PointsMgmtProps {
     localUser: LocalUser;
 }
 
-const deleteUser = async (userType: string | undefined, userId: number | undefined) => {
-    try {
-        console.log(`${userId} ${userType}`);
-        const response = await axios.delete(`http://localhost:2999/api/admin/delete-user/${userType}/${userId}`);
-        alert(response.data.message);
-    } catch (error) {
-        alert(error);
-    }
-}
 
 function DeleteButton({ user }:UserMgmtProps) {
+    const deleteUser = async (userType: string | undefined, userId: number | undefined) => {
+        try {
+            console.log(`${userId} ${userType}`);
+            const response = await axios.delete(`http://localhost:2999/api/admin/delete-user/${userType}/${userId}`);
+            alert(response.data.message);
+        } catch (error) {
+            alert(error);
+        }
+    }
+
     const userType = user.UserType;
     const userId = user.UserID;
 
@@ -47,6 +48,7 @@ function DeleteButton({ user }:UserMgmtProps) {
 }
 
 function PointsMgmt({ user, localUser }:PointsMgmtProps) {
+    // Form 1: Specific point management.
     const [pointsInc, setPointsInc] = useState<string>('');
     const [reason, setReason] = useState<string>('');
 
@@ -65,32 +67,141 @@ function PointsMgmt({ user, localUser }:PointsMgmtProps) {
         }
     };
 
+    // Form 2: Quick actions.
+    const actions = [
+        { label: "Safe Driving Award", value: "safe-driving", points: 10 },
+        { label: "Late Delivery Penalty", value: "late-delivery", points: -5 },
+        { label: "Violation Penalty", value: "violation", points: -20 },
+        { label: "Customer Compliment", value: "compliment", points: 15 },
+    ];
+    
+    const [selectedAction, setSelectedAction] = useState("-");
+
+    const handleActionSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const action = actions.find(a => a.value === selectedAction);
+        if (!action) return alert("Invalid action selected.");
+
+        const success = await updatePoints(
+            user.UserID,
+            action.points,
+            localUser.id,
+            action.label // use label as the reason
+        );
+
+        if (success) {
+            alert(`${action.label} applied successfully!`);
+            setSelectedAction(actions[0].value);
+        } else {
+            alert("Failed to apply action.");
+        }
+    };
+
     return (
-        <div className="points-management">
-            <h2>Points Management</h2>
-            <form className="inline-form" onSubmit={handleSubmit}>
-                <label>Points:</label>
-                <input type="number" value={pointsInc} onChange={(event) => {setPointsInc(event.target.value)}} required/>
-                <label>Reason:</label>
-                <input type="text" value={reason} onChange={(event) => {setReason(event.target.value)}} required/>
-                <input type="submit" value="Update Points"/>
-            </form>
-        </div>
+        <>
+            <div className="menu-container">
+                <h2 className="menu-header">Point Management</h2>
+                <div className="menu-sector">
+                    <form className="inline-form" onSubmit={handleSubmit}>
+                        <label>Points:</label>
+                        <input type="number" value={pointsInc} onChange={(event) => {setPointsInc(event.target.value)}} required/>
+                        <label>Reason:</label>
+                        <input type="text" value={reason} onChange={(event) => {setReason(event.target.value)}} required/>
+                        <input type="submit" value="Update Points"/>
+                    </form>
+                </div>
+            </div>
+            <div className="menu-container">
+                <h2 className="menu-header">Quick Point Management</h2>
+                <div className="menu-sector">
+                    <form className="inline-form" onSubmit={handleActionSubmit}>
+                        <label>Choose an action:</label>
+                        <select value={selectedAction} onChange={(e) => setSelectedAction(e.target.value)} required>
+                            {actions.map((action) => (
+                                <option key={action.value} value={action.value}>
+                                    {action.label} ({action.points > 0 ? "+" : ""}{action.points} pts)
+                                </option>
+                            ))}
+                        </select>
+                        <input type="submit" value="Apply Action"/>
+                    </form>
+                </div>
+            </div>
+        </>
     )
 }
 
+// Creating the interface for sponsors.
+interface Sponsor {
+    CompanyID: number;
+    CompanyName: string;
+}
+
+// This section will allow an admin to change a driver's affiliated sponsor.
 function SponsorMgmt({ user, localUser }:PointsMgmtProps) {
+    const [sponsors, setSponsors] = useState<Sponsor[]>([]);
+    const [selectedCompanyID, setSelectedCompanyID] = useState('');
+
+    // Fetching the list of sponsors.
+    useEffect(() => {
+        const fetchSponsors = async () => {
+          try {
+            const res = await axios.get('http://localhost:2999/api/get-sponsors');
+            setSponsors(res.data);
+          } catch (error) {
+            console.error('Error fetching sponsors:', error);
+          }
+        };
+    
+        fetchSponsors();
+    }, []);
+
+    // Function to handle the change of a sponsor.
+    const handleSubmit = async (e:React.FormEvent) => {
+        e.preventDefault();
+
+        try {
+            const res = await axios.patch('http://localhost:2999/api/sponsor-update', {
+                driverID: user.UserID,
+                sponsorID: parseInt(selectedCompanyID)
+            });
+
+            alert("Sponsor was changed successfully!");
+        } catch (error) {
+            alert("Could not set sponsor.");
+            console.error('Error changing sponsors:', error);
+        }
+    }
+
+    let sponsorDisplay:ReactElement = <p>Sponsor: Unpartnered</p>;
+
     if (user.CompanyID != null) {
-        return (
-            <div className="sponsor-management">
-                <p>Sponsor ID: {user.CompanyID}</p>
-            </div>
-        )
+        sponsorDisplay = <p>Sponsor: {user.CompanyID}</p>;
     }
 
     return (
-        <div className="sponsor-mangement">
-            <p>User is not partnered!</p>
+        <div className="menu-container">
+            <h2 className="menu-header">Sponsor Management</h2>
+            <div className="menu-sector">
+                {sponsorDisplay}
+                <form className="inline-form" onSubmit={handleSubmit}>
+                    <label>Select Sponsor:</label>
+                    <select
+                        value={selectedCompanyID}
+                        onChange={(e) => setSelectedCompanyID(e.target.value)}
+                        required
+                    >
+                        <option value="">-- Choose a Sponsor --</option>
+                        {sponsors.map((sponsor) => (
+                        <option key={sponsor.CompanyID} value={sponsor.CompanyID}>
+                            {sponsor.CompanyName}
+                        </option>
+                        ))}
+                    </select>
+                    <input type="submit" value="Change Sponsor" />
+                </form>
+            </div>
         </div>
     )
 }
@@ -107,10 +218,12 @@ export function UserMgmt({ user }:UserMgmtProps) {
 
     return (
         <div className="user-management">
-            <div className="user-info">
-                <h2>User Information</h2>
-                <p><b>Selected user:</b> { user?.Name }</p>
-                {user.UserType === "Driver" && <p><b>Points:</b> {points !== null ? points : "Loading..."}</p>}
+            <div className="menu-container">
+                <h2 className="menu-header">User Information</h2>
+                <div className="menu-sector">
+                    <p>Selected user: { user?.Name }</p>
+                    {user.UserType === "Driver" && <p>Points: {points !== null ? points : "Loading..."}</p>}
+                </div>
             </div>
             {user.UserType === "Driver" && <SponsorMgmt user={user} localUser={localUser}/>}
             {user.UserType === "Driver" && <PointsMgmt user={user} localUser={localUser}/>}

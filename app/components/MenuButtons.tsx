@@ -1,6 +1,4 @@
-import { Nanum_Gothic } from 'next/font/google';
 import React, { ButtonHTMLAttributes } from 'react';
-import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
 
@@ -11,11 +9,10 @@ export function DriverButtons() {
         <>
             <li onClick={() => navigate("/point-transaction")}>Point History</li>
             <li onClick={() => navigate("/fake-store")}>Redeem Points</li>
-            <li onClick={() => navigate("/blackjack")}>GAMBLING!</li>
-            <li><Link to="/request-sponsor">Request Sponsor</Link></li>
+            <li onClick={() => navigate("/blackjack")}>Blackjack</li>
+            <li onClick={() => navigate("/request-sponsor")}>Request Sponsor</li>
             <li onClick={() => navigate("/password-change")}>Change Password</li>
             <li onClick={() => navigate("/driver-orders")}>View Orders</li>
-            <li> <Link to="/profile">Profile</Link></li>
 
         </>
     )
@@ -29,14 +26,12 @@ export function SponsorButtons() {
             <li onClick={() => navigate("/users")} id="viewRoster">View Roster</li>
             <li onClick={() => navigate("/password-change")}>Change Password</li>
             <li onClick={() => navigate("/sponsor-catalog")}>Manage Product Catalog</li>
-            <li onClick={() => navigate("/update-driver-pts")}>Update Points</li>
             <li onClick={() => navigate("/review")}>Review Applications</li>
             <li onClick={() => navigate("/password-change")}>Change Password</li>
             <li onClick={() => navigate("/create-product")}>Add New Product</li>
             <li onClick={() => navigate("/leaderboard")}>View Driver Leaderboard</li>
             <li onClick={() => navigate("/review-sponsor-requests")}>Review Driver Requests </li>
             <li onClick={() => navigate("/driver-transactions")}>View Driver Transactions</li>
-            <li> <Link to="/profile">Profile</Link></li>
         </>
     )
 }
@@ -49,13 +44,11 @@ export function AdminButtons() {
             <li onClick={() => navigate("/users")}>Manage Users</li>
             <li onClick={() => navigate("/review")}>Review Applications</li>
             <li onClick={() => navigate("/create-user")}>Add User</li>
-            <li onClick={() => navigate("/update-driver-pts")}>Update Points</li>
             <li onClick={() => navigate("/password-change")}>Change Password</li>
             <li onClick={() => navigate("/create-product")}>Add New Product</li>
             <li onClick={() => navigate("/add-company")}>Add Company</li>
             <li onClick={() => navigate("/catalog-purchases")}>View Driver Transactions</li>
-            <li> <Link to="/profile">Profile</Link></li>
-            <li>View Audit Logs</li>
+            <li>Generate Report</li>
         </>
     )
 }

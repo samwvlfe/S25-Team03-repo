@@ -1,7 +1,7 @@
-import { useBreakpointValue } from "@aws-amplify/ui-react";
-import React, { ReactElement , useState } from "react";
+import React, { ReactElement , useEffect, useState } from "react";
+import { updatePoints, fetchTotalPoints} from '../../backend/api';
+import CircularLoading from '../components/CircularLoading';
 import { Link } from 'react-router-dom';
-
 
 // Class for card creation.
 class Card {
@@ -25,32 +25,36 @@ class Card {
         }
 
         const layouts:Record<string, number[][]> = {
-            "Ace": [[1]],
-            "Jack": [[1]],
-            "Queen": [[1]],
-            "King": [[1]],
-            "Two": [[1], [1]],
-            "Three": [[1], [1], [1]],
-            "Four": [[2], [2]],
+            "Ace": [[0], [1], [0]],
+            "Jack": [[0], [1], [0]],
+            "Queen": [[0], [1], [0]],
+            "King": [[0], [1], [0]],
+            "Two": [[0], [2], [0]],
+            "Three": [[0], [3], [0]],
+            "Four": [[2], [0], [2]],
             "Five": [[2], [1], [2]],
-            "Six": [[2], [2], [2]],
-            "Seven": [[2], [1], [2], [2]],
-            "Eight": [[2], [1], [2], [1], [2]],
-            "Nine": [[2], [2], [1], [2], [2]],
-            "Ten": [[2], [1], [2], [1], [2]]
+            "Six": [[3], [0], [3]],
+            "Seven": [[3], [1], [3]],
+            "Eight": [[3], [2], [3]],
+            "Nine": [[4], [1], [4]],
+            "Ten": [[4], [2], [4]],
         }
 
+        const classes:string = "card " + this.type;
+
         return (
-            <div className="card">
-                <div className="card-info"><p>{display}<br />{this.suite}</p></div>
-                {layouts[this.type].map((row, rowIndex) => (
-                    <div key={rowIndex} className="card-row">
-                        {Array.from({ length: row[0] }).map((_, i) => (
-                            <span key={i}>{this.suite}</span>
-                        ))}
-                    </div>
-                ))}
-                <div className="card-info-alt"><p>{display}<br />{this.suite}</p></div>
+            <div className={classes}>
+                {!this.flipped && <>
+                    <div className="card-info"><p>{display}<br />{this.suite}</p></div>
+                    {layouts[this.type].map((row, rowIndex) => (
+                        <div key={rowIndex} className="card-row">
+                            {Array.from({ length: row[0] }).map((_, i) => (
+                                <span key={i}>{this.suite}</span>
+                            ))}
+                        </div>
+                    ))}
+                    <div className="card-info-alt"><p>{display}<br />{this.suite}</p></div>
+                </>}
             </div>
         )
     }
@@ -122,6 +126,8 @@ class Game {
     playerState: string = "Bust";
     dealerStand: number;
 
+    bet: number = 0;
+
     deck: Multideck;
 
     constructor(deckNumber: number, dealerStand: number) {
@@ -132,10 +138,13 @@ class Game {
     }
 
     // Deals two cards to the dealer and the player.
-    startGame():void {
+    startGame(bet: number):void {
         // Resetting the hands.
         this.playerHand.cards = [];
         this.dealerHand.cards = [];
+
+        // The amount of money to bet.
+        this.bet = bet;
 
         // Resetting player state.
         this.playerState = "Playing";
@@ -155,6 +164,7 @@ class Game {
         switch (true) {
             case this.dealerHand.calcVal() == 21:
                 console.log("Dealer got blackjack!");
+                this.dealerHand.cards[0].flipped = false;
                 this.playerState = "Lost";
                 break;
             case this.playerHand.calcVal() == 21:
@@ -234,14 +244,26 @@ class Game {
     }
 }
 
-
 export default function Blackjack() {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+
     const [game] = useState(new Game(2, 17));
+    const [loading, setLoading] = useState<boolean>(false);
     const [, setRender] = useState(0);
+    const [rangeValue, setRangeValue] = useState(50);
+    const [points, setPoints] = useState<number | null>(null);
+
     const forceRender = () => setRender(prev => prev + 1);
 
-    const handleStart = () => {
-        game.startGame();
+    useEffect(() => {
+        fetchTotalPoints(user.id).then(setPoints);
+    });
+
+    const handleStart = async () => {
+        game.startGame(rangeValue);
+        setLoading(true);
+        await updatePoints(user.id, -rangeValue, 1, "Blackjack");
+        setLoading(false);
         forceRender();
     }
 
@@ -253,10 +275,24 @@ export default function Blackjack() {
     const handleHold = () => {
         game.hold();
         forceRender();
+
+        switch (true) {
+            case game.playerState === "Won":
+                updatePoints(user.id, (rangeValue * 2), 1, "Big winner!");
+                break;
+            case game.playerState === "Blackjack":
+                updatePoints(user.id, (rangeValue * 2.5), 1, "Gambling is fun!");
+                break;
+        }
+    }
+
+    const handleRange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setRangeValue(Number(e.target.value));
     }
 
     return (
         <main>
+            {loading && <CircularLoading />}
             <div className="blackjack">
                 <div className="hand">
                     {game.dealerHand.cards.map(card => (
@@ -265,6 +301,11 @@ export default function Blackjack() {
                 </div>
                 <div className="game-controls">
                     {game.playerState != "Playing" && <button onClick={handleStart}>Start Game</button>}
+                    {game.playerState != "Playing" && <>
+                        <label>Bet:</label>
+                        <input type="range" min={50} max={Number(points)} value={rangeValue} onChange={handleRange}/>
+                        <output>{rangeValue}</output>
+                    </>}
                     {game.playerState == "Playing" && <button onClick={handleDeal}>Deal</button>}
                     {game.playerState == "Playing" && <button onClick={handleHold}>Hold</button>}
                 </div>

@@ -111,7 +111,7 @@ const Profile: React.FC = () => {
           </div>
         )}
 
-        <button type="submit">Update Profile</button>
+        <input type="submit" value="Update Profile"/>
       </form>
       {message && <p>{message}</p>}
                   {/* Back button */}

@@ -82,10 +82,10 @@ export default function DriverPointHistory() {
 
   return (
     <main>
-      <div className="move-down">
+      <div className="move-down center-flex">
         <h2>Point History</h2>
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        <div className="overflow-table">
+        <div className="table-layout">
           <table border={1}>
             <thead>
               <tr>
@@ -106,7 +106,7 @@ export default function DriverPointHistory() {
                     <td>{row.DriverID}</td>
                     <td>{row.Timestamp.slice(0, 10)}</td>
                     <td>{row.OrderItems}</td>
-                    <th>{row.Amount}</th>
+                    <td>{row.Amount}</td>
                     <td>{row.Status}</td>
                     <td>
                       <button onClick={() => handleCancelOrder(row.PurchaseID, row.DriverID, row.Amount)}>

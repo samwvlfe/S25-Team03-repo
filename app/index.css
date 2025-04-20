@@ -27,6 +27,11 @@
   100% {transform: translate(-50%, -50%)  rotate(360deg);}
 }
 
+@keyframes levitate {
+  0% {background-position-y: 60%;}
+  100% {background-position-y: 90%}
+}
+
 /* All general formatting. */
 body {
   margin: 0;
@@ -233,7 +238,7 @@ header a {
 #signout div {
   position: absolute;
 
-  transform: translateY(150%);
+  transform: translateY(115%);
 
   width: 10%;
 
@@ -521,7 +526,168 @@ header a {
 
 /* Formatting for the menu page. */
 .menu-page {
+  display: flex;
   flex-direction: row;
+}
+
+.reception {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+
+  justify-content: center;
+  align-items: stretch;
+}
+
+.wall-area {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.floor-level {
+  display: flex;
+
+  justify-content: center;
+}
+
+.small-window {
+  aspect-ratio: 1/1;
+
+  height: 175px;
+
+  background-color: black;
+  border-radius: 300px;
+}
+
+.big-window {
+  aspect-ratio: 1/1;
+
+  height: 300px;
+
+  background-color: black;
+  border-radius: 300px;
+}
+
+.obelisk {
+  background-image: url('/media/obelisk.svg');
+  background-size: 100%;
+  background-position-y: 100%;
+  background-repeat: no-repeat;
+
+  height: 100%;
+  width: 100px;
+
+  animation: 5s ease-in-out 0s infinite alternate levitate;
+}
+
+.desk-area {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.speech-bubble {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translateX(-16%);
+
+  padding: 25px;
+  border-radius: 25px;
+
+  background-color: white;
+}
+
+.speech-bubble::after {
+  content: '';
+
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+
+  transform: translateX(-50%) rotate(180deg);
+
+  height: 0;
+  width: 0;
+
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+
+  border-bottom: 8px solid white;
+}
+
+.blob-creature {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  background-image: url('/media/blob-creature.svg');
+  background-size: 100% 100%;
+
+  height: 200px;
+  width: 150px;
+
+  transform: translateY(100px);
+}
+
+.blob-eye {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  aspect-ratio: 1/1;
+
+  height: 40px;
+  margin-top: 30px;
+
+  border-radius: 100px;
+
+  background-color: white;
+}
+
+.blob-pupil {
+  position: absolute;
+
+  aspect-ratio: 1/1;
+
+  height: 25px;
+  border-radius: 100px;
+
+  background-color: black;
+
+  transition: transform 0.05s linear;
+}
+
+.desk {
+  background-image: url('/media/desk.svg');
+  background-size: 100% 100%;
+
+  height: 100px;
+  width: 400px;
+
+  position: relative;
+
+  z-index: 10;
+}
+
+.plant {
+  background-image: url('/media/plant-pot.svg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: bottom;
+
+  height: 100%;
+  width: 100px;
 }
 
 .side-menu {
@@ -547,29 +713,6 @@ header a {
   color: #231F20;
 }
 
-#menuContent {
-  display: flex;
-  flex-direction: row;
-
-  background-color: rgba(255, 255, 255, 0.75);
-  background-image: url('/media/logo.svg');
-  background-blend-mode: lighten;
-  background-size: 40%;
-  background-repeat: no-repeat;
-  background-position: center;
-
-  flex: 1;
-
-  gap: 20px;
-
-  justify-content: center;
-  align-items: center;
-}
-
-#menuContent p {
-  margin: 0;
-}
-
 /* View Users formatting. */
 .view-users {
   display: flex;
@@ -588,29 +731,48 @@ header a {
   align-items: center;
   justify-content: space-between;
 
-  padding: 20px;
-
   width: 20%;
 
   background-color: white;
 }
 
-.user-info {
-  text-align: center;
+.menu-container {
+  display: inline-block;
+  text-align: left;
+
+  width: 100%;
+}
+
+.menu-header {
+  font-size: 14pt;
+
+  padding: 15px;
+  margin: 0;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.menu-sector {
+  padding: 15px;
+
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.menu-sector p {
+  margin: 0;
 }
 
 .delete-button {
   font-family: 'Reddit Sans';
   font-size: 12pt;
 
-  width: 80%;
+  width: 100%;
 
   text-align: center;
 
   border: 0;
-  border-radius: 25px;
 
-  background-color: #e34045;
+  background-color: rgba(0, 0, 0, 0.8);
   color: white;
 
   padding: 10px;
@@ -634,6 +796,7 @@ header a {
   display: flex;
 
   justify-content: center;
+  align-items: center;
 
   gap: 20px;
 
@@ -663,16 +826,20 @@ header a {
 
 .card {
   display: flex;
-  flex-direction: column;
 
-  align-items: stretch;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
 
-  border: 1px solid black;
-  border-radius: 5px;
+  gap: 10px;
+
+  background-color: white;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.15);
+
+  border-radius: 8px;
+  border: 5px solid white;
 
   width: 160px;
-  height: 250px;
+  height: 225px;
 
   padding: 5px;
 }
@@ -683,23 +850,55 @@ header a {
   text-align: center;
 }
 
+.card span {
+  text-align: center;
+
+  font-size: 24pt;
+}
+
 .card-row {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
 
-  font-size: 16pt;
+  flex: 1;
+
+  height: 75%;
+
+  justify-content: space-around;
 }
 
 .card-info, .card-info-alt {
   display: flex;
+
+  height: 100%;
+
+  margin: 0;
+  padding: 0;
 }
 
 .card-info {
-  justify-content: left;
+  align-items: start;
 }
 
 .card-info-alt {
-  justify-content: right;
+  align-items: end;
+}
+
+/* Additional formatting for specific cards. */
+.Seven .card-row:nth-child(3) {
+  height: 42.5%;
+
+  justify-content: start;
+}
+
+.Eight .card-row:nth-child(3) {
+  height: 50%;
+}
+
+.Nine .card-row:nth-child(3) {
+  height: 54%;
+
+  justify-content: start;
 }
 
 /* Footer formatting. */
@@ -795,24 +994,26 @@ footer {
 }
 
 .table-layout {
-  display: flex;
-  flex-direction: column;
-
-  align-items: center;
-  justify-content: center;
-
   width: 50%;
+  max-height: 70vh;
+  overflow: auto;
 }
 
 .table-layout table {
   width: 100%;
 }
 
+.table-layout th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
 .filter {
   display: flex;
   justify-content: space-between;
 
-  width: 100%;
+  width: 20%;
 
   padding: 10px;
 }
@@ -852,7 +1053,6 @@ footer {
   font-size: 12pt;
   font-family: "Reddit Sans";
 
-  border-radius: 20px;
   border: 0;
 
   margin-top: 20px;
@@ -885,6 +1085,9 @@ footer {
 .move-down{
   display: flex;
   flex-direction: column;
+
+  flex: 1;
+
   margin-top: 20px;
 }
 
@@ -952,4 +1155,11 @@ footer {
 #toggleUser{
   position: absolute;
   left: 120px;
+}
+
+.center-flex {
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
 }

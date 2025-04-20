@@ -37,44 +37,46 @@ export default function ReviewApplications() {
 
     return (
         <main>
-            <div className="table-layout" id="applicationReview">
+            <div className="move-down center-flex">
                 <h2>Review Applications</h2>
-                <table border={1}>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {applications.map(app => (
-                            <tr key={app.ApplicationID}>
-                                <td>{app.ApplicationID}</td>
-                                <td>{app.ApplicantName}</td>
-                                <td>{app.ApplicantType}</td>
-                                <td>{app.Username}</td>
-                                <td>{app.Email}</td>
-                                <td>{app.ApplicationStatus}</td>
-                                <td>
-                                    {app.ApplicationStatus === 'Pending' && (
-                                        <>
-                                            <button onClick={() => updateStatus(app.ApplicationID, 'Approved')}>&#10003; Approve</button>
-                                            <button onClick={() => updateStatus(app.ApplicationID, 'Rejected')}>&#x2717; Reject</button>
-                                        </>
-                                    )}
-                                </td>
+                <div className="table-layout">
+                    <table border={1}>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-            <div className="backButn">
-                <Link to="/menu" className="black-link">{"<-- Back"}</Link>
+                        </thead>
+                        <tbody>
+                            {applications.map(app => (
+                                <tr key={app.ApplicationID}>
+                                    <td>{app.ApplicationID}</td>
+                                    <td>{app.ApplicantName}</td>
+                                    <td>{app.ApplicantType}</td>
+                                    <td>{app.Username}</td>
+                                    <td>{app.Email}</td>
+                                    <td>{app.ApplicationStatus}</td>
+                                    <td>
+                                        {app.ApplicationStatus === 'Pending' && (
+                                            <>
+                                                <button onClick={() => updateStatus(app.ApplicationID, 'Approved')}>&#10003; Approve</button>
+                                                <button onClick={() => updateStatus(app.ApplicationID, 'Rejected')}>&#x2717; Reject</button>
+                                            </>
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="backButn">
+                    <Link to="/menu" className="black-link">{"<-- Back"}</Link>
+                </div>
             </div>
         </main>
     );
