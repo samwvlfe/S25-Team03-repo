@@ -1,5 +1,4 @@
 import React, { ButtonHTMLAttributes } from 'react';
-import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
 
@@ -10,7 +9,7 @@ export function DriverButtons() {
         <>
             <li onClick={() => navigate("/point-transaction")}>Point History</li>
             <li onClick={() => navigate("/fake-store")}>Redeem Points</li>
-            <li onClick={() => navigate("/blackjack")}>GAMBLING!</li>
+            <li onClick={() => navigate("/blackjack")}>Blackjack</li>
             <li onClick={() => navigate("/request-sponsor")}>Request Sponsor</li>
             <li onClick={() => navigate("/password-change")}>Change Password</li>
             <li onClick={() => navigate("/driver-orders")}>View Orders</li>
@@ -49,7 +48,7 @@ export function AdminButtons() {
             <li onClick={() => navigate("/create-product")}>Add New Product</li>
             <li onClick={() => navigate("/add-company")}>Add Company</li>
             <li onClick={() => navigate("/catalog-purchases")}>View Driver Transactions</li>
-            <li>View Audit Logs</li>
+            <li>Generate Report</li>
         </>
     )
 }
