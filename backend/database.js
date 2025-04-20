@@ -15,14 +15,6 @@ app.use(cors());
 import {createHashPassword} from "../script/extra.js"
 import { isValidPassword } from "../script/passwordComplexity.js";
 
-// Database connection - TEST
-// const db = mysql.createConnection({
-//     host: 't3db-instance.cmypylkqlfup.us-east-1.rds.amazonaws.com',
-//     user: 't3admin',
-//     password: 'JlziWBbT4LmgEEbJsCwW',
-//     database: 'GoodDriverIncentiveT3',
-//     port: 3306
-// });
 
 // Database connection - PRODUCTION
 const db = mysql.createConnection({
@@ -459,7 +451,7 @@ app.post('/api/create-product', (req, res) => {
   
     const query = `
       INSERT INTO ProductCatalog (ProductName, PriceInPoints, Description, ImageURL)
-      VALUES (?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, TRUE)
     `;
   
     db.query(query, [productName, priceInPoints, description || null, imageURL || null], (err, result) => {
@@ -893,6 +885,6 @@ app.patch('/api/sponsor-update', (req, res) => {
 });
 
 // Start server
-app.listen(port, () => {
-    console.log(`Server running at http://127.0.0.1:${port}/`);
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Server running on port ${port} and accessible externally`);
 });

@@ -1,5 +1,7 @@
 import React, { ReactElement , useEffect, useState } from "react";
 import { updatePoints, fetchTotalPoints} from '../../backend/api';
+import { useBreakpointValue } from "@aws-amplify/ui-react";
+import { Link } from 'react-router-dom';
 
 // Class for card creation.
 class Card {
@@ -297,6 +299,9 @@ export default function Blackjack() {
                     {game.playerHand.cards.map(card => (
                         card.info()
                     ))}
+                </div>
+                <div className="backButn" style={{ marginTop: "20px" }}>
+                <Link to="/menu">{"<-- Back"}</Link>
                 </div>
             </div>
         </main>

@@ -1,5 +1,6 @@
 "use client";  // Mark as a client component
 
+
 import React, {useState, useEffect, ReactEventHandler, useRef} from 'react';
 import {
   BrowserRouter as Router,
@@ -32,10 +33,11 @@ import Profile from './pages/Profile';
 import Leaderboard from "./pages/Leaderboard";
 
 import {handleSignOut, toggleNav} from '../script/toggle'
+import LoadingIndicator from './components/Loading';
 
 export default function Navigation() {
-    const [menuState, setMenuState] = useState("none");
     const menuRef = useRef<HTMLDivElement | null>(null);
+    const [menuState, setMenuState] = useState("none");
 
     const toggleMenu = (event: React.MouseEvent<HTMLImageElement>) => {
         event.stopPropagation();
@@ -67,6 +69,23 @@ export default function Navigation() {
             document.removeEventListener("click", handleClickOutside);
         }
     }, [menuState]);
+  
+    // show assumed role user
+    useEffect(() => {
+        try {
+            const prevUser = JSON.parse(localStorage.getItem("previousUser") || "{}");
+            const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+            if (prevUser && prevUser.username) {
+                const div_ = document.getElementById("prevUser");
+                if (div_) {
+                    div_.innerHTML = `${user.username}'s account`;
+                }
+            }
+        } catch (err) {
+            console.error("Failed to parse previousUser from localStorage", err);
+        }
+    }, []);
 
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     const profileImage = user.profileImageURL || "/media/default-alien.svg";
@@ -82,6 +101,23 @@ export default function Navigation() {
                 </Link>
                 <nav className="nav-bar">
                     <ul>
+                        <li id="prevUser" className="prevU"></li>
+                        <li id="toggleUser">
+                            <button onClick={(e) => {
+                                e.stopPropagation(); // prevent row toggle
+                                const OGUser = JSON.parse(localStorage.getItem("previousUser") || "{}");
+                                localStorage.clear();
+                                // set only user to previus user
+                                localStorage.setItem("user", JSON.stringify(OGUser));
+                                //hide the button
+                                let toggleDiv = document.getElementById("toggleUser");
+                                if(toggleDiv){
+                                    toggleDiv.style.display = "none";
+                                }
+                            }}>
+                                Back To OG User
+                            </button>
+                        </li>
                         <li id="signin" style={{ display: "block" }}>
                             <Link to="/signin">
                                 <img src="/media/signin.svg" alt="Sign In" />
