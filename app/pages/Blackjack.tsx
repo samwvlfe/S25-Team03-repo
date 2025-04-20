@@ -1,6 +1,6 @@
 import React, { ReactElement , useEffect, useState } from "react";
 import { updatePoints, fetchTotalPoints} from '../../backend/api';
-import { useBreakpointValue } from "@aws-amplify/ui-react";
+import CircularLoading from '../components/CircularLoading';
 import { Link } from 'react-router-dom';
 
 // Class for card creation.
@@ -248,6 +248,7 @@ export default function Blackjack() {
     const user = JSON.parse(localStorage.getItem("user") || "{}");
 
     const [game] = useState(new Game(2, 17));
+    const [loading, setLoading] = useState<boolean>(false);
     const [, setRender] = useState(0);
     const [rangeValue, setRangeValue] = useState(50);
     const [points, setPoints] = useState<number | null>(null);
@@ -260,7 +261,9 @@ export default function Blackjack() {
 
     const handleStart = async () => {
         game.startGame(rangeValue);
+        setLoading(true);
         await updatePoints(user.id, -rangeValue, 1, "Blackjack");
+        setLoading(false);
         forceRender();
     }
 
@@ -289,6 +292,7 @@ export default function Blackjack() {
 
     return (
         <main>
+            {loading && <CircularLoading />}
             <div className="blackjack">
                 <div className="hand">
                     {game.dealerHand.cards.map(card => (
