@@ -258,8 +258,9 @@ export default function Blackjack() {
         fetchTotalPoints(user.id).then(setPoints);
     });
 
-    const handleStart = () => {
+    const handleStart = async () => {
         game.startGame(rangeValue);
+        await updatePoints(user.id, -rangeValue, 1, "Blackjack");
         forceRender();
     }
 
@@ -271,6 +272,15 @@ export default function Blackjack() {
     const handleHold = () => {
         game.hold();
         forceRender();
+
+        switch (true) {
+            case game.playerState === "Won":
+                updatePoints(user.id, (rangeValue * 2), 1, "Big winner!");
+                break;
+            case game.playerState === "Blackjack":
+                updatePoints(user.id, (rangeValue * 2.5), 1, "Gambling is fun!");
+                break;
+        }
     }
 
     const handleRange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -289,7 +299,7 @@ export default function Blackjack() {
                     {game.playerState != "Playing" && <button onClick={handleStart}>Start Game</button>}
                     {game.playerState != "Playing" && <>
                         <label>Bet:</label>
-                        <input type="range" max={Number(points)} value={rangeValue} onChange={handleRange}/>
+                        <input type="range" min={50} max={Number(points)} value={rangeValue} onChange={handleRange}/>
                         <output>{rangeValue}</output>
                     </>}
                     {game.playerState == "Playing" && <button onClick={handleDeal}>Deal</button>}
