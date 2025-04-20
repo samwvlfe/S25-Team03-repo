@@ -22,7 +22,7 @@ export default function SponsorRequestForm() {
   useEffect(() => {
     const fetchSponsors = async () => {
       try {
-        const res = await axios.get('http://44.200.67.186:2999/api/get-sponsors');
+        const res = await axios.get('https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/get-sponsors');
         setSponsors(res.data);
       } catch (error) {
         console.error('Error fetching sponsors:', error);
@@ -37,7 +37,7 @@ export default function SponsorRequestForm() {
     setLoading(true);
 
     try {
-      const res = await axios.post('http://44.200.67.186:2999/api/request-sponsor', {
+      const res = await axios.post('https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/request-sponsor', {
         driverID: user.id,
         sponsorCompanyID: selectedCompanyID
       });

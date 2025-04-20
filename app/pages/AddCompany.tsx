@@ -17,7 +17,7 @@ const AddCompany = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://44.200.67.186:2999/api/add-company', {
+      const response = await axios.post('https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/add-company', {
         companyName,
         pointsInfo
       });

@@ -37,7 +37,7 @@ const PasswordChange: React.FC = () => {
         }
 
         try { //call procedure
-            const response = await fetch('http://44.200.67.186:2999/api/update-password', {
+            const response = await fetch('https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/update-password', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ u_table, username, newPassword })

@@ -27,7 +27,7 @@ const DriverTransactions: React.FC = () => {
       const companyID = userData.companyID;
 
       try {
-        const response = await fetch('http://44.200.67.186:2999/driver-transactions', {
+        const response = await fetch('https://xyoottz426.execute-api.us-east-1.amazonaws.com/driver-transactions', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ companyID }),

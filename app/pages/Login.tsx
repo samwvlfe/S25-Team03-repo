@@ -30,7 +30,7 @@ export default function Login() {
         }
 
         try {
-            const response = await axios.post('http://44.200.67.186:2999/api/login', formData, {
+            const response = await axios.post('https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/login', formData, {
                 headers: { "Content-Type": "application/json" }
             });
 

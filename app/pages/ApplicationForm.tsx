@@ -31,7 +31,7 @@ export default function ApplicationForm() {
         setLoading(true);
 
         try {
-            const response = await axios.post('http://44.200.67.186:2999/api/submit-application', formData); 
+            const response = await axios.post('https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/submit-application', formData); 
             alert(response.data.message);
             navigate('/apply-success');
         } catch (error) {

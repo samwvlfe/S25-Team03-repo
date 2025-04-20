@@ -27,7 +27,7 @@ export default function DriverPointHistory() {
     }
 
     // Call the backend API using axios. The endpoint expects driverID as a query parameter.
-    axios.get('http://44.200.67.186:2999/pointHistory/', { params: { driverID } })
+    axios.get('https://xyoottz426.execute-api.us-east-1.amazonaws.com/pointHistory/', { params: { driverID } })
       .then(response => {
         console.log("Point history received:", response.data);
         setHistory(response.data);

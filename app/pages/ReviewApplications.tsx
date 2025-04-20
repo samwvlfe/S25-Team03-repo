@@ -18,14 +18,14 @@ export default function ReviewApplications() {
 
     // Fetch applications from backend
     React.useEffect(() => {
-        axios.get('http://44.200.67.186:2999/api/get-applications')
+        axios.get('https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/get-applications')
             .then(response => {setApplications(response.data)})
             .catch(error => console.error('Error fetching applications:', error));
     }, []);
 
     // Function to update application status
     const updateStatus = (applicationID: number, status: 'Approved' | 'Rejected') => {
-        axios.post('http://44.200.67.186:2999/api/update-application-status', { applicationID, status })
+        axios.post('https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/update-application-status', { applicationID, status })
             .then(() => {
                 alert(`Application ${status}`);
                 setApplications(applications.map(app => 

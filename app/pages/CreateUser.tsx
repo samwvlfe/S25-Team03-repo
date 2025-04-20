@@ -21,7 +21,7 @@ export default function CreateUser() {
         e.preventDefault();
 
         try {
-            await axios.post('http://44.200.67.186:2999/api/admin/create-user', {...formData });
+            await axios.post('https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/admin/create-user', {...formData });
             alert('Profile created successfully');
         } catch (err) {
             alert('Error creating profile');

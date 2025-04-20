@@ -95,7 +95,7 @@ const Cart: React.FC = () => {
         return -1;
       }
       // Replace with your actual API endpoint.
-      const response = await fetch("http://44.200.67.186:2999/api/purchase", {
+      const response = await fetch("https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/purchase", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

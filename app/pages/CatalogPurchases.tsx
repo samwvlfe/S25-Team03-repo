@@ -18,7 +18,7 @@ const CatalogPurchases: React.FC = () => {
   useEffect(() => {
     const fetchPurchases = async () => {
       try {
-        const response = await fetch('http://44.200.67.186:2999/catalog-purchases');
+        const response = await fetch('https://xyoottz426.execute-api.us-east-1.amazonaws.com/catalog-purchases');
         const result = await response.json();
 
         if (!response.ok) {

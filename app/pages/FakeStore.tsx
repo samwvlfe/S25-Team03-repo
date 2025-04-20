@@ -14,7 +14,7 @@ const FakeStore: React.FC = () => {
 
     // Fetch both API and local DB products
     useEffect(() => {
-        axios.get("http://44.200.67.186:2999/api/fake-store")
+        axios.get("https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/fake-store")
             .then(res => {
                 const seen = new Set<string>();
                 const deduped = res.data.filter((product: Product) => {

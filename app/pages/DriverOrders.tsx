@@ -26,7 +26,7 @@ export default function DriverPointHistory() {
       return;
     }
 
-    axios.get('http://44.200.67.186:2999/orderHistory/', { params: { driverID } })
+    axios.get('https://xyoottz426.execute-api.us-east-1.amazonaws.com/orderHistory/', { params: { driverID } })
       .then(response => {
         console.log("Order history received:", response.data);
         setOrder(response.data);
@@ -42,7 +42,7 @@ export default function DriverPointHistory() {
     if (!confirmed) return;
   
     try {
-        const response = await fetch(`http://44.200.67.186:2999/deleteOrder/?PurchaseID=${purchaseID}`, {
+        const response = await fetch(`https://xyoottz426.execute-api.us-east-1.amazonaws.com/deleteOrder/?PurchaseID=${purchaseID}`, {
             method: 'GET',
         });
         

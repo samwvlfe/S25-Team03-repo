@@ -20,7 +20,7 @@ const Profile: React.FC = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get(`http://44.200.67.186:2999/api/profile/${user.username}`);
+        const res = await axios.get(`https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/profile/${user.username}`);
         const fetchedData = {
           name: res.data.Name || '',
           email: res.data.Email || '',
@@ -66,7 +66,7 @@ const Profile: React.FC = () => {
         userType: profile.userType,
       };
 
-      await axios.put(`http://44.200.67.186:2999/api/profile/update`, updatedData);
+      await axios.put(`https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/profile/update`, updatedData);
       setMessage(' Profile updated successfully!');
 
       // Update localStorage and user object

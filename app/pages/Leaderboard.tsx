@@ -11,7 +11,7 @@ const Leaderboard = () => {
   const [drivers, setDrivers] = useState<Driver[]>([]);
 
   useEffect(() => {
-    axios.get("http://44.200.67.186:2999/api/leaderboard")
+    axios.get("https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/leaderboard")
       .then(res => setDrivers(res.data))
       .catch(err => console.error("Failed to load leaderboard:", err));
   }, []);

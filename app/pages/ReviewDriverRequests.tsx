@@ -20,14 +20,14 @@ const ReviewDriverRequests = () => {
     if (!sponsor.companyID) return;
 
     axios
-      .get(`http://44.200.67.186:2999/api/sponsor/driver-requests/${sponsor.companyID}`)
+      .get(`https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/sponsor/driver-requests/${sponsor.companyID}`)
       .then((res) => setRequests(res.data))
       .catch((err) => console.error("Failed to fetch requests", err));
   }, []);
 
   const handleDecision = (requestID: number, driverID: number, decision: string) => {
     axios
-      .post("http://44.200.67.186:2999/api/sponsor/handle-request", {
+      .post("https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/sponsor/handle-request", {
         requestID,
         driverID,
         decision

@@ -12,7 +12,7 @@ const CreateProduct = () => {
     e.preventDefault();
 
     try {
-      await axios.post("http://44.200.67.186:2999/api/products", {
+      await axios.post("https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/products", {
         productName,
         priceInPoints: parseInt(priceInPoints),
         description,
