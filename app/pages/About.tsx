@@ -17,7 +17,7 @@ export default function About() {
 
   // Making use of Axios to call the API.
   useEffect(() => {
-    axios.get('http://44.200.67.186:2999/api/about')
+    axios.get('https://44.200.67.186:2999/api/about')
       .then(response => {
         setData(response.data);
       })
