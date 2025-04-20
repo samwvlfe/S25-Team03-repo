@@ -40,11 +40,10 @@ export default function DriverPointHistory() {
 
   return (
     <main>
-      <div className="move-down">
+      <div className="move-down center-flex">
+        <h2>Point History</h2>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <div className="table-layout">
-          <h2>Point History</h2>
-          {error && <p style={{ color: 'red' }}>{error}</p>}
-
           <table border={1}>
             <thead>
               <tr>

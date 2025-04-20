@@ -37,39 +37,40 @@ const CatalogPurchases: React.FC = () => {
   }, []);
 
   return (
-    <div className="move-down">
-      <h1>Catalog Purchases</h1>
-
-      {error && <div style={{ color: 'red', marginBottom: '1rem' }}>{error}</div>}
-      {loading && <div>Loading...</div>}
-
-      {!loading && purchases.length > 0 && (
-        <table border={1} cellPadding={10} style={{ borderCollapse: 'collapse', width: '100%' }}>
-          <thead>
-            <tr>
-              <th>Transaction ID</th>
-              <th>Driver ID</th>
-              <th>Point Change</th>
-              <th>Timestamp</th>
-            </tr>
-          </thead>
-          <tbody>
-            {purchases.map((record, index) => (
-              <tr key={index}>
-                <td>{record.TransactionID}</td>
-                <td>{record.DriverID}</td>
-                <td>{record.PointChange}</td>
-                <td>{record.Timestamp.slice(0, 10)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-
-      <div className="backButn">
-        <Link to="/menu" className="black-link">{"<-- Back"}</Link>
+    <main>
+      <div className="move-down center-flex">
+        <h2>Catalog Purchases</h2>
+        {error && <div style={{ color: 'red', marginBottom: '1rem' }}>{error}</div>}
+        {loading && <div>Loading...</div>}
+        <div className="table-layout">
+          {!loading && purchases.length > 0 && (
+            <table border={1} cellPadding={10} style={{ borderCollapse: 'collapse', width: '100%' }}>
+              <thead>
+                <tr>
+                  <th>Transaction ID</th>
+                  <th>Driver ID</th>
+                  <th>Point Change</th>
+                  <th>Timestamp</th>
+                </tr>
+              </thead>
+              <tbody>
+                {purchases.map((record, index) => (
+                  <tr key={index}>
+                    <td>{record.TransactionID}</td>
+                    <td>{record.DriverID}</td>
+                    <td>{record.PointChange}</td>
+                    <td>{record.Timestamp.slice(0, 10)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+        <div className="backButn">
+          <Link to="/menu" className="black-link">{"<-- Back"}</Link>
+        </div>
       </div>
-    </div>
+    </main>
   );
 };
 

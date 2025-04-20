@@ -39,34 +39,38 @@ const ReviewDriverRequests = () => {
   };
 
   return (
-    <div>
-      <h2>Review Driver Sponsorship Requests</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Driver Username</th>
-            <th>Request Date</th>
-            <th>Decision</th>
-          </tr>
-        </thead>
-        <tbody>
-          {requests.map((r) => (
-            <tr key={r.RequestID}>
-              <td>{r.Username}</td>
-              <td>{new Date(r.RequestDate).toLocaleDateString()}</td>
-              <td>
-                <button onClick={() => handleDecision(r.RequestID, r.DriverID, "Approved")}>Approve</button>
-                <button onClick={() => handleDecision(r.RequestID, r.DriverID, "Rejected")}>Reject</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-            {/* Back button */}
-      <div className="backButn" style={{ marginTop: "20px" }}>
-        <Link to="/menu">{"<-- Back"}</Link>
+    <main>
+      <div className="move-down center-flex">
+        <h2>Review Driver Sponsorship Requests</h2>
+        <div className="table-layout">
+          <table>
+            <thead>
+              <tr>
+                <th>Driver Username</th>
+                <th>Request Date</th>
+                <th>Decision</th>
+              </tr>
+            </thead>
+            <tbody>
+              {requests.map((r) => (
+                <tr key={r.RequestID}>
+                  <td>{r.Username}</td>
+                  <td>{new Date(r.RequestDate).toLocaleDateString()}</td>
+                  <td>
+                    <button onClick={() => handleDecision(r.RequestID, r.DriverID, "Approved")}>Approve</button>
+                    <button onClick={() => handleDecision(r.RequestID, r.DriverID, "Rejected")}>Reject</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {/* Back button */}
+        <div className="backButn" style={{ marginTop: "20px" }}>
+          <Link to="/menu">{"<-- Back"}</Link>
+        </div>
       </div>
-    </div>
+    </main>
   );
 };
 

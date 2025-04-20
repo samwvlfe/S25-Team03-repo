@@ -596,7 +596,10 @@ header a {
 .speech-bubble {
   position: absolute;
 
-  transform: translateY(-110%);
+  top: 50%;
+  left: 50%;
+
+  transform: translateX(-16%);
 
   padding: 25px;
   border-radius: 25px;
@@ -746,7 +749,7 @@ header a {
   padding: 15px;
   margin: 0;
 
-  background-color: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .menu-sector {
@@ -991,24 +994,26 @@ footer {
 }
 
 .table-layout {
-  display: flex;
-  flex-direction: column;
-
-  align-items: center;
-  justify-content: center;
-
   width: 50%;
+  max-height: 70vh;
+  overflow: auto;
 }
 
 .table-layout table {
   width: 100%;
 }
 
+.table-layout th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
 .filter {
   display: flex;
   justify-content: space-between;
 
-  width: 100%;
+  width: 20%;
 
   padding: 10px;
 }
@@ -1080,6 +1085,9 @@ footer {
 .move-down{
   display: flex;
   flex-direction: column;
+
+  flex: 1;
+
   margin-top: 20px;
 }
 
@@ -1147,4 +1155,11 @@ footer {
 #toggleUser{
   position: absolute;
   left: 120px;
+}
+
+.center-flex {
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
 }

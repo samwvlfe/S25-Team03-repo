@@ -51,39 +51,41 @@ const DriverTransactions: React.FC = () => {
   }, []);
 
   return (
-    <div className="move-down">
-      <h1>Driver Transactions</h1>
+    <main>
+      <div className="move-down center-flex">
+        <h2>Driver Transactions</h2>
+        <div className="table-layout">
+          {error && <div style={{ color: 'red', marginBottom: '1rem' }}>{error}</div>}
+          {loading && <div>Loading...</div>}
 
-      {error && <div style={{ color: 'red', marginBottom: '1rem' }}>{error}</div>}
-      {loading && <div>Loading...</div>}
-
-      {!loading && data.length > 0 && (
-        <table border={1} cellPadding={10} style={{ borderCollapse: 'collapse', width: '100%' }}>
-          <thead>
-            <tr>
-              <th>Transaction ID</th>
-              <th>Username</th>
-              <th>Point Change</th>
-              <th>Timestamp</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((row, index) => (
-              <tr key={index}>
-                <td>{row.TransactionID}</td>
-                <td>{row.Username}</td>
-                <td>{row.PointChange}</td>
-                <td>{row.Timestamp.slice(0, 10)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-
-      <div className="backButn">
-        <Link to="/menu" className="black-link">{"<-- Back"}</Link>
+          {!loading && data.length > 0 && (
+            <table border={1} cellPadding={10} style={{ borderCollapse: 'collapse', width: '100%' }}>
+              <thead>
+                <tr>
+                  <th>Transaction ID</th>
+                  <th>Username</th>
+                  <th>Point Change</th>
+                  <th>Timestamp</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((row, index) => (
+                  <tr key={index}>
+                    <td>{row.TransactionID}</td>
+                    <td>{row.Username}</td>
+                    <td>{row.PointChange}</td>
+                    <td>{row.Timestamp.slice(0, 10)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+        <div className="backButn">
+          <Link to="/menu" className="black-link">{"<-- Back"}</Link>
+        </div>
       </div>
-    </div>
+    </main>
   );
 };
 
