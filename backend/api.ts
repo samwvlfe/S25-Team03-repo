@@ -1,7 +1,7 @@
 // get points function
 export async function fetchTotalPoints(driverID: number): Promise<number | null> {
     try {
-        const response = await fetch(`https://xyoottz426.execute-api.us-east-1.amazonaws.com/getTotalPoints?driverID=${driverID}`);
+        const response = await fetch(`https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/getTotalPoints?driverID=${driverID}`);
         if (!response.ok) {
             throw new Error('Failed to fetch total points');
         }
@@ -16,7 +16,7 @@ export async function fetchTotalPoints(driverID: number): Promise<number | null>
 // update points function
 export async function updatePoints(userDriverID: number, Points_inc: number, EditorUserID: number, reason: string): Promise<boolean> {
     try {
-        const response = await fetch("https://xyoottz426.execute-api.us-east-1.amazonaws.com/updatePoints", {
+        const response = await fetch("https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/updatePoints", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
