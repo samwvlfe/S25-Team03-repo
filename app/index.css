@@ -736,6 +736,10 @@ header a {
   gap: 5%;
 }
 
+.selected-row {
+  font-weight: bold;
+}
+
 .user-management {
   display: flex;
   flex-direction: column;
