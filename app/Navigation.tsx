@@ -31,6 +31,7 @@ import DriverOrders from './pages/DriverOrders'
 import CatalogPurchases from './pages/CatalogPurchases';
 import Profile from './pages/Profile';
 import Leaderboard from "./pages/Leaderboard";
+import GenerateReport from "./pages/GenerateReport"
 
 import {handleSignOut, toggleNav} from '../script/toggle'
 import LoadingIndicator from './components/Loading';
@@ -177,6 +178,7 @@ export default function Navigation() {
                 <Route path="/catalog-purchases" element={<CatalogPurchases />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/leaderboard" element={<Leaderboard />} />
+                <Route path="/generate-report" element={<GenerateReport />} />
             </Routes>
         </Router>
     );

@@ -48,7 +48,7 @@ export function AdminButtons() {
             <li onClick={() => navigate("/create-product")}>Add New Product</li>
             <li onClick={() => navigate("/add-company")}>Add Company</li>
             <li onClick={() => navigate("/catalog-purchases")}>View Driver Transactions</li>
-            <li>Generate Report</li>
+            <li onClick={() => navigate("/generate-report")}>Generate Report</li>
         </>
     )
 }

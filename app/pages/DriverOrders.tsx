@@ -42,7 +42,7 @@ export default function DriverPointHistory() {
     if (!confirmed) return;
   
     try {
-        const response = await fetch(`https://xyoottz426.execute-api.us-east-1.amazonaws.com/deleteOrder/?PurchaseID=${purchaseID}`, {
+        const response = await fetch(`https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/deleteOrder/?PurchaseID=${purchaseID}`, {
             method: 'GET',
         });
         

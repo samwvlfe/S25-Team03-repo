@@ -14,6 +14,13 @@ import fontkit from '@pdf-lib/fontkit';
 const app = express();
 const port = process.env.PORT || 2999;
 
+const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const sqlFilePath = path.join(__dirname, 'ReportGeneration.sql');
+    const reportsDir = path.join(__dirname, 'reports');
+    if (!fs.existsSync(reportsDir)) fs.mkdirSync(reportsDir);
+    app.use('/reports', express.static(path.join(__dirname, 'reports')));
+
 // Middleware
 app.use(express.json());
 app.use(cors());
@@ -493,7 +500,7 @@ app.post('/api/create-product', (req, res) => {
   });  
 
 // get points from driver table based on driver ID
-app.get('/getTotalPoints', (req, res) => {
+app.get('/api/getTotalPoints', (req, res) => {
     const { driverID } = req.query;
 
     if (!driverID) {
@@ -535,7 +542,7 @@ app.get('/api/leaderboard', (req, res) => {
   });
 
 // change points by Driver ID 
-app.post('/updatePoints', (req, res) => {
+app.post('/api/updatePoints', (req, res) => {
     const { userDriverID, Points_inc, EditorUserID, reason } = req.body; 
 
     if (!userDriverID || !Points_inc || !EditorUserID || !reason) {
@@ -557,7 +564,7 @@ app.post('/updatePoints', (req, res) => {
 });
 
 // show point log based on current DriverID
-app.get('/pointHistory/', (req, res) => {
+app.get('/api/pointHistory/', (req, res) => {
 
     const { driverID } = req.query;
 
@@ -716,7 +723,7 @@ app.get('/api/driver-actions', (req, res) => {
 });
 
 // order history by driver ID
-app.get('/orderHistory', (req, res) => {
+app.get('/api/orderHistory', (req, res) => {
     const { driverID } = req.query;
   
     if (!driverID || isNaN(driverID)) {
@@ -740,7 +747,7 @@ app.get('/orderHistory', (req, res) => {
   });
 
 // show transactions by Driver
-app.post('/driver-transactions', (req, res) => {
+app.post('/api/driver-transactions', (req, res) => {
     const companyID = req.body.companyID;
   
     if (!Number.isInteger(companyID)) {
@@ -757,7 +764,7 @@ app.post('/driver-transactions', (req, res) => {
 });
 
 //delete order
-app.get('/deleteOrder/', (req, res) => {
+app.get('/api/deleteOrder/', (req, res) => {
 
     const { PurchaseID } = req.query;
 
@@ -784,7 +791,7 @@ app.get('/deleteOrder/', (req, res) => {
 });
 
 // get all driver purchases for admin
-app.get('/catalog-purchases', (req, res) => {
+app.get('/api/catalog-purchases', (req, res) => {
     const query = `
       SELECT * 
       FROM PointHistory 
@@ -891,108 +898,106 @@ app.patch('/api/sponsor-update', (req, res) => {
     })
 });
 
-// Start server
-app.listen(port, '0.0.0.0', () => {
-    console.log(`Server running on port ${port} and accessible externally`);
-    console.log(`Server running on port ${port} and accessible externally`);
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-    const sqlFilePath = path.join(__dirname, 'ReportGeneration.sql');
-const reportsDir = path.join(__dirname, 'reports');
-if (!fs.existsSync(reportsDir)) fs.mkdirSync(reportsDir);
-
-const getReportQueries = () => {
-  const raw = fs.readFileSync(sqlFilePath, 'utf-8');
-  return raw.split(';').map(q => q.trim()).filter(q => q.toLowerCase().startsWith('select'));
-};
-
-const reportNames = [
-  'Total_Points_Earned_Per_Driver',
-  'Highest_Point_Gain_Per_Company',
-  'Most_Products_Sold',
-  'Most_Points_Lost_Due_To_Infractions'
-];
-
-function generateReportByNumber(reportNumber, format = 'pdf') {
-    const queries = getReportQueries();
-    const index = reportNumber - 1;
+app.post('/api/generate-report', async (req, res) => {
+    const {
+      format = 'pdf',
+      reportTitle = 'Custom_Report',
+      columns = ['*'],
+      filters = {}, // e.g. { StartDate: '2025-01-01', EndDate: '2025-03-01' }
+      sortBy = '',
+      layout = {
+        fontSize: 10,
+        lineSpacing: 20,
+        includeHeaders: true,
+        pageSize: [600, 800]
+      }
+    } = req.body;
   
-    if (!queries[index]) {
-      console.error(`Report #${reportNumber} not found in SQL file.`);
-      return;
+    if (!['pdf', 'csv'].includes(format)) {
+      return res.status(400).json({ error: 'Invalid format' });
     }
   
-    const query = queries[index];
-    const reportName = reportNames[index] || `Report_${reportNumber}`;
+    const selectedCols = columns.length ? columns.join(', ') : '*';
+    const whereClauses = [];
+  
+    // Basic filters
+    if (filters.StartDate && filters.EndDate) {
+      whereClauses.push(`Date BETWEEN '${filters.StartDate}' AND '${filters.EndDate}'`);
+    }
+  
+    const whereSQL = whereClauses.length > 0 ? `WHERE ${whereClauses.join(' AND ')}` : '';
+    const sortSQL = sortBy ? `ORDER BY ${sortBy}` : '';
+  
+    const query = `SELECT ${selectedCols} FROM Driver ${whereSQL} ${sortSQL};`;
   
     db.query(query, async (err, results) => {
       if (err) {
-        console.error(`Query for ${reportName} failed:`, err);
-        return;
+        console.error('Query Error:', err);
+        return res.status(500).json({ error: 'Database query failed', details: err });
+      }
+  
+      if (!results.length) {
+        return res.status(404).json({ error: 'No data found for given parameters' });
       }
   
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-      const filename = path.join(reportsDir, `${reportName}_${timestamp}.${format}`);
+      const safeTitle = reportTitle.replace(/\s+/g, '_');
+      const filename = `${safeTitle}_${timestamp}.${format}`;
+      const filePath = path.join(reportsDir, filename);
   
-      if (format === 'csv') {
-        const headers = Object.keys(results[0] || {}).map(key => ({
-          id: key,
-          title: key,
-        }));
-  
-        const csvWriter = createObjectCsvWriter({
-          path: filename,
-          header: headers,
-        });
-  
-        try {
+      try {
+        if (format === 'csv') {
+          const headers = Object.keys(results[0]).map(key => ({ id: key, title: key }));
+          const csvWriter = createObjectCsvWriter({ path: filePath, header: headers });
           await csvWriter.writeRecords(results);
-          console.log(`CSV report saved to: ${filename}`);
-        } catch (writeErr) {
-          console.error(`Failed to write CSV:`, writeErr);
-        }
+        } else if (format === 'pdf') {
+          const pdfDoc = await PDFDocument.create();
+          pdfDoc.registerFontkit(fontkit);
+          const customFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+          let page = pdfDoc.addPage(layout.pageSize);
+          let { height } = page.getSize();
+          let y = height - 40;
   
-      } else if (format === 'pdf') {
-        const pdfDoc = await PDFDocument.create();
-        pdfDoc.registerFontkit(fontkit);
-        const customFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
-        const page = pdfDoc.addPage([600, 800]);
-        const { height } = page.getSize();
-  
-        let y = height - 40;
-        page.drawText(`Report: ${reportName}`, {
-          x: 50, y,
-          size: 18,
-          font: customFont,
-          color: rgb(0, 0, 0)
-        });
-  
-        y -= 30;
-        for (const row of results) {
-          const line = Object.values(row).join(' | ');
-          if (y < 50) {
-            y = height - 40;
-            pdfDoc.addPage();
+          if (layout.includeHeaders) {
+            page.drawText(`Report: ${reportTitle}`, {
+              x: 50,
+              y,
+              size: layout.fontSize + 4,
+              font: customFont,
+              color: rgb(0, 0, 0)
+            });
+            y -= layout.lineSpacing;
           }
-          page.drawText(line, { x: 50, y, size: 10, font: customFont });
-          y -= 20;
+  
+          for (const row of results) {
+            const line = Object.values(row).join(' | ');
+            if (y < 50) {
+              page = pdfDoc.addPage(layout.pageSize);
+              y = height - 40;
+            }
+            page.drawText(line, {
+              x: 50,
+              y,
+              size: layout.fontSize,
+              font: customFont
+            });
+            y -= layout.lineSpacing;
+          }
+  
+          const pdfBytes = await pdfDoc.save();
+          fs.writeFileSync(filePath, pdfBytes);
         }
   
-        const pdfBytes = await pdfDoc.save();
-        fs.writeFileSync(filename, pdfBytes);
-        console.log(`PDF report saved to: ${filename}`);
-      } else {
-        console.error(`Unsupported format: ${format}`);
+        res.json({ success: true, file: filename, path: `/reports/${filename}` });
+  
+      } catch (genErr) {
+        console.error('Report generation failed:', genErr);
+        res.status(500).json({ error: 'Report generation failed', details: genErr });
       }
     });
-  }  
+  });  
 
-// Generate one report on startup for test
-//generateReportByNumber(1, 'csv');  // or 'csv'
-
-// Schedule daily generation
-cron.schedule('0 8 * * *', () => {
-  console.log('Scheduled report generation at 8AM');
-  generatePdfReport(1);
-});
+// Start server
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Server running on port ${port} and accessible externally`);
 });
