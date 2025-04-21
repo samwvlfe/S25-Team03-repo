@@ -994,7 +994,12 @@ app.post('/api/generate-report', async (req, res) => {
           fs.writeFileSync(filePath, pdfBytes);
         }
   
-        res.json({ success: true, file: filename, path: `/reports/${filename}` });
+        const publicIP = 'http://44.200.67.186'; // ← EC2 public IP (no trailing slash)
+        res.json({
+            success: true,
+            file: filename,
+            path: `${publicIP}/reports/${filename}`, // ← absolute URL
+        });
   
       } catch (genErr) {
         console.error('Report generation failed:', genErr);
