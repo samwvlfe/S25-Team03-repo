@@ -596,10 +596,7 @@ header a {
 .speech-bubble {
   position: absolute;
 
-  top: 50%;
-  left: 50%;
-
-  transform: translateX(-16%);
+  transform: translateY(-125%);
 
   padding: 25px;
   border-radius: 25px;
