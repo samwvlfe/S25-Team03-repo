@@ -563,6 +563,17 @@ header a {
   gap: 10px;
 }
 
+.wall-decor {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 20px;
+
+  gap: 400px;
+}
+
 .floor-level {
   display: flex;
 
@@ -600,6 +611,27 @@ header a {
   background-repeat: no-repeat;
   background-color: #231F20;
   border-radius: 300px;
+}
+
+.slime-diploma {
+  aspect-ratio: 1/1;
+
+  height: 100px;
+
+  background-image: url('/media/slime-diploma.svg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.slime-wife {
+  aspect-ratio: 1/1;
+
+  height: 100px;
+
+  background-image: url('/media/slime-wife.svg');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
 
 .obelisk {
