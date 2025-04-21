@@ -32,6 +32,20 @@
   100% {background-position-y: 90%}
 }
 
+@keyframes fade-in-out {
+  0% {opacity: 0;}
+  10% {opacity: 1;}
+  90% {opacity: 1;}
+  100% {opacity: 0;}
+}
+
+@keyframes move-in-out {
+  0% {transform: translateX(-25%);}
+  10% {transform: translateX(-0.5%);}
+  90% {transform: translateX(0.5%);}
+  100% {transform: translate(25%);}
+}
+
 /* All general formatting. */
 body {
   margin: 0;
@@ -809,6 +823,29 @@ header a {
   flex: 1;
 
   justify-content: space-around;
+}
+
+.blackjack-results {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  padding: 20px;
+  width: 100%;
+
+  background-color:rgba(0, 0, 0, 0.8);
+  color: white;
+
+  font-size: 14pt;
+  text-align: center;
+
+  animation: fade-in-out 3s ease-in-out;
+}
+
+.blackjack-results p {
+  animation: move-in-out 3s ease-in-out;
 }
 
 .game-controls {

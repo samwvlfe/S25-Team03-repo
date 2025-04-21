@@ -252,6 +252,7 @@ export default function Blackjack() {
     const [, setRender] = useState(0);
     const [rangeValue, setRangeValue] = useState(50);
     const [points, setPoints] = useState<number | null>(null);
+    const [result, setResult] = useState<string | null>(null);
 
     const forceRender = () => setRender(prev => prev + 1);
 
@@ -261,10 +262,23 @@ export default function Blackjack() {
 
     const handleStart = async () => {
         game.startGame(rangeValue);
+
         setLoading(true);
         await updatePoints(user.id, -rangeValue, 1, "Blackjack");
         setLoading(false);
+
         forceRender();
+
+        if (game.playerState === "Lost") {
+            setResult("You lost...");
+            setTimeout(() => setResult(null), 3000);
+        }
+
+        if (game.playerState === "Blackjack") {
+            updatePoints(user.id, (rangeValue * 2.5), 1, "Got Blackjack!");
+            setResult(`Blackjack! You won ${rangeValue} points!`);
+            setTimeout(() => setResult(null), 3000);
+        }
     }
 
     const handleDeal = () => {
@@ -276,14 +290,24 @@ export default function Blackjack() {
         game.hold();
         forceRender();
 
+        let msg = "";
+
         switch (true) {
             case game.playerState === "Won":
-                updatePoints(user.id, (rangeValue * 2), 1, "Big winner!");
+                updatePoints(user.id, (rangeValue * 2), 1, "Blackjack winnings!");
+                msg = `You won ${rangeValue} points!`;
                 break;
-            case game.playerState === "Blackjack":
-                updatePoints(user.id, (rangeValue * 2.5), 1, "Gambling is fun!");
+            case game.playerState === "Push":
+                msg = `Push! Returned ${rangeValue} points.`;
+                break;
+            case game.playerState === "Lost":
+                msg = "You lost...";
                 break;
         }
+
+        setResult(msg);
+
+        setTimeout(() => setResult(null), 3000);
     }
 
     const handleRange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -293,6 +317,9 @@ export default function Blackjack() {
     return (
         <main>
             {loading && <CircularLoading />}
+            {result && <div className="blackjack-results">
+                <p>{result}</p>
+            </div>}
             <div className="blackjack">
                 <div className="hand">
                     {game.dealerHand.cards.map(card => (
@@ -300,14 +327,19 @@ export default function Blackjack() {
                     ))}
                 </div>
                 <div className="game-controls">
-                    {game.playerState != "Playing" && <button onClick={handleStart}>Start Game</button>}
-                    {game.playerState != "Playing" && <>
-                        <label>Bet:</label>
-                        <input type="range" min={50} max={Number(points)} value={rangeValue} onChange={handleRange}/>
-                        <output>{rangeValue}</output>
-                    </>}
-                    {game.playerState == "Playing" && <button onClick={handleDeal}>Deal</button>}
-                    {game.playerState == "Playing" && <button onClick={handleHold}>Hold</button>}
+                    { points !== null && points < 50 && <p>You must have at least 50 points to play Blackjack.</p>}
+                    { points !== null && points >= 50 &&
+                        <>
+                            {game.playerState != "Playing" && <button onClick={handleStart}>Start Game</button>}
+                            {game.playerState != "Playing" && <>
+                                <label>Bet:</label>
+                                <input type="range" min={50} max={Number(points)} value={rangeValue} onChange={handleRange}/>
+                                <output>{rangeValue}</output>
+                            </>}
+                            {game.playerState == "Playing" && <button onClick={handleDeal}>Deal</button>}
+                            {game.playerState == "Playing" && <button onClick={handleHold}>Hold</button>}
+                        </>
+                    }
                 </div>
                 <div className="hand">
                     {game.playerHand.cards.map(card => (
