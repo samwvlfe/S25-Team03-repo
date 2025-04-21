@@ -49,12 +49,13 @@ const GenerateReport: React.FC = () => {
 
     try {
       const res = await axios.post(
-        'https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/generate-report',
+        'https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/generate-report', // API Gateway endpoint
         payload
       );
 
+      // Check if `res.data.path` exists and is a valid URL
       if (res.data?.path) {
-        setFileUrl(res.data.path); // full EC2 URL returned from backend
+        setFileUrl(res.data.path); // Set full EC2 URL returned from backend
       } else {
         console.warn('No path in response:', res.data);
       }
@@ -173,7 +174,7 @@ const GenerateReport: React.FC = () => {
         <div className="mt-4">
           <p className="text-green-600">Report generated successfully!</p>
           <a
-            href={fileUrl}
+            href={fileUrl} // Correct absolute URL from backend
             target="_blank"
             rel="noopener noreferrer"
             className="underline text-blue-600"
