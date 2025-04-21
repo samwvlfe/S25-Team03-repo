@@ -48,8 +48,10 @@ const GenerateReport: React.FC = () => {
     };
 
     try {
-        const baseURL = process.env.REACT_APP_API_BASE_URL || "";
-        const res = await axios.post(`${baseURL}/api/generate-report`, payload);        
+        const res = await axios.post(
+            "https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/generate-report",
+            payload
+          );                
       if (res.data?.file) {
         setFileUrl(`/reports/${res.data.file}`);
       }
