@@ -48,12 +48,15 @@ const GenerateReport: React.FC = () => {
     };
 
     try {
-        const res = await axios.post(
-            "https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/generate-report",
-            payload
-          );                
-      if (res.data?.file) {
-        setFileUrl(`/reports/${res.data.file}`);
+      const res = await axios.post(
+        'https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/generate-report',
+        payload
+      );
+
+      if (res.data?.path) {
+        setFileUrl(res.data.path); // full EC2 URL returned from backend
+      } else {
+        console.warn('No path in response:', res.data);
       }
     } catch (err) {
       console.error('Failed to generate report', err);
