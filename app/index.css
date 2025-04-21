@@ -559,9 +559,20 @@ header a {
   aspect-ratio: 1/1;
 
   height: 175px;
-
-  background-color: black;
+  background-color: #231F20;
   border-radius: 300px;
+}
+
+.small-window:nth-child(1) {
+  background-image: url('/media/ring-planet.svg');
+  background-position: 21% 50%;
+}
+
+.small-window:nth-child(3) {
+  background-image: url('/media/small-planet.svg');
+  background-repeat: no-repeat;
+
+  background-position: 150% 125%;
 }
 
 .big-window {
@@ -569,7 +580,11 @@ header a {
 
   height: 300px;
 
-  background-color: black;
+  background-image: url('/media/ring-planet.svg');
+
+  background-position: 120% 50%;
+  background-repeat: no-repeat;
+  background-color: #231F20;
   border-radius: 300px;
 }
 
