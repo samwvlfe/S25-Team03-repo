@@ -66,124 +66,126 @@ const GenerateReport: React.FC = () => {
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Generate Custom Report</h2>
-      <form onSubmit={handleSubmit} className="space-y-4 bg-white p-4 shadow-md rounded-xl">
-        <div>
-          <label className="font-medium">Report Title:</label>
-          <input
-            type="text"
-            className="border w-full p-2 rounded mt-1"
-            value={reportTitle}
-            onChange={(e) => setReportTitle(e.target.value)}
-          />
-        </div>
-
-        <div>
-          <label className="font-medium">Select Columns:</label>
-          <div className="grid grid-cols-2 gap-2 mt-1">
-            {availableColumns.map((col) => (
-              <label key={col} className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  checked={columns.includes(col)}
-                  onChange={() => handleColumnToggle(col)}
-                />
-                <span>{col}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex gap-4">
+    <main>
+      <div className="p-6 max-w-2xl mx-auto">
+        <h2 className="text-2xl font-bold mb-4">Generate Custom Report</h2>
+        <form onSubmit={handleSubmit} className="space-y-4 bg-white p-4 shadow-md rounded-xl">
           <div>
-            <label className="font-medium">Start Date:</label>
+            <label className="font-medium">Report Title:</label>
             <input
-              type="date"
-              className="border p-2 rounded w-full"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              type="text"
+              className="border w-full p-2 rounded mt-1"
+              value={reportTitle}
+              onChange={(e) => setReportTitle(e.target.value)}
             />
           </div>
-          <div>
-            <label className="font-medium">End Date:</label>
-            <input
-              type="date"
-              className="border p-2 rounded w-full"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
-          </div>
-        </div>
 
-        <div>
-          <label className="font-medium">Report Format:</label>
-          <select
-            className="border w-full p-2 rounded mt-1"
-            value={format}
-            onChange={(e) => setFormat(e.target.value)}
+          <div>
+            <label className="font-medium">Select Columns:</label>
+            <div className="grid grid-cols-2 gap-2 mt-1">
+              {availableColumns.map((col) => (
+                <label key={col} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    checked={columns.includes(col)}
+                    onChange={() => handleColumnToggle(col)}
+                  />
+                  <span>{col}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex gap-4">
+            <div>
+              <label className="font-medium">Start Date:</label>
+              <input
+                type="date"
+                className="border p-2 rounded w-full"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="font-medium">End Date:</label>
+              <input
+                type="date"
+                className="border p-2 rounded w-full"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="font-medium">Report Format:</label>
+            <select
+              className="border w-full p-2 rounded mt-1"
+              value={format}
+              onChange={(e) => setFormat(e.target.value)}
+            >
+              <option value="pdf">PDF</option>
+              <option value="csv">CSV</option>
+            </select>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="font-medium">Font Size:</label>
+              <input
+                type="number"
+                min="6"
+                className="border w-full p-2 rounded"
+                value={fontSize}
+                onChange={(e) => setFontSize(Number(e.target.value))}
+              />
+            </div>
+            <div>
+              <label className="font-medium">Line Spacing:</label>
+              <input
+                type="number"
+                min="10"
+                className="border w-full p-2 rounded"
+                value={lineSpacing}
+                onChange={(e) => setLineSpacing(Number(e.target.value))}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                checked={includeHeaders}
+                onChange={() => setIncludeHeaders(!includeHeaders)}
+              />
+              <span>Include Header</span>
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
-            <option value="pdf">PDF</option>
-            <option value="csv">CSV</option>
-          </select>
-        </div>
+            Generate Report
+          </button>
+        </form>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="font-medium">Font Size:</label>
-            <input
-              type="number"
-              min="6"
-              className="border w-full p-2 rounded"
-              value={fontSize}
-              onChange={(e) => setFontSize(Number(e.target.value))}
-            />
+        {fileUrl && (
+          <div className="mt-4">
+            <p className="text-green-600">Report generated successfully!</p>
+            <a
+              href={fileUrl} // Correct absolute URL from backend
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-blue-600"
+            >
+              Download Report
+            </a>
           </div>
-          <div>
-            <label className="font-medium">Line Spacing:</label>
-            <input
-              type="number"
-              min="10"
-              className="border w-full p-2 rounded"
-              value={lineSpacing}
-              onChange={(e) => setLineSpacing(Number(e.target.value))}
-            />
-          </div>
-        </div>
-
-        <div>
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={includeHeaders}
-              onChange={() => setIncludeHeaders(!includeHeaders)}
-            />
-            <span>Include Header</span>
-          </label>
-        </div>
-
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Generate Report
-        </button>
-      </form>
-
-      {fileUrl && (
-        <div className="mt-4">
-          <p className="text-green-600">Report generated successfully!</p>
-          <a
-            href={fileUrl} // Correct absolute URL from backend
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline text-blue-600"
-          >
-            Download Report
-          </a>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </main>
   );
 };
 
