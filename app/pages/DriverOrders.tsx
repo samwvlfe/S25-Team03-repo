@@ -26,7 +26,7 @@ export default function DriverPointHistory() {
       return;
     }
 
-    axios.get('https://xyoottz426.execute-api.us-east-1.amazonaws.com/orderHistory/', { params: { driverID } })
+    axios.get('https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/orderHistory/', { params: { driverID } })
       .then(response => {
         console.log("Order history received:", response.data);
         setOrder(response.data);

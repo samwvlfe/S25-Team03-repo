@@ -23,7 +23,13 @@ const __filename = fileURLToPath(import.meta.url);
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+const allowedOrigins = ['https://main.d2pvc8dymu1dbr.amplifyapp.com'];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
+
 
 //import hash func
 import {createHashPassword} from "../script/extra.js"
@@ -922,7 +928,7 @@ app.post('/api/generate-report', async (req, res) => {
   
     // Basic filters
     if (filters.StartDate && filters.EndDate) {
-      whereClauses.push(`Date BETWEEN '${filters.StartDate}' AND '${filters.EndDate}'`);
+        whereClauses.push(`DateJoined BETWEEN '${filters.StartDate}' AND '${filters.EndDate}'`);
     }
   
     const whereSQL = whereClauses.length > 0 ? `WHERE ${whereClauses.join(' AND ')}` : '';
