@@ -14,7 +14,7 @@ const GenerateReport: React.FC = () => {
 
   const availableColumns = [
     'DriverID',
-    'DriverName',
+    'Name',
     'TotalPoints',
     'Infractions',
     'DateJoined',
