@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="127.97858"
+   height="80.967758"
+   viewBox="0 0 127.97858 80.967758"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer7"
+     style="fill:#f2f2f2;stroke:#1a1a1a;stroke-width:3;stroke-dasharray:none;stroke-opacity:1"
+     transform="translate(-655.9907,-128.53993)">
+    <rect
+       style="fill:#f2f2f2;stroke:#1a1a1a;stroke-width:9.99998;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+       id="rect12-5"
+       width="117.97856"
+       height="70.967789"
+       x="660.99072"
+       y="133.53992" />
+    <text
+       xml:space="preserve"
+       style="text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:none;stroke:#231f20;stroke-width:1;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+       x="671.57568"
+       y="172.11169"
+       id="text23"><tspan
+         id="tspan23"
+         x="671.57568"
+         y="172.11169"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;font-family:'Segoe Script';-inkscape-font-specification:'Segoe Script, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal">Slime Diploma</tspan></text>
+    <circle
+       style="fill:#666666;stroke:#231f20;stroke-width:0;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+       id="path23"
+       cx="764.20172"
+       cy="189.89908"
+       r="8.3085051" />
+  </g>
+</svg>

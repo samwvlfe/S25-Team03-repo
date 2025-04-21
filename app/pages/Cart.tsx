@@ -123,58 +123,62 @@ const Cart: React.FC = () => {
 
 
   return (
-    <div style={{ padding: "40px" }}>
-      <h1>Your Shopping Cart</h1>
-      {aggregatedCart.length === 0 ? (
-        <p>Your cart is empty.</p>
-      ) : (
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr>
-              <th>Product</th>
-              <th>Description</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {aggregatedCart.map((item, index) => (
-              <tr key={item.ProductID}>
-                <td style={{ padding: "10px", textAlign: "center" }}>
-                  <img
-                    src={item.ImageURL}
-                    alt={item.ProductName}
-                    style={{ width: "50px", height: "50px" }}
-                  />
-                </td>
-                <td style={{ padding: "10px" }}>{item.ProductName}</td>
-                <td style={{ padding: "10px" }}>{item.PriceInPoints} points</td>
-                <td style={{ padding: "10px" }}>{item.quantity}</td>
-                <td style={{ padding: "10px" }}>
-                  <button onClick={() => increaseQuantity(index)}>+</button>
-                  <button onClick={() => decreaseQuantity(index)}>-</button>
-                  <button onClick={() => removeItem(index)}>Remove</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+    <main>
+      <div className="move-down center-flex">
+        <h2>Your Shopping Cart</h2>
+          {aggregatedCart.length === 0 ? (
+            <p>Your cart is empty.</p>
+          ) : (
+            <div className="table-layout">
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {aggregatedCart.map((item, index) => (
+                    <tr key={item.ProductID}>
+                      <td style={{ padding: "10px", textAlign: "center" }}>
+                        <img
+                          src={item.ImageURL}
+                          alt={item.ProductName}
+                          style={{ width: "50px", height: "50px" }}
+                        />
+                      </td>
+                      <td style={{ padding: "10px" }}>{item.ProductName}</td>
+                      <td style={{ padding: "10px" }}>{item.PriceInPoints} points</td>
+                      <td style={{ padding: "10px" }}>{item.quantity}</td>
+                      <td style={{ padding: "10px" }}>
+                        <button onClick={() => increaseQuantity(index)}>+</button>
+                        <button onClick={() => decreaseQuantity(index)}>-</button>
+                        <button onClick={() => removeItem(index)}>Remove</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
 
-      {/* Buy button */}
-      <div className="buy-BTN">
-        <button onClick={submitTotalPrice}>PURCHASE</button>
-      </div>
-      
+          {/* Buy button */}
+          <div className="buy-BTN">
+            <button onClick={submitTotalPrice}>Purchase</button>
+          </div>
+          
 
-      <div className="backButn">
-        <Link to="/menu" className="black-link">Back to Menu</Link>
-      </div>
-      <div className="back-to-store">
-        <Link to="/fake-store" className="black-link">Back to Store</Link>
-      </div>
-    </div>
+          <div className="backButn">
+            <Link to="/menu" className="black-link">Back to Menu</Link>
+          </div>
+          <div className="back-to-store">
+            <Link to="/fake-store" className="black-link">Back to Store</Link>
+          </div>
+        </div>
+    </main>
   );
 };
 

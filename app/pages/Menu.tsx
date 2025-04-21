@@ -30,6 +30,10 @@ export default function Menu() {
                     <div className="big-window"/>
                     <div className="small-window"/>
                 </div>
+                <div className='wall-decor'>
+                    <div className="slime-diploma"/>
+                    <div className="slime-wife"/>
+                </div>
                 <div className="floor-level">
                     <div className="obelisk" />
                     <div className="desk-area">

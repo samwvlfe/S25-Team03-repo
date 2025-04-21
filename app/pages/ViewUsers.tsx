@@ -105,7 +105,7 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
                                             } else {
                                                 setCurUser(null);
                                             }
-                                        }}>
+                                        }} className={curUser?.UserID === user.UserID ? "selected-row" : ""}>
                                             <td>{user.UserID}</td>
                                             <td>{user.Name}</td>
                                             <td>{user.Username}</td>
@@ -136,7 +136,6 @@ export default function ViewUsers({ adminID }: ViewUsersProps) {
                                                 }
                                                 // navigate to menu
                                                 navigate("/");
-                                                
                                             }}>
                                                 Select
                                             </button>

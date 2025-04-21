@@ -47,7 +47,7 @@ function DeleteButton({ user }:UserMgmtProps) {
     )
 }
 
-function PointsMgmt({ user, localUser }:PointsMgmtProps) {
+function PointsMgmt({ user, localUser}:PointsMgmtProps) {
     // Form 1: Specific point management.
     const [pointsInc, setPointsInc] = useState<string>('');
     const [reason, setReason] = useState<string>('');
@@ -67,6 +67,20 @@ function PointsMgmt({ user, localUser }:PointsMgmtProps) {
         }
     };
 
+    return (
+        <div className="menu-sector">
+            <form className="inline-form" onSubmit={handleSubmit}>
+                <label>Points:</label>
+                <input type="number" value={pointsInc} onChange={(event) => {setPointsInc(event.target.value)}} required/>
+                <label>Reason:</label>
+                <input type="text" value={reason} onChange={(event) => {setReason(event.target.value)}} required/>
+                <input type="submit" value="Update Points"/>
+            </form>
+        </div>
+    )
+}
+
+function QuickMgmt({ user, localUser }:PointsMgmtProps) {
     // Form 2: Quick actions.
     const actions = [
         { label: "Safe Driving Award", value: "safe-driving", points: 10 },
@@ -99,36 +113,19 @@ function PointsMgmt({ user, localUser }:PointsMgmtProps) {
     };
 
     return (
-        <>
-            <div className="menu-container">
-                <h2 className="menu-header">Point Management</h2>
-                <div className="menu-sector">
-                    <form className="inline-form" onSubmit={handleSubmit}>
-                        <label>Points:</label>
-                        <input type="number" value={pointsInc} onChange={(event) => {setPointsInc(event.target.value)}} required/>
-                        <label>Reason:</label>
-                        <input type="text" value={reason} onChange={(event) => {setReason(event.target.value)}} required/>
-                        <input type="submit" value="Update Points"/>
-                    </form>
-                </div>
-            </div>
-            <div className="menu-container">
-                <h2 className="menu-header">Quick Point Management</h2>
-                <div className="menu-sector">
-                    <form className="inline-form" onSubmit={handleActionSubmit}>
-                        <label>Choose an action:</label>
-                        <select value={selectedAction} onChange={(e) => setSelectedAction(e.target.value)} required>
-                            {actions.map((action) => (
-                                <option key={action.value} value={action.value}>
-                                    {action.label} ({action.points > 0 ? "+" : ""}{action.points} pts)
-                                </option>
-                            ))}
-                        </select>
-                        <input type="submit" value="Apply Action"/>
-                    </form>
-                </div>
-            </div>
-        </>
+        <div className="menu-sector">
+            <form className="inline-form" onSubmit={handleActionSubmit}>
+                <label>Choose an action:</label>
+                <select value={selectedAction} onChange={(e) => setSelectedAction(e.target.value)} required>
+                    {actions.map((action) => (
+                        <option key={action.value} value={action.value}>
+                            {action.label} ({action.points > 0 ? "+" : ""}{action.points} pts)
+                        </option>
+                    ))}
+                </select>
+                <input type="submit" value="Apply Action"/>
+            </form>
+        </div>
     )
 }
 
@@ -181,33 +178,31 @@ function SponsorMgmt({ user, localUser }:PointsMgmtProps) {
     }
 
     return (
-        <div className="menu-container">
-            <h2 className="menu-header">Sponsor Management</h2>
-            <div className="menu-sector">
-                {sponsorDisplay}
-                <form className="inline-form" onSubmit={handleSubmit}>
-                    <label>Select Sponsor:</label>
-                    <select
-                        value={selectedCompanyID}
-                        onChange={(e) => setSelectedCompanyID(e.target.value)}
-                        required
-                    >
-                        <option value="">-- Choose a Sponsor --</option>
-                        {sponsors.map((sponsor) => (
-                        <option key={sponsor.CompanyID} value={sponsor.CompanyID}>
-                            {sponsor.CompanyName}
-                        </option>
-                        ))}
-                    </select>
-                    <input type="submit" value="Change Sponsor" />
-                </form>
-            </div>
+        <div className="menu-sector">
+            {sponsorDisplay}
+            <form className="inline-form" onSubmit={handleSubmit}>
+                <label>Select Sponsor:</label>
+                <select
+                    value={selectedCompanyID}
+                    onChange={(e) => setSelectedCompanyID(e.target.value)}
+                    required
+                >
+                    <option value="">-- Choose a Sponsor --</option>
+                    {sponsors.map((sponsor) => (
+                    <option key={sponsor.CompanyID} value={sponsor.CompanyID}>
+                        {sponsor.CompanyName}
+                    </option>
+                    ))}
+                </select>
+                <input type="submit" value="Change Sponsor" />
+            </form>
         </div>
     )
 }
 
 export function UserMgmt({ user }:UserMgmtProps) {
     const [points, setPoints] = useState<number | null>(null);
+    const [openMenus, setOpenMenus] = useState<boolean[]>([true, false, false, false]);
     const localUser = JSON.parse(localStorage.getItem("user") || "{}");
 
     useEffect(() => {
@@ -219,14 +214,24 @@ export function UserMgmt({ user }:UserMgmtProps) {
     return (
         <div className="user-management">
             <div className="menu-container">
-                <h2 className="menu-header">User Information</h2>
-                <div className="menu-sector">
+                <h2 className="menu-header" onClick={() => setOpenMenus(prev => [!prev[0], ...prev.slice(1)])}>{openMenus[0] ? '-' : '+'} User Information</h2>
+                {openMenus[0] && <div className="menu-sector">
                     <p>Selected user: { user?.Name }</p>
                     {user.UserType === "Driver" && <p>Points: {points !== null ? points : "Loading..."}</p>}
-                </div>
+                </div>}
             </div>
-            {user.UserType === "Driver" && <SponsorMgmt user={user} localUser={localUser}/>}
-            {user.UserType === "Driver" && <PointsMgmt user={user} localUser={localUser}/>}
+            {user.UserType === "Driver" && <div className="menu-container">
+                <h2 className="menu-header" onClick={() => setOpenMenus(prev => [...prev.slice(0, 1), !prev[1], ...prev.slice(2)])}>{openMenus[1] ? '-' : '+'} Sponsor Management</h2>
+                {openMenus[1] && <SponsorMgmt user={user} localUser={localUser}/>}
+            </div>}
+            {user.UserType === "Driver" && <div className="menu-container">
+                <h2 className="menu-header" onClick={() => setOpenMenus(prev => [...prev.slice(0, 2), !prev[2], ...prev.slice(3)])}>{openMenus[2] ? '-' : '+'} Points Management</h2>
+                {openMenus[2] && <PointsMgmt user={user} localUser={localUser}/>}
+            </div>}
+            {user.UserType === "Driver" && <div className="menu-container">
+                <h2 className="menu-header" onClick={() => setOpenMenus(prev => [...prev.slice(0, 3), !prev[3]])}>{openMenus[3] ? '-' : '+'} Quick Points Management</h2>
+                {openMenus[3] && <QuickMgmt user={user} localUser={localUser}/>}
+            </div>}
             {(localUser.usertype === "SponsorUser" && user.UserType === "Driver") && <DeleteButton user={user}/>}
             {(localUser.usertype === "Admin" && user.UserType != "Admin") && <DeleteButton user={user}/>}
         </div>
