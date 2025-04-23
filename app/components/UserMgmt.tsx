@@ -32,7 +32,7 @@ function DeleteButton({ user }:UserMgmtProps) {
     const deleteUser = async (userType: string | undefined, userId: number | undefined) => {
         try {
             console.log(`${userId} ${userType}`);
-            const response = await axios.delete(`http://localhost:2999/api/admin/delete-user/${userType}/${userId}`);
+            const response = await axios.delete(`https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/admin/delete-user/${userType}/${userId}`);
             alert(response.data.message);
         } catch (error) {
             alert(error);
@@ -144,7 +144,7 @@ function SponsorMgmt({ user, localUser }:PointsMgmtProps) {
     useEffect(() => {
         const fetchSponsors = async () => {
           try {
-            const res = await axios.get('http://localhost:2999/api/get-sponsors');
+            const res = await axios.get('https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/get-sponsors');
             setSponsors(res.data);
           } catch (error) {
             console.error('Error fetching sponsors:', error);
@@ -159,7 +159,7 @@ function SponsorMgmt({ user, localUser }:PointsMgmtProps) {
         e.preventDefault();
 
         try {
-            const res = await axios.patch('http://localhost:2999/api/sponsor-update', {
+            const res = await axios.patch('https://xyoottz426.execute-api.us-east-1.amazonaws.com/api/sponsor-update', {
                 driverID: user.UserID,
                 sponsorID: parseInt(selectedCompanyID)
             });
